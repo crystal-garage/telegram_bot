@@ -18,17 +18,17 @@ describe TelegramBot do
   end
 
   it "logs messages" do
-    IO.pipe do |r, w|
+    IO.pipe do |reader, writer|
       test = TestBot.new
       TestBot::Log.level = :debug
-      TestBot::Log.backend = ::Log::IOBackend.new(w)
+      TestBot::Log.backend = ::Log::IOBackend.new(writer)
 
       spawn { test.polling }
       Fiber.yield
       test.stop
 
-      r.gets.should match(/TestBot is ready to lead/)
-      r.gets.should match(/TestBot is going to take a rest/)
+      reader.gets.should match(/TestBot is ready to lead/)
+      reader.gets.should match(/TestBot is going to take a rest/)
     end
   end
 end

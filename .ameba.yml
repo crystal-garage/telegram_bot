@@ -17,3 +17,9 @@ Metrics/CyclomaticComplexity:
 
 Naming/AccessorMethodName:
   Enabled: false
+
+Naming/BinaryOperatorParameterName:
+  Enabled: false
+
+Naming/BlockParameterName:
+  Enabled: false

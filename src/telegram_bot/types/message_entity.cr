@@ -16,7 +16,7 @@ module TelegramBot
       *,
       @url = nil,
       @user = nil,
-      @language = nil
+      @language = nil,
     )
     end
   end

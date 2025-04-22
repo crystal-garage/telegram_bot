@@ -16,7 +16,7 @@ module TelegramBot
       @address : String,
       *,
       @forsquare_id = nil,
-      @foursquare_type = nil
+      @foursquare_type = nil,
     )
     end
   end

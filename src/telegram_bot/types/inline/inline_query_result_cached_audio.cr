@@ -13,7 +13,7 @@ module TelegramBot
       @audio_file_id : String,
       *,
       @reply_markup = nil,
-      @input_message_content = nil
+      @input_message_content = nil,
     )
     end
   end

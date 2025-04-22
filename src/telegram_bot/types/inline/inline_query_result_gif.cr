@@ -29,7 +29,7 @@ module TelegramBot
       @caption = nil,
       @parse_mode = nil,
       @reply_markup = nil,
-      @input_message_content = nil
+      @input_message_content = nil,
     )
     end
   end

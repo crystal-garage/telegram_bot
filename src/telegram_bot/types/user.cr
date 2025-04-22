@@ -22,7 +22,7 @@ module TelegramBot
       @language_code = nil,
       @can_join_groups = nil,
       @can_read_all_group_messages = nil,
-      @supports_inline_queries = nil
+      @supports_inline_queries = nil,
     )
     end
   end

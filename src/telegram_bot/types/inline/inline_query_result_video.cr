@@ -33,7 +33,7 @@ module TelegramBot
       @video_duration = nil,
       @description = nil,
       @reply_markup = nil,
-      @input_message_content = nil
+      @input_message_content = nil,
     )
     end
   end

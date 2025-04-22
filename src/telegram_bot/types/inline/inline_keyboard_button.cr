@@ -12,7 +12,7 @@ module TelegramBot
       *,
       @url : String? = nil,
       @callback_data : String? = nil,
-      @switch_inline_query : String? = nil
+      @switch_inline_query : String? = nil,
     )
     end
   end

@@ -13,7 +13,7 @@ module TelegramBot
       @phone_number : String,
       @first_name : String,
       @last_name = nil,
-      @vcard = nil
+      @vcard = nil,
     )
     end
   end

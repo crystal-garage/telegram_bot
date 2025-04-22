@@ -19,7 +19,7 @@ module TelegramBot
       @performer = nil,
       @audio_duration = nil,
       @reply_markup = nil,
-      @input_message_content = nil
+      @input_message_content = nil,
     )
     end
   end

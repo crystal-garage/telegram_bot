@@ -10,7 +10,7 @@ module TelegramBot
       @message_text : String,
       *,
       @parse_mode = nil,
-      @disable_web_page_preview = nil
+      @disable_web_page_preview = nil,
     )
     end
   end

@@ -14,7 +14,7 @@ module TelegramBot
       @width : Int32,
       @height : Int32,
       *,
-      @file_size = nil
+      @file_size = nil,
     )
     end
   end

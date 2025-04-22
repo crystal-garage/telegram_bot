@@ -27,7 +27,7 @@ module TelegramBot
       @input_message_content = nil,
       @thumb_url = nil,
       @thumb_width = nil,
-      @thumb_height = nil
+      @thumb_height = nil,
     )
     end
   end

@@ -10,7 +10,7 @@ module TelegramBot
       @text : String,
       *,
       @request_contact = nil,
-      @request_location = nil
+      @request_location = nil,
     )
     end
   end
@@ -28,7 +28,7 @@ module TelegramBot
       *,
       @resize_keyboard = nil,
       @one_time_keyboard = nil,
-      @selective = nil
+      @selective = nil,
     )
     end
 
@@ -38,7 +38,7 @@ module TelegramBot
       *,
       resize_keyboard : Bool? = nil,
       one_time_keyboard : Bool? = nil,
-      selective : Bool? = nil
+      selective : Bool? = nil,
     )
       buttons = keyboard.map { |row| row.map { |text| KeyboardButton.new(text) } }
       initialize(

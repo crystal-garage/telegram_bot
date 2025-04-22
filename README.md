@@ -1,9 +1,9 @@
 # TelegramBot
 
-[![Crystal CI](https://github.com/mamantoha/telegram_bot/actions/workflows/crystal.yml/badge.svg)](https://github.com/mamantoha/telegram_bot/actions/workflows/crystal.yml)
-[![GitHub release](https://img.shields.io/github/release/mamantoha/telegram_bot.svg)](https://github.com/mamantoha/telegram_bot/releases)
-[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://mamantoha.github.io/telegram_bot/)
-[![License](https://img.shields.io/github/license/mamantoha/telegram_bot.svg)](https://github.com/mamantoha/telegram_bot/blob/develop/LICENSE)
+[![Crystal CI](https://github.com/crystal-garage/telegram_bot/actions/workflows/crystal.yml/badge.svg)](https://github.com/crystal-garage/telegram_bot/actions/workflows/crystal.yml)
+[![GitHub release](https://img.shields.io/github/release/crystal-garage/telegram_bot.svg)](https://github.com/crystal-garage/telegram_bot/releases)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://crystal-garage.github.io/telegram_bot/)
+[![License](https://img.shields.io/github/license/crystal-garage/telegram_bot.svg)](https://github.com/crystal-garage/telegram_bot/blob/develop/LICENSE)
 
 [Telegram Bot API](https://core.telegram.org/bots/api) (3.2) wrapper for Crystal
 
@@ -162,14 +162,14 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   telegram_bot:
-    github: mamantoha/telegram_bot
+    github: crystal-garage/telegram_bot
 ```
 
 ## Contributing
 
 __Contributing is very welcomed!__
 
-1. Fork it ( https://github.com/mamantoha/TelegramBot/fork )
+1. Fork it ( https://github.com/crystal-garage/telegram_bot/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)

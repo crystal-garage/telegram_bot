@@ -251,22 +251,10 @@ module TelegramBot
     end
 
     macro def_request(name, *args)
-      {% reply_markup_arg = nil %}
-
-      {% for arg in args %}
-        {% if arg.stringify == "reply_markup" %}
-          {% reply_markup_arg = arg %}
-        {% end %}
-      {% end %}
-
-      {% if reply_markup_arg %}
-        reply_markup = reply_markup.try(&.to_json)
-      {% end %}
-
       request {{name}}, force_http: false, params: {
         {% for arg in args %}
           {% if arg.stringify == "reply_markup" %}
-            "reply_markup" => reply_markup,
+            {{arg.stringify}} => {{arg.id}}.try(&.to_json),
           {% else %}
             {{arg.stringify}} => {{arg.id}},
           {% end %}

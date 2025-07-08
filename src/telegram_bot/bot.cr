@@ -251,19 +251,35 @@ module TelegramBot
     end
 
     macro def_request(name, *args)
-        request {{name}}, force_http: false, params: {
-          {% for arg in args %}
+      {% reply_markup_arg = nil %}
+
+      {% for arg in args %}
+        {% if arg.stringify == "reply_markup" %}
+          {% reply_markup_arg = arg %}
+        {% end %}
+      {% end %}
+
+      {% if reply_markup_arg %}
+        reply_markup = reply_markup.try(&.to_json)
+      {% end %}
+
+      request {{name}}, force_http: false, params: {
+        {% for arg in args %}
+          {% if arg.stringify == "reply_markup" %}
+            "reply_markup" => reply_markup,
+          {% else %}
             {{arg.stringify}} => {{arg.id}},
           {% end %}
-        }
+        {% end %}
+      }
     end
 
     macro def_force_request(name, *args)
-        request {{name}}, force_http: true, params: {
-          {% for arg in args %}
-            {{arg.stringify}} => {{arg.id}},
-          {% end %}
-        }
+      request {{name}}, force_http: true, params: {
+        {% for arg in args %}
+          {{arg.stringify}} => {{arg.id}},
+        {% end %}
+      }
     end
 
     alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply | Nil
@@ -275,7 +291,6 @@ module TelegramBot
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
                      reply_markup : ReplyMarkup = nil) : Message?
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "sendMessage", chat_id, text, parse_mode, disable_notification, disable_web_page_preview, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
@@ -590,7 +605,6 @@ module TelegramBot
                           parse_mode : String? = nil,
                           disable_web_page_preview : Bool? = nil,
                           reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup
       if res
         if res.as_bool?
@@ -606,7 +620,6 @@ module TelegramBot
                              inline_message_id : String? = nil,
                              caption : String? = nil,
                              reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup
       if res
         if res.as_bool?
@@ -621,7 +634,6 @@ module TelegramBot
                                   message_id : Int32? = nil,
                                   inline_message_id : String? = nil,
                                   reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup
       if res
         if res.as_bool?
@@ -696,7 +708,6 @@ module TelegramBot
                   disable_notification : Bool? = nil,
                   reply_to_message_id : Int32? = nil,
                   reply_markup : InlineKeyboardMarkup? = nil) : Message?
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "sendGame", chat_id, game_short_name, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
@@ -754,7 +765,6 @@ module TelegramBot
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
                      reply_markup : ReplyMarkup = nil) : Message?
-      reply_markup = reply_markup.try(&.to_json)
       res = def_request "sendInvoice", chat_id, tilte, description, payload, provider_token, start_parameter, currency, prices, photo_url, photo_size, photo_width, photo_height, need_name, need_phone_number, need_email, need_shipping_address, is_flexible, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end

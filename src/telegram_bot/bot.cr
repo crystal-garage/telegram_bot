@@ -253,7 +253,7 @@ module TelegramBot
     macro def_request(name, *args)
       params = {
         {% for arg in args %}
-          {%  if arg.stringify == "reply_markup" %}
+          {% if arg.stringify == "reply_markup" %}
             {{arg.stringify}} => {{arg.id}}.try(&.to_json),
           {% else %}
             {{arg.stringify}} => {{arg.id}},
@@ -267,7 +267,7 @@ module TelegramBot
     macro def_force_request(name, *args)
       params = {
         {% for arg in args %}
-          {%  if arg.stringify == "reply_markup" %}
+          {% if arg.stringify == "reply_markup" %}
             {{arg.stringify}} => {{arg.id}}.try(&.to_json),
           {% else %}
             {{arg.stringify}} => {{arg.id}},

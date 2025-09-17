@@ -7,7 +7,7 @@ module TelegramBot
     property length : Int32
     property url : String?
     property user : User?
-    property language : User?
+    property language : String?
 
     def initialize(
       @type : String,
@@ -16,7 +16,7 @@ module TelegramBot
       *,
       @url = nil,
       @user = nil,
-      @language = nil,
+      @language : String? = nil,
     )
     end
   end

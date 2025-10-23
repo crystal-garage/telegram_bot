@@ -168,7 +168,6 @@ module TelegramBot
           end
         else
           # doesn't have username at all
-          true
         end
       end
 

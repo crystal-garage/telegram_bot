@@ -86,7 +86,7 @@ module TelegramBot
     end
 
     private def setup_trap_signal
-      Signal::INT.trap do
+      Process.on_terminate do
         stop
         exit
       end
@@ -254,28 +254,28 @@ module TelegramBot
       params = {
         {% for arg in args %}
           {% if arg.stringify == "reply_markup" %}
-            {{arg.stringify}} => {{arg.id}}.try(&.to_json),
+            {{ arg.stringify }} => {{ arg.id }}.try(&.to_json),
           {% else %}
-            {{arg.stringify}} => {{arg.id}},
+            {{ arg.stringify }} => {{ arg.id }},
           {% end %}
         {% end %}
       }
 
-      request {{name}}, force_http: false, params: params
+      request {{ name }}, force_http: false, params: params
     end
 
     macro def_force_request(name, *args)
       params = {
         {% for arg in args %}
           {% if arg.stringify == "reply_markup" %}
-            {{arg.stringify}} => {{arg.id}}.try(&.to_json),
+            {{ arg.stringify }} => {{ arg.id }}.try(&.to_json),
           {% else %}
-            {{arg.stringify}} => {{arg.id}},
+            {{ arg.stringify }} => {{ arg.id }},
           {% end %}
         {% end %}
       }
 
-      request {{name}}, force_http: true, params: params
+      request {{ name }}, force_http: true, params: params
     end
 
     alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply | Nil

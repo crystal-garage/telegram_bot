@@ -48,6 +48,16 @@ module TelegramBot
       raise "callback_query handler is not implemented"
     end
 
+    # handle shipping query
+    def handle(shipping_query : ShippingQuery)
+      raise "shipping_query handler is not implemented"
+    end
+
+    # handle pre-checkout query
+    def handle(pre_checkout_query : PreCheckoutQuery)
+      raise "pre_checkout_query handler is not implemented"
+    end
+
     # @name username of the bot
     # @token
     # @allowlist
@@ -131,6 +141,12 @@ module TelegramBot
       elsif callback_query = u.callback_query
         return if !allowed_user?(callback_query)
         handle callback_query
+      elsif shipping_query = u.shipping_query
+        return if !allowed_user?(shipping_query)
+        handle shipping_query
+      elsif pre_checkout_query = u.pre_checkout_query
+        return if !allowed_user?(pre_checkout_query)
+        handle pre_checkout_query
       elsif message = u.edited_message
         return if !allowed_user?(message)
         handle_edited message
@@ -306,7 +322,7 @@ module TelegramBot
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
                    reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendPhoto", chat_id, photo, disable_notification, reply_to_message_id, reply_markup
+      res = def_request "sendPhoto", chat_id, photo, caption, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -318,7 +334,7 @@ module TelegramBot
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
                    reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendPhoto", chat_id, audio, duration, performer, title, disable_notification, reply_to_message_id, reply_markup
+      res = def_request "sendAudio", chat_id, audio, duration, performer, title, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -371,7 +387,7 @@ module TelegramBot
                         disable_notification : Bool? = nil,
                         reply_to_message_id : Int32? = nil,
                         reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendVideoNote", chat_id, video, duration, length, disable_notification, caption, reply_to_message_id, reply_markup
+      res = def_request "sendVideoNote", chat_id, video_note, duration, length, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -442,7 +458,8 @@ module TelegramBot
                      first_name : String,
                      last_name : String? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyMarkup = nil) : Message?
+                     reply_markup : ReplyMarkup = nil,
+                     disable_notification : Bool? = nil) : Message?
       res = def_request "sendContact", chat_id, phone_number, first_name, last_name, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
@@ -536,18 +553,6 @@ module TelegramBot
     def get_chat(chat_id : Int | String)
       res = def_request "getChat", chat_id
       Chat.from_json res.not_nil!.to_json
-    end
-
-    def pin_chat_message(chat_id : Int | String,
-                         message_id : Int32,
-                         disable_notification : Bool?)
-      res = def_request "pinChatMessage", chat_id, message_id, disable_notification
-      res.as_bool if res
-    end
-
-    def unpin_chat_message(chat_id : Int | String)
-      res = def_request "unpinChatMessage", chat_id
-      res.as_bool if res
     end
 
     def leave_chat(chat_id : Int | String)
@@ -740,7 +745,7 @@ module TelegramBot
     #
 
     def send_invoice(chat_id : Int,
-                     tilte : String,
+                     title : String,
                      description : String,
                      payload : String,
                      provider_token : String,
@@ -760,15 +765,15 @@ module TelegramBot
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
                      reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendInvoice", chat_id, tilte, description, payload, provider_token, start_parameter, currency, prices, photo_url, photo_size, photo_width, photo_height, need_name, need_phone_number, need_email, need_shipping_address, is_flexible, disable_notification, reply_to_message_id, reply_markup
+      res = def_request "sendInvoice", chat_id, title, description, payload, provider_token, start_parameter, currency, prices, photo_url, photo_size, photo_width, photo_height, need_name, need_phone_number, need_email, need_shipping_address, is_flexible, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
     def answer_shipping_query(shipping_query_id : String,
                               ok : Bool,
-                              shipping_option : Array(ShippingOption)? = nil,
+                              shipping_options : Array(ShippingOption)? = nil,
                               error_message : String? = nil) : Bool | Message | Nil
-      res = def_request "answerShippingQuery", shipping_query_id, ok, shipping_option, error_message
+      res = def_request "answerShippingQuery", shipping_query_id, ok, shipping_options, error_message
       res.as_bool if res
     end
 

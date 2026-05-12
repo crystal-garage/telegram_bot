@@ -106,22 +106,24 @@ describe TelegramBot::Bot do
 
   it "dispatches shipping queries" do
     bot = RequestBuildingBot.new
-    update = TelegramBot::Update.from_json(%({
-      "update_id": 1,
-      "shipping_query": {
-        "id": "shipping-id",
-        "from": {"id": 1, "is_bot": false, "first_name": "User"},
-        "invoice_payload": "payload",
-        "shipping_address": {
-          "country_code": "US",
-          "state": "CA",
-          "city": "San Francisco",
-          "street_line1": "Market",
-          "street_line2": "",
-          "post_code": "94103"
+    update = TelegramBot::Update.from_json(<<-JSON)
+      {
+        "update_id": 1,
+        "shipping_query": {
+          "id": "shipping-id",
+          "from": {"id": 1, "is_bot": false, "first_name": "User"},
+          "invoice_payload": "payload",
+          "shipping_address": {
+            "country_code": "US",
+            "state": "CA",
+            "city": "San Francisco",
+            "street_line1": "Market",
+            "street_line2": "",
+            "post_code": "94103"
+          }
         }
       }
-    }))
+      JSON
 
     bot.handle_update(update)
 
@@ -130,16 +132,18 @@ describe TelegramBot::Bot do
 
   it "dispatches pre-checkout queries" do
     bot = RequestBuildingBot.new
-    update = TelegramBot::Update.from_json(%({
-      "update_id": 1,
-      "pre_checkout_query": {
-        "id": "pre-checkout-id",
-        "from": {"id": 1, "is_bot": false, "first_name": "User"},
-        "currency": "USD",
-        "total_amount": 1000,
-        "invoice_payload": "payload"
+    update = TelegramBot::Update.from_json(<<-JSON)
+      {
+        "update_id": 1,
+        "pre_checkout_query": {
+          "id": "pre-checkout-id",
+          "from": {"id": 1, "is_bot": false, "first_name": "User"},
+          "currency": "USD",
+          "total_amount": 1000,
+          "invoice_payload": "payload"
+        }
       }
-    }))
+      JSON
 
     bot.handle_update(update)
 

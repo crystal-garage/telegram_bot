@@ -1,19 +1,19 @@
 require "http/client"
 
 class HTTP::Client
-  def self.post_multipart(url : String | URI, parts : MultipartBody | Hash, headers : HTTP::Headers | Nil = nil) : HTTP::Client::Response
+  def self.post_multipart(url : String | URI, parts : MultipartBody | Hash, headers : HTTP::Headers? = nil) : HTTP::Client::Response
     exec(url) do |client, path|
       client.post_multipart(path, parts, headers)
     end
   end
 
-  def post_multipart(path, parts : MultipartBody, headers : HTTP::Headers | Nil = nil) : HTTP::Client::Response
+  def post_multipart(path, parts : MultipartBody, headers : HTTP::Headers? = nil) : HTTP::Client::Response
     headers ||= HTTP::Headers.new
     headers["Content-Type"] = "multipart/form-data; boundary=#{parts.boundary}"
     post path, headers, parts.bodyg
   end
 
-  def post_multipart(path, params : Hash, headers : HTTP::Headers | Nil = nil) : HTTP::Client::Response
+  def post_multipart(path, params : Hash, headers : HTTP::Headers? = nil) : HTTP::Client::Response
     parts = HTTP::Client::MultipartBody.new(params)
     post_multipart(path, parts, headers)
   end

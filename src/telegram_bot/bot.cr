@@ -102,7 +102,7 @@ module TelegramBot
       end
     end
 
-    def serve(bind_address : String = "127.0.0.1", bind_port : Int32 = 80, ssl_certificate_path : String | Nil = nil, ssl_key_path : String | Nil = nil)
+    def serve(bind_address : String = "127.0.0.1", bind_port : Int32 = 80, ssl_certificate_path : String? = nil, ssl_key_path : String? = nil)
       server = HTTP::Server.new do |context|
         begin
           Fiber.current.telegram_bot_server_http_context = context
@@ -206,7 +206,7 @@ module TelegramBot
       true
     end
 
-    protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => String | Int32 | Nil)
+    protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => String | Int32?)
       client = if !force_http && (context = Fiber.current.telegram_bot_server_http_context)
                  ResponseClient.new(context.not_nil!.response) ensure Fiber.current.telegram_bot_server_http_context = nil
                else
@@ -224,7 +224,7 @@ module TelegramBot
                  end
       client.close
 
-      return nil if response.nil?
+      return if response.nil?
       handle_http_response(response)
     end
 
@@ -293,7 +293,7 @@ module TelegramBot
       request {{ name }}, force_http: true, params: params
     end
 
-    alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply | Nil
+    alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply?
 
     def send_message(chat_id : Int | String,
                      text : String,
@@ -412,30 +412,30 @@ module TelegramBot
 
     def edit_message_live_location(latitude : Float,
                                    longitude : Float,
-                                   chat_id : Int | String | Nil = nil,
+                                   chat_id : Int | String? = nil,
                                    message_id : Int32? = nil,
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
       res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
 
-    def stop_message_live_location(chat_id : Int | String | Nil = nil,
+    def stop_message_live_location(chat_id : Int | String? = nil,
                                    message_id : Int32? = nil,
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
       res = def_request "stopMessageLiveLocation", chat_id, message_id, inline_message_id, reply_markup
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
@@ -598,60 +598,60 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def edit_message_text(chat_id : Int | String | Nil = nil,
+    def edit_message_text(chat_id : Int | String? = nil,
                           message_id : Int32? = nil,
                           inline_message_id : String? = nil,
                           text : String? = nil,
                           parse_mode : String? = nil,
                           disable_web_page_preview : Bool? = nil,
-                          reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
+                          reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool?
       res = def_request "editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
 
-    def edit_message_caption(chat_id : Int | String | Nil = nil,
+    def edit_message_caption(chat_id : Int | String? = nil,
                              message_id : Int32? = nil,
                              inline_message_id : String? = nil,
                              caption : String? = nil,
-                             reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
+                             reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool?
       res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
 
-    def edit_message_reply_markup(chat_id : Int | String | Nil = nil,
+    def edit_message_reply_markup(chat_id : Int | String? = nil,
                                   message_id : Int32? = nil,
                                   inline_message_id : String? = nil,
-                                  reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
+                                  reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool?
       res = def_request "editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
 
     def delete_message(chat_id : Int | String,
-                       message_id : Int32) : Message | Bool | Nil
+                       message_id : Int32) : Message | Bool?
       res = def_request "deleteMessage", chat_id, message_id
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
@@ -686,7 +686,7 @@ module TelegramBot
       HTTP::Client.get("https://api.telegram.org/file/bot#{@token}/#{file_path}").body
     end
 
-    def set_webhook(url : String, certificate : ::File | String | Nil = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
+    def set_webhook(url : String, certificate : ::File | String? = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
       multipart_params = HTTP::Client::MultipartBody.new({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates})
       multipart_params.add_file("certificate", certificate, filename: "cert.pem") if certificate
       Log.info { "Setting webhook to '#{url}'#{" with certificate" if certificate}" }
@@ -716,21 +716,21 @@ module TelegramBot
                        score : Int32,
                        force : Bool? = nil,
                        disable_edit_message : Bool? = nil,
-                       chat_id : Int | String | Nil = nil,
+                       chat_id : Int | String? = nil,
                        message_id : Int32? = nil,
-                       inline_message_id : String? = nil) : Message | Bool | Nil
+                       inline_message_id : String? = nil) : Message | Bool?
       res = def_request "setGameScore", user_id, score, force, disable_edit_message, chat_id, message_id, inline_message_id
       if res
         if res.as_bool?
-          return true
+          true
         else
-          return Message.from_json res.to_json
+          Message.from_json res.to_json
         end
       end
     end
 
     def get_game_high_scores(user_id : Int32,
-                             chat_id : Int | String | Nil = nil,
+                             chat_id : Int | String? = nil,
                              message_id : Int32? = nil,
                              inline_message_id : String? = nil) : Array(GameHighScore)
       res = def_request "getGameHighScores", user_id, chat_id, message_id, inline_message_id
@@ -772,14 +772,14 @@ module TelegramBot
     def answer_shipping_query(shipping_query_id : String,
                               ok : Bool,
                               shipping_options : Array(ShippingOption)? = nil,
-                              error_message : String? = nil) : Bool | Message | Nil
+                              error_message : String? = nil) : Bool | Message?
       res = def_request "answerShippingQuery", shipping_query_id, ok, shipping_options, error_message
       res.as_bool if res
     end
 
     def answer_pre_checkout_query(pre_checkout_query_id : String,
                                   ok : Bool,
-                                  error_message : String? = nil) : Bool | Message | Nil
+                                  error_message : String? = nil) : Bool | Message?
       res = def_request "answerPreCheckoutQuery", pre_checkout_query_id, ok, error_message
       res.as_bool if res
     end

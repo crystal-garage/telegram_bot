@@ -20,7 +20,7 @@ module TelegramBot
 
     def post_multipart(method : String, multipart_body : HTTP::Client::MultipartBody)
       multipart_body.add_part("method", method)
-      @response.content_type = "multipart/form-data; boundary=#{multipart_body.boundary}"
+      @response.content_type = multipart_body.content_type
       @response.print(multipart_body.bodyg)
       nil
     end

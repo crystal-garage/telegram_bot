@@ -213,12 +213,14 @@ module TelegramBot
                  HttpClient.new(@token)
                end
 
-      response = if params.values.any?(::IO::FileDescriptor)
-                   multipart_params = HTTP::Client::MultipartBody.new(params)
+      serialized_params = serialize_params(params)
+
+      response = if serialized_params.values.any?(::File)
+                   multipart_params = HTTP::Client::MultipartBody.new(serialized_params)
                    client.post_multipart method, multipart_params
-                 elsif !params.empty?
-                   stringified_params = params.reduce(Hash(String, String).new) { |h, (k, v)| h[k] = v.to_s; h }
-                   client.post_form method, stringified_params
+                 elsif !serialized_params.empty?
+                   form_params = serialized_params.reduce(Hash(String, String).new) { |h, (k, v)| h[k] = v.to_s; h }
+                   client.post_form method, form_params
                  else
                    client.post method
                  end
@@ -226,6 +228,40 @@ module TelegramBot
 
       return if response.nil?
       handle_http_response(response)
+    end
+
+    protected def serialize_params(params : Hash) : Hash(String, String | ::File)
+      params.reduce(Hash(String, String | ::File).new) do |serialized, (key, value)|
+        unless value.nil?
+          serialized[key] = serialize_param(value)
+        end
+
+        serialized
+      end
+    end
+
+    protected def serialize_param(value : ::File) : ::File
+      value
+    end
+
+    protected def serialize_param(value : String) : String
+      value
+    end
+
+    protected def serialize_param(value : Bool) : String
+      value.to_s
+    end
+
+    protected def serialize_param(value : Number) : String
+      value.to_s
+    end
+
+    protected def serialize_param(value : Array) : String
+      value.to_json
+    end
+
+    protected def serialize_param(value) : String
+      value.to_json
     end
 
     protected def handle_http_response(response)
@@ -268,11 +304,7 @@ module TelegramBot
     macro def_request(name, *args)
       params = {
         {% for arg in args %}
-          {% if arg.stringify == "reply_markup" %}
-            {{ arg.stringify }} => {{ arg.id }}.try(&.to_json),
-          {% else %}
-            {{ arg.stringify }} => {{ arg.id }},
-          {% end %}
+          {{ arg.stringify }} => {{ arg.id }},
         {% end %}
       }
 
@@ -282,11 +314,7 @@ module TelegramBot
     macro def_force_request(name, *args)
       params = {
         {% for arg in args %}
-          {% if arg.stringify == "reply_markup" %}
-            {{ arg.stringify }} => {{ arg.id }}.try(&.to_json),
-          {% else %}
-            {{ arg.stringify }} => {{ arg.id }},
-          {% end %}
+          {{ arg.stringify }} => {{ arg.id }},
         {% end %}
       }
 
@@ -664,7 +692,6 @@ module TelegramBot
                             switch_pm_text : String? = nil,
                             switch_pm_parameter : String? = nil) : Bool?
       # results   Array of InlineQueryResult  Yes   A JSON-serialized array of results for the inline query
-      results = "[" + results.join(", ", &.to_json) + "]"
       res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results, switch_pm_text, switch_pm_parameter
       res.as_bool if res
     end
@@ -687,7 +714,7 @@ module TelegramBot
     end
 
     def set_webhook(url : String, certificate : ::File | String? = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
-      multipart_params = HTTP::Client::MultipartBody.new({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates})
+      multipart_params = HTTP::Client::MultipartBody.new(serialize_params({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates}))
       multipart_params.add_file("certificate", certificate, filename: "cert.pem") if certificate
       Log.info { "Setting webhook to '#{url}'#{" with certificate" if certificate}" }
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
@@ -805,7 +832,6 @@ module TelegramBot
                                emojis : String,
                                contains_masks : Bool? = nil,
                                mask_position : MaskPosition? = nil)
-      mask_position = mask_position.to_json
       res = def_request "createNewStickerSet", user_id, name, title, png_sticker, emojis, contains_masks, mask_position
       res.as_bool if res
     end
@@ -815,7 +841,6 @@ module TelegramBot
                            png_sticker : ::File | String,
                            emojis : String,
                            mask_position : MaskPosition? = nil)
-      mask_position = mask_position.to_json
       res = def_request "addStickerToSet", user_id, name, png_sticker, emojis, mask_position
       res.as_bool if res
     end
@@ -841,7 +866,6 @@ module TelegramBot
 
     # Change the list of the bot's commands.
     def set_my_commands(commands : Array(BotCommand))
-      commands = "[" + commands.join(", ", &.to_json) + "]"
       res = def_request "setMyCommands", commands
       res.as_bool if res
     end

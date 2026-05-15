@@ -21,11 +21,15 @@ class RequestBuildingBot < TelegramBot::Bot
     end
 
     case method
-    when "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage"
+    when "answerInlineQuery", "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage", "setMyCommands"
       JSON.parse("true")
     else
       JSON.parse(%({"message_id":1,"date":0,"chat":{"id":1,"type":"private"}}))
     end
+  end
+
+  def serialize_for_spec(params : Hash)
+    serialize_params(params)
   end
 
   def handle(shipping_query : TelegramBot::ShippingQuery)
@@ -102,6 +106,90 @@ describe TelegramBot::Bot do
     bot.last_params["shipping_query_id"].should eq("query-id")
     bot.last_params["shipping_options"].should eq("[]")
     bot.last_params.has_key?("shipping_option").should be_false
+  end
+
+  it "serializes arrays and skips nil request params" do
+    bot = RequestBuildingBot.new
+    params = bot.serialize_for_spec({
+      "allowed_updates" => ["message", "callback_query"],
+      "timeout"         => nil,
+    })
+
+    params["allowed_updates"].should eq(%(["message","callback_query"]))
+    params.has_key?("timeout").should be_false
+  end
+
+  it "serializes JSON objects consistently" do
+    bot = RequestBuildingBot.new
+    reply_markup = TelegramBot::InlineKeyboardMarkup.new([
+      [TelegramBot::InlineKeyboardButton.new("Open", url: "https://example.com")],
+    ])
+    params = bot.serialize_for_spec({"reply_markup" => reply_markup})
+
+    JSON.parse(params["reply_markup"].as(String)).should eq(JSON.parse(%({
+      "inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]
+    })))
+  end
+
+  it "serializes arrays of JSON objects" do
+    bot = RequestBuildingBot.new
+    commands = [
+      TelegramBot::BotCommand.new("start", "Start the bot"),
+      TelegramBot::BotCommand.new("help", "Show help"),
+    ]
+    params = bot.serialize_for_spec({"commands" => commands})
+
+    JSON.parse(params["commands"].as(String)).should eq(JSON.parse(%([
+      {"command": "start", "description": "Start the bot"},
+      {"command": "help", "description": "Show help"}
+    ])))
+  end
+
+  it "serializes inline query results through their base type" do
+    bot = RequestBuildingBot.new
+    content = TelegramBot::InputTextMessageContent.new("Article details")
+    results = [TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)] of TelegramBot::InlineQueryResult
+    params = bot.serialize_for_spec({"results" => results})
+
+    JSON.parse(params["results"].as(String)).should eq(JSON.parse(%([
+      {
+        "type": "article",
+        "id": "article/1",
+        "title": "Article",
+        "input_message_content": {"message_text": "Article details"}
+      }
+    ])))
+  end
+
+  it "keeps wrappers passing native arrays to the request layer" do
+    bot = RequestBuildingBot.new
+    content = TelegramBot::InputTextMessageContent.new("Article details")
+    results = [TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)] of TelegramBot::InlineQueryResult
+
+    bot.answer_inline_query("inline-query-id", results)
+
+    bot.last_method.should eq("answerInlineQuery")
+    if results_param = bot.last_params["results"]?
+      results_param.should contain("InlineQueryResultArticle")
+    else
+      fail "expected results param"
+    end
+  end
+
+  it "builds multipart bodies with serialized non-file params" do
+    body = HTTP::Client::MultipartBody.new({"allowed_updates" => %(["message"])})
+
+    body.content_type.should contain("multipart/form-data")
+    body.bodyg.should contain(%(["message"]))
+  end
+
+  it "builds multipart file parts without manual header assembly" do
+    body = HTTP::Client::MultipartBody.new
+    body.add_file("document", "binary\u0000content", filename: "file.bin")
+    payload = body.bodyg
+
+    payload.should contain(%(name="document"; filename="file.bin"))
+    payload.should contain("binary\u0000content")
   end
 
   it "dispatches shipping queries" do

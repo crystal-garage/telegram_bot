@@ -1127,17 +1127,35 @@ module TelegramBot
       HTTP::Client.get("https://api.telegram.org/file/bot#{@token}/#{file_path}").body
     end
 
-    def set_webhook(url : String, certificate : ::File | String? = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
-      multipart_params = HTTP::Client::MultipartBody.new(serialize_params({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates}))
+    def set_webhook(url : String,
+                    certificate : ::File | String? = nil,
+                    max_connections : Int32? = nil,
+                    allowed_updates : Array(String)? = @allowed_updates,
+                    ip_address : String? = nil,
+                    drop_pending_updates : Bool? = nil,
+                    secret_token : String? = nil)
+      multipart_params = HTTP::Client::MultipartBody.new(serialize_params({
+        "url"                  => url,
+        "max_connections"      => max_connections,
+        "allowed_updates"      => allowed_updates,
+        "ip_address"           => ip_address,
+        "drop_pending_updates" => drop_pending_updates,
+        "secret_token"         => secret_token,
+      }))
       multipart_params.add_file("certificate", certificate, filename: "cert.pem") if certificate
       Log.info { "Setting webhook to '#{url}'#{" with certificate" if certificate}" }
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
       handle_http_response(response)
     end
 
-    def delete_webhook : Bool?
-      res = request "deleteWebhook", force_http: true
+    def delete_webhook(drop_pending_updates : Bool? = nil) : Bool?
+      res = def_force_request "deleteWebhook", drop_pending_updates
       res.as_bool if res
+    end
+
+    def get_webhook_info : WebhookInfo
+      res = request "getWebhookInfo", force_http: true
+      WebhookInfo.from_json(res.to_json)
     end
 
     #
@@ -1270,8 +1288,9 @@ module TelegramBot
     end
 
     # Get the current list of the bot's commands.
-    def get_my_commands : Array(BotCommand)
-      res = request "getMyCommands"
+    def get_my_commands(scope : BotCommandScope? = nil,
+                        language_code : String? = nil) : Array(BotCommand)
+      res = def_force_request "getMyCommands", scope, language_code
       res = res.not_nil!.as_a
       commands = Array(BotCommand).new
       res.each { |command| commands << BotCommand.from_json(command.to_json) }
@@ -1279,9 +1298,61 @@ module TelegramBot
     end
 
     # Change the list of the bot's commands.
-    def set_my_commands(commands : Array(BotCommand))
-      res = def_request "setMyCommands", commands
+    def set_my_commands(commands : Array(BotCommand),
+                        scope : BotCommandScope? = nil,
+                        language_code : String? = nil)
+      res = def_request "setMyCommands", commands, scope, language_code
       res.as_bool if res
+    end
+
+    def delete_my_commands(scope : BotCommandScope? = nil,
+                           language_code : String? = nil)
+      res = def_force_request "deleteMyCommands", scope, language_code
+      res.as_bool if res
+    end
+
+    def set_my_name(name : String? = nil,
+                    language_code : String? = nil)
+      res = def_force_request "setMyName", name, language_code
+      res.as_bool if res
+    end
+
+    def get_my_name(language_code : String? = nil) : BotName
+      res = def_force_request "getMyName", language_code
+      BotName.from_json(res.to_json)
+    end
+
+    def set_my_description(description : String? = nil,
+                           language_code : String? = nil)
+      res = def_force_request "setMyDescription", description, language_code
+      res.as_bool if res
+    end
+
+    def get_my_description(language_code : String? = nil) : BotDescription
+      res = def_force_request "getMyDescription", language_code
+      BotDescription.from_json(res.to_json)
+    end
+
+    def set_my_short_description(short_description : String? = nil,
+                                 language_code : String? = nil)
+      res = def_force_request "setMyShortDescription", short_description, language_code
+      res.as_bool if res
+    end
+
+    def get_my_short_description(language_code : String? = nil) : BotShortDescription
+      res = def_force_request "getMyShortDescription", language_code
+      BotShortDescription.from_json(res.to_json)
+    end
+
+    def set_my_default_administrator_rights(rights : ChatAdministratorRights? = nil,
+                                            for_channels : Bool? = nil)
+      res = def_force_request "setMyDefaultAdministratorRights", rights, for_channels
+      res.as_bool if res
+    end
+
+    def get_my_default_administrator_rights(for_channels : Bool? = nil) : ChatAdministratorRights
+      res = def_force_request "getMyDefaultAdministratorRights", for_channels
+      ChatAdministratorRights.from_json(res.to_json)
     end
   end
 end

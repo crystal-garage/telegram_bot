@@ -3,6 +3,37 @@ require "./spec_helper"
 class RequestBuildingBot < TelegramBot::Bot
   getter last_method, last_force_http, last_params, handled_update
 
+  TRUE_METHODS = [
+    "answerInlineQuery",
+    "answerShippingQuery",
+    "answerPreCheckoutQuery",
+    "pinChatMessage",
+    "unpinChatMessage",
+    "sendMessageDraft",
+    "setMyCommands",
+    "deleteMyCommands",
+    "setMyName",
+    "setMyDescription",
+    "setMyShortDescription",
+    "setMyDefaultAdministratorRights",
+    "deleteWebhook",
+  ]
+
+  METHOD_RESPONSES = {
+    "getMyCommands"                   => %([{"command":"start","description":"Start"}]),
+    "getMyName"                       => %({"name":"Test Bot"}),
+    "getMyDescription"                => %({"description":"Long description"}),
+    "getMyShortDescription"           => %({"short_description":"Short description"}),
+    "getMyDefaultAdministratorRights" => %({"can_delete_messages":true}),
+    "getWebhookInfo"                  => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
+    "answerWebAppQuery"               => %({"inline_message_id":"inline-id"}),
+    "savePreparedInlineMessage"       => %({"id":"prepared-inline-id","expiration_date":1800000000}),
+    "savePreparedKeyboardButton"      => %({"id":"prepared-keyboard-id"}),
+    "copyMessage"                     => %({"message_id":100}),
+    "copyMessages"                    => %([{"message_id":100},{"message_id":101}]),
+    "forwardMessages"                 => %([{"message_id":100},{"message_id":101}]),
+  }
+
   def initialize
     super "testbot", "token"
     @last_method = nil.as(String?)
@@ -20,19 +51,10 @@ class RequestBuildingBot < TelegramBot::Bot
       @last_params[key] = value.nil? ? nil : value.to_s
     end
 
-    case method
-    when "answerInlineQuery", "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage", "sendMessageDraft", "setMyCommands"
+    if TRUE_METHODS.includes?(method)
       JSON.parse("true")
-    when "answerWebAppQuery"
-      JSON.parse(%({"inline_message_id":"inline-id"}))
-    when "savePreparedInlineMessage"
-      JSON.parse(%({"id":"prepared-inline-id","expiration_date":1800000000}))
-    when "savePreparedKeyboardButton"
-      JSON.parse(%({"id":"prepared-keyboard-id"}))
-    when "copyMessage"
-      JSON.parse(%({"message_id":100}))
-    when "copyMessages", "forwardMessages"
-      JSON.parse(%([{"message_id":100},{"message_id":101}]))
+    elsif response = METHOD_RESPONSES[method]?
+      JSON.parse(response)
     else
       JSON.parse(%({"message_id":1,"date":0,"chat":{"id":1,"type":"private"}}))
     end
@@ -485,6 +507,100 @@ describe TelegramBot::Bot do
     prepared_button.id.should eq("prepared-keyboard-id")
     bot.last_method.should eq("savePreparedKeyboardButton")
     bot.param("button").should contain("KeyboardButton")
+  end
+
+  it "serializes bot command scopes" do
+    bot = RequestBuildingBot.new
+    commands = [TelegramBot::BotCommand.new("start", "Start")]
+    scope = TelegramBot::BotCommandScopeChatMember.new("@group", 123)
+
+    bot.set_my_commands(commands, scope: scope, language_code: "en")
+
+    bot.last_method.should eq("setMyCommands")
+    bot.param("commands").should contain("BotCommand")
+    bot.param("scope").should contain("BotCommandScopeChatMember")
+    bot.last_params["language_code"].should eq("en")
+
+    params = bot.serialize_for_spec({"scope" => scope})
+    JSON.parse(params["scope"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "chat_member",
+        "chat_id": "@group",
+        "user_id": 123
+      }
+      JSON
+  end
+
+  it "builds bot command metadata methods" do
+    bot = RequestBuildingBot.new
+    scope = TelegramBot::BotCommandScopeAllPrivateChats.new
+
+    commands = bot.get_my_commands(scope: scope, language_code: "en")
+
+    commands.first.command.should eq("start")
+    bot.last_method.should eq("getMyCommands")
+    bot.last_force_http.should be_true
+    bot.param("scope").should contain("BotCommandScopeAllPrivateChats")
+    bot.last_params["language_code"].should eq("en")
+
+    deleted = bot.delete_my_commands(scope: scope)
+
+    deleted.should be_true
+    bot.last_method.should eq("deleteMyCommands")
+    bot.last_force_http.should be_true
+  end
+
+  it "builds webhook metadata methods" do
+    bot = RequestBuildingBot.new
+
+    deleted = bot.delete_webhook(drop_pending_updates: true)
+
+    deleted.should be_true
+    bot.last_method.should eq("deleteWebhook")
+    bot.last_force_http.should be_true
+    bot.last_params["drop_pending_updates"].should eq("true")
+
+    info = bot.get_webhook_info
+
+    info.url.should eq("https://example.com/hook")
+    info.has_custom_certificate?.should be_false
+    info.pending_update_count.should eq(3)
+    info.ip_address.should eq("127.0.0.1")
+    info.allowed_updates.should eq(["message"])
+    bot.last_method.should eq("getWebhookInfo")
+    bot.last_force_http.should be_true
+  end
+
+  it "builds bot profile and default administrator rights methods" do
+    bot = RequestBuildingBot.new
+
+    bot.set_my_name("Test Bot", language_code: "en").should be_true
+    bot.last_method.should eq("setMyName")
+    bot.last_force_http.should be_true
+    bot.last_params["name"].should eq("Test Bot")
+    bot.last_params["language_code"].should eq("en")
+
+    bot.get_my_name(language_code: "en").name.should eq("Test Bot")
+    bot.last_method.should eq("getMyName")
+    bot.last_params["language_code"].should eq("en")
+
+    bot.set_my_description("Long description").should be_true
+    bot.last_method.should eq("setMyDescription")
+    bot.get_my_description.description.should eq("Long description")
+
+    bot.set_my_short_description("Short description").should be_true
+    bot.last_method.should eq("setMyShortDescription")
+    bot.get_my_short_description.short_description.should eq("Short description")
+
+    rights = TelegramBot::ChatAdministratorRights.new(can_delete_messages: true)
+    bot.set_my_default_administrator_rights(rights, for_channels: true).should be_true
+    bot.last_method.should eq("setMyDefaultAdministratorRights")
+    bot.param("rights").should contain("ChatAdministratorRights")
+    bot.last_params["for_channels"].should eq("true")
+
+    bot.get_my_default_administrator_rights(for_channels: true).can_delete_messages?.should be_true
+    bot.last_method.should eq("getMyDefaultAdministratorRights")
+    bot.last_force_http.should be_true
   end
 
   it "builds multipart bodies with serialized non-file params" do

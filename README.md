@@ -5,7 +5,12 @@
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://crystal-garage.github.io/telegram_bot/)
 [![License](https://img.shields.io/github/license/crystal-garage/telegram_bot.svg)](https://github.com/crystal-garage/telegram_bot/blob/develop/LICENSE)
 
-[Telegram Bot API](https://core.telegram.org/bots/api) (3.2) wrapper for Crystal
+[Telegram Bot API](https://core.telegram.org/bots/api) wrapper for Crystal.
+
+The shard has partial compatibility with Telegram Bot API 10.0. It supports the
+older Bot API surface plus selected modern updates, message fields, sending
+methods, polls, reactions, keyboards, and Web App/Mini App helpers. See
+[Bot API support](#bot-api-support) for the current implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
 >
@@ -20,6 +25,12 @@ api methods and types:
 - [x] inline mode
 - [x] payments
 - [x] games
+- [x] polls and dice
+- [x] modern keyboard and Web App helpers
+- [ ] webhook metadata and command scopes
+- [ ] full chat administration methods
+- [ ] Stars, gifts, and paid media methods
+- [ ] full business, guest, and managed bot APIs
 
 getting updates:
 
@@ -61,6 +72,98 @@ end
 
 my_bot = MyBot.new
 my_bot.polling
+```
+
+### Inline keyboard callbacks
+
+Use `InlineKeyboardMarkup` and override `handle(callback_query)` to react to
+button presses:
+
+```crystal
+class CallbackBot < TelegramBot::Bot
+  def handle(message : TelegramBot::Message)
+    keyboard = TelegramBot::InlineKeyboardMarkup.new([
+      [
+        TelegramBot::InlineKeyboardButton.new("Confirm", callback_data: "confirm"),
+        TelegramBot::InlineKeyboardButton.new("Open", url: "https://example.com"),
+      ],
+    ])
+
+    send_message(message.chat.id, "Choose an action", reply_markup: keyboard)
+  end
+
+  def handle(callback_query : TelegramBot::CallbackQuery)
+    answer_callback_query(callback_query.id, text: "Received")
+  end
+end
+```
+
+### Polls
+
+Use `send_poll` for regular polls and quizzes:
+
+```crystal
+class PollBot < TelegramBot::Bot
+  def handle(message : TelegramBot::Message)
+    options = [
+      TelegramBot::InputPollOption.new("Crystal"),
+      TelegramBot::InputPollOption.new("Ruby"),
+    ]
+
+    send_poll(
+      message.chat.id,
+      "Which language is compiled?",
+      options,
+      type: "quiz",
+      correct_option_ids: [0]
+    )
+  end
+
+  def handle(poll_answer : TelegramBot::PollAnswer)
+    # Store or inspect poll_answer.option_ids / option_persistent_ids here.
+  end
+end
+```
+
+### Forum topic updates
+
+The shard can parse forum topic service messages. Forum management methods such
+as `create_forum_topic` are not implemented yet.
+
+```crystal
+class ForumBot < TelegramBot::Bot
+  def handle(message : TelegramBot::Message)
+    if topic = message.forum_topic_created
+      send_message(message.chat.id, "Topic created: #{topic.name}")
+    end
+  end
+end
+```
+
+### Web App and Mini App helpers
+
+Inline and reply keyboard buttons support `web_app`, and the bot can answer Web
+App queries:
+
+```crystal
+class WebAppBot < TelegramBot::Bot
+  def handle(message : TelegramBot::Message)
+    if data = message.web_app_data
+      return reply message, "Received: #{data.button_text}"
+    end
+
+    markup = TelegramBot::InlineKeyboardMarkup.new([
+      [
+        TelegramBot::InlineKeyboardButton.new(
+          "Open app",
+          web_app: TelegramBot::WebAppInfo.new("https://example.com/app")
+        ),
+      ],
+    ])
+
+    send_message(message.chat.id, "Open the Mini App", reply_markup: markup)
+  end
+end
 ```
 
 ### Logging
@@ -147,6 +250,11 @@ If you run your bot behind a proxy that performs SSL offloading (ie the proxy pr
 
 When running your bot in `serve` mode, the bot will favour executing any methods by sending a response as part of the Telegram request, rather than executing a new request.
 
+Telegram's modern `setWebhook` parameters `ip_address`,
+`drop_pending_updates`, and `secret_token` are not implemented yet. Do not rely
+on `serve` to validate `X-Telegram-Bot-Api-Secret-Token` until that support is
+added.
+
 ### Allow/blocklists
 
 However it's not part of the API you can set block or allow lists in the bot's constructor to filter your users by username.
@@ -154,6 +262,123 @@ However it's not part of the API you can set block or allow lists in the bot's c
 `allowlist`: if user is not present on the list (or doesn't have username) the message won't be handled
 
 `blocklist`: if user is present on the list the message won't be handled
+
+## Bot API support
+
+Telegram currently documents Bot API 10.0. This shard is partially upgraded:
+implemented items are available through Crystal methods and JSON-serializable
+types, while unimplemented items are intentionally left out of the public API.
+
+### Implemented methods
+
+- Messages and media: `send_message`, `reply`, `forward_message`,
+  `forward_messages`, `copy_message`, `copy_messages`, `send_photo`,
+  `send_audio`, `send_document`, `send_sticker`, `send_video`,
+  `send_animation`, `send_voice`, `send_video_note`, `send_media_group`,
+  `send_location`, `send_venue`, `send_contact`, `send_poll`, `send_dice`,
+  `send_message_draft`, `send_chat_action`
+- Message editing and deletion: `edit_message_live_location`,
+  `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
+  `edit_message_reply_markup`, `delete_message`
+- Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
+  `save_prepared_inline_message`, `save_prepared_keyboard_button`
+- Callback, games, files, webhooks: `answer_callback_query`, `send_game`,
+  `set_game_score`, `get_game_high_scores`, `get_file`, `download`,
+  `set_webhook`, `serve`
+- Chat basics: `kick_chat_member`, `unban_chat_member`,
+  `restrict_chat_member`, `promote_chat_member`, `export_chat_invite_link`,
+  `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
+  `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
+  `get_chat`, `leave_chat`, `get_chat_administrators`, `get_chat_member`,
+  `get_chat_members_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
+- Payments and stickers: `send_invoice`, `answer_shipping_query`,
+  `answer_pre_checkout_query`, `get_sticker_set`, `upload_sticker_file`,
+  `create_new_sticker_set`, `add_sticker_to_set`,
+  `set_sticker_position_in_set`, `delete_sticker_position_in_set`
+- Bot commands: `set_my_commands`
+
+### Implemented update handlers
+
+Override these methods in your bot subclass:
+
+- `handle(message : Message)`
+- `handle_edited(message : Message)`
+- `handle_channel_post(message : Message)`
+- `handle_edited_channel_post(message : Message)`
+- `handle(inline_query : InlineQuery)`
+- `handle(chosen_inline_result : ChosenInlineResult)`
+- `handle(callback_query : CallbackQuery)`
+- `handle(shipping_query : ShippingQuery)`
+- `handle(pre_checkout_query : PreCheckoutQuery)`
+- `handle(poll : Poll)`
+- `handle(poll_answer : PollAnswer)`
+- `handle_my_chat_member(my_chat_member : ChatMemberUpdated)`
+- `handle(chat_member : ChatMemberUpdated)`
+- `handle(chat_join_request : ChatJoinRequest)`
+- `handle(message_reaction : MessageReactionUpdated)`
+- `handle(message_reaction_count : MessageReactionCountUpdated)`
+- `handle_business_connection(business_connection : BusinessConnection)`
+- `handle_business_message(message : Message)`
+- `handle_edited_business_message(message : Message)`
+- `handle_deleted_business_messages(deleted_business_messages : BusinessMessagesDeleted)`
+- `handle_guest_message(message : Message)`
+- `handle(purchased_paid_media : PaidMediaPurchased)`
+- `handle(chat_boost : ChatBoostUpdated)`
+- `handle(removed_chat_boost : ChatBoostRemoved)`
+- `handle(managed_bot : ManagedBotUpdated)`
+
+### Implemented modern types
+
+- Message compatibility: `MessageId`, `InaccessibleMessage`,
+  `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
+  `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `MessageOrigin`,
+  `MessageOriginUser`, `MessageOriginHiddenUser`, `MessageOriginChat`,
+  `MessageOriginChannel`
+- Polls, reactions, and forum service messages: `Dice`, `Poll`,
+  `PollOption`, `InputPollOption`, `PollMedia`, `PollAnswer`,
+  `PollOptionAdded`, `PollOptionDeleted`, `ReactionTypeEmoji`,
+  `ReactionTypeCustomEmoji`, `ReactionTypePaid`, `MessageReactionUpdated`,
+  `MessageReactionCountUpdated`, `ReactionCount`, `ForumTopic`,
+  `ForumTopicCreated`, `ForumTopicEdited`, `ForumTopicClosed`,
+  `ForumTopicReopened`, `GeneralForumTopicHidden`,
+  `GeneralForumTopicUnhidden`
+- Keyboards and Web Apps: `InlineKeyboardButton`, `InlineKeyboardMarkup`,
+  `KeyboardButton`, `ReplyKeyboardMarkup`, `LoginUrl`, `WebAppInfo`,
+  `WebAppData`, `SwitchInlineQueryChosenChat`, `CopyTextButton`,
+  `KeyboardButtonRequestUsers`, `KeyboardButtonRequestChat`,
+  `KeyboardButtonRequestManagedBot`, `KeyboardButtonPollType`,
+  `ChatAdministratorRights`, `SentWebAppMessage`, `PreparedInlineMessage`,
+  `PreparedKeyboardButton`
+- Selected business and managed bot update containers:
+  `BusinessConnection`, `BusinessMessagesDeleted`, `PaidMediaPurchased`,
+  `ChatBoostUpdated`, `ChatBoostRemoved`, `ManagedBotUpdated`
+
+### Not implemented yet
+
+- `get_webhook_info`, modern `set_webhook` options, `delete_webhook`, command
+  scopes, and bot profile/default administrator-rights methods
+- Full modern chat administration, invite link, join request, forum management,
+  and reaction management methods
+- Stars, gifts, paid media methods, and their full type graph
+- Full business, guest, and managed bot method/type support
+
+## Compatibility notes
+
+Request parameters that are arrays or `JSON::Serializable` objects are
+JSON-serialized before they are sent to Telegram. This includes inline query
+results, command arrays, media arrays, reply markup, `ReplyParameters`, and
+`LinkPreviewOptions`.
+
+Deprecated Telegram aliases are kept where they already existed in the shard.
+For example, `reply_to_message_id` remains on sending methods for backward
+compatibility, while new code should prefer `reply_parameters` because it maps
+to Telegram's modern API and supports quote, checklist task, and poll option
+replies. When both old and new reply arguments are supplied, Telegram receives
+both parameters; callers should normally choose one.
+
+Some modern update types are parsed and dispatched before all related Bot API
+methods are implemented. For example, `chat_join_request` updates can be
+handled, but `approve_chat_join_request` is not available yet.
 
 ## Installation
 

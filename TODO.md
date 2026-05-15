@@ -326,15 +326,15 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 11: Documentation And Compatibility
 
-- [ ] Update README with the supported Bot API version.
-- [ ] Document known compatibility behavior for old method arguments like
+- [x] Update README with the supported Bot API version.
+- [x] Document known compatibility behavior for old method arguments like
       `reply_to_message_id` versus `reply_parameters`.
-- [ ] Add examples for:
-  - [ ] command bot
-  - [ ] inline keyboard callback bot
-  - [ ] poll bot
-  - [ ] forum topic bot
-  - [ ] webhook with `secret_token`
-- [ ] Add a support matrix listing implemented methods and types.
-- [ ] Decide whether to keep deprecated Telegram API aliases or mark them with
+- [x] Add examples for:
+  - [x] command bot
+  - [x] inline keyboard callback bot
+  - [x] poll bot
+  - [x] forum topic bot
+  - [x] webhook with `secret_token` compatibility note
+- [x] Add a support matrix listing implemented methods and types.
+- [x] Decide whether to keep deprecated Telegram API aliases or mark them with
       comments before removal in a future major release.

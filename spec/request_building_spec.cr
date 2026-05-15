@@ -39,6 +39,70 @@ class RequestBuildingBot < TelegramBot::Bot
   def handle(pre_checkout_query : TelegramBot::PreCheckoutQuery)
     @handled_update = pre_checkout_query.id
   end
+
+  def handle_business_connection(business_connection : TelegramBot::BusinessConnection)
+    @handled_update = business_connection.id
+  end
+
+  def handle_business_message(message : TelegramBot::Message)
+    @handled_update = "business_message:#{message.message_id}"
+  end
+
+  def handle_edited_business_message(message : TelegramBot::Message)
+    @handled_update = "edited_business_message:#{message.message_id}"
+  end
+
+  def handle_deleted_business_messages(deleted_business_messages : TelegramBot::BusinessMessagesDeleted)
+    @handled_update = deleted_business_messages.business_connection_id
+  end
+
+  def handle_guest_message(message : TelegramBot::Message)
+    @handled_update = "guest_message:#{message.message_id}"
+  end
+
+  def handle(message_reaction : TelegramBot::MessageReactionUpdated)
+    @handled_update = "message_reaction:#{message_reaction.message_id}"
+  end
+
+  def handle(message_reaction_count : TelegramBot::MessageReactionCountUpdated)
+    @handled_update = "message_reaction_count:#{message_reaction_count.message_id}"
+  end
+
+  def handle(purchased_paid_media : TelegramBot::PaidMediaPurchased)
+    @handled_update = purchased_paid_media.paid_media_payload
+  end
+
+  def handle(poll : TelegramBot::Poll)
+    @handled_update = poll.id
+  end
+
+  def handle(poll_answer : TelegramBot::PollAnswer)
+    @handled_update = poll_answer.poll_id
+  end
+
+  def handle_my_chat_member(my_chat_member : TelegramBot::ChatMemberUpdated)
+    @handled_update = "my_chat_member:#{my_chat_member.date}"
+  end
+
+  def handle(chat_member : TelegramBot::ChatMemberUpdated)
+    @handled_update = "chat_member:#{chat_member.date}"
+  end
+
+  def handle(chat_join_request : TelegramBot::ChatJoinRequest)
+    @handled_update = "chat_join_request:#{chat_join_request.user_chat_id}"
+  end
+
+  def handle(chat_boost : TelegramBot::ChatBoostUpdated)
+    @handled_update = chat_boost.boost.try(&.boost_id)
+  end
+
+  def handle(removed_chat_boost : TelegramBot::ChatBoostRemoved)
+    @handled_update = removed_chat_boost.boost_id
+  end
+
+  def handle(managed_bot : TelegramBot::ManagedBotUpdated)
+    @handled_update = managed_bot.bot.try(&.username)
+  end
 end
 
 describe TelegramBot::Bot do
@@ -242,5 +306,223 @@ describe TelegramBot::Bot do
     bot.handle_update(update)
 
     bot.handled_update.should eq("pre-checkout-id")
+  end
+
+  it "dispatches modern update fields" do
+    cases = {
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "business_connection": {"id": "business-connection-id"}
+          }
+          JSON
+        "business-connection-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "business_message": {"message_id": 10, "date": 0, "chat": {"id": 1, "type": "private"}}
+          }
+          JSON
+        "business_message:10",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "edited_business_message": {"message_id": 11, "date": 0, "chat": {"id": 1, "type": "private"}}
+          }
+          JSON
+        "edited_business_message:11",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "deleted_business_messages": {
+              "business_connection_id": "deleted-business-id",
+              "chat": {"id": 1, "type": "private"},
+              "message_ids": [1, 2]
+            }
+          }
+          JSON
+        "deleted-business-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "guest_message": {"message_id": 12, "date": 0, "chat": {"id": 1, "type": "private"}}
+          }
+          JSON
+        "guest_message:12",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "message_reaction": {
+              "chat": {"id": 1, "type": "private"},
+              "message_id": 13,
+              "date": 0,
+              "old_reaction": [],
+              "new_reaction": []
+            }
+          }
+          JSON
+        "message_reaction:13",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "message_reaction_count": {
+              "chat": {"id": 1, "type": "private"},
+              "message_id": 14,
+              "date": 0,
+              "reactions": []
+            }
+          }
+          JSON
+        "message_reaction_count:14",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "purchased_paid_media": {
+              "from": {"id": 1, "is_bot": false, "first_name": "User"},
+              "paid_media_payload": "paid-media-payload"
+            }
+          }
+          JSON
+        "paid-media-payload",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "poll": {
+              "id": "poll-id",
+              "question": "Question?",
+              "options": [],
+              "total_voter_count": 0,
+              "is_closed": false,
+              "is_anonymous": false,
+              "type": "regular",
+              "allows_multiple_answers": false
+            }
+          }
+          JSON
+        "poll-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "poll_answer": {
+              "poll_id": "poll-answer-id",
+              "user": {"id": 1, "is_bot": false, "first_name": "User"},
+              "option_ids": [0]
+            }
+          }
+          JSON
+        "poll-answer-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "my_chat_member": {
+              "chat": {"id": 1, "type": "private"},
+              "from": {"id": 1, "is_bot": false, "first_name": "User"},
+              "date": 15,
+              "old_chat_member": {"user": {"id": 2, "is_bot": true, "first_name": "Bot"}, "status": "member"},
+              "new_chat_member": {"user": {"id": 2, "is_bot": true, "first_name": "Bot"}, "status": "administrator"}
+            }
+          }
+          JSON
+        "my_chat_member:15",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "chat_member": {
+              "chat": {"id": 1, "type": "private"},
+              "from": {"id": 1, "is_bot": false, "first_name": "User"},
+              "date": 16,
+              "old_chat_member": {"user": {"id": 3, "is_bot": false, "first_name": "Member"}, "status": "member"},
+              "new_chat_member": {"user": {"id": 3, "is_bot": false, "first_name": "Member"}, "status": "left"}
+            }
+          }
+          JSON
+        "chat_member:16",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "chat_join_request": {
+              "chat": {"id": 1, "type": "private"},
+              "from": {"id": 1, "is_bot": false, "first_name": "User"},
+              "user_chat_id": 12345,
+              "date": 0
+            }
+          }
+          JSON
+        "chat_join_request:12345",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "chat_boost": {
+              "chat": {"id": 1, "type": "private"},
+              "boost": {
+                "boost_id": "boost-id",
+                "add_date": 0,
+                "expiration_date": 1,
+                "source": {"source": "premium", "user": {"id": 1, "is_bot": false, "first_name": "User"}}
+              }
+            }
+          }
+          JSON
+        "boost-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "removed_chat_boost": {
+              "chat": {"id": 1, "type": "private"},
+              "boost_id": "removed-boost-id",
+              "remove_date": 0,
+              "source": {"source": "premium", "user": {"id": 1, "is_bot": false, "first_name": "User"}}
+            }
+          }
+          JSON
+        "removed-boost-id",
+      },
+      {
+        <<-JSON,
+          {
+            "update_id": 1,
+            "managed_bot": {
+              "bot": {"id": 2, "is_bot": true, "first_name": "Managed", "username": "managed_bot"}
+            }
+          }
+          JSON
+        "managed_bot",
+      },
+    }
+
+    cases.each do |json, expected|
+      bot = RequestBuildingBot.new
+      bot.handle_update(TelegramBot::Update.from_json(json))
+      bot.handled_update.should eq(expected)
+    end
   end
 end

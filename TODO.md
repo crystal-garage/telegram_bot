@@ -34,28 +34,28 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 2: Core Update Dispatch
 
-- [ ] Add missing `Update` fields:
-  - [ ] `shipping_query`
-  - [ ] `pre_checkout_query`
-  - [ ] `poll`
-  - [ ] `poll_answer`
-  - [ ] `my_chat_member`
-  - [ ] `chat_member`
-  - [ ] `chat_join_request`
-  - [ ] `message_reaction`
-  - [ ] `message_reaction_count`
-  - [ ] `business_connection`
-  - [ ] `business_message`
-  - [ ] `edited_business_message`
-  - [ ] `deleted_business_messages`
-  - [ ] `purchased_paid_media`
-  - [ ] `chat_boost`
-  - [ ] `removed_chat_boost`
-  - [ ] `guest_message`
-  - [ ] `managed_bot`
-- [ ] Add overridable handler methods for the update types above.
-- [ ] Update `handle_update` to dispatch all supported update fields.
-- [ ] Keep existing handler behavior backward-compatible.
+- [x] Add missing `Update` fields:
+  - [x] `shipping_query`
+  - [x] `pre_checkout_query`
+  - [x] `poll`
+  - [x] `poll_answer`
+  - [x] `my_chat_member`
+  - [x] `chat_member`
+  - [x] `chat_join_request`
+  - [x] `message_reaction`
+  - [x] `message_reaction_count`
+  - [x] `business_connection`
+  - [x] `business_message`
+  - [x] `edited_business_message`
+  - [x] `deleted_business_messages`
+  - [x] `purchased_paid_media`
+  - [x] `chat_boost`
+  - [x] `removed_chat_boost`
+  - [x] `guest_message`
+  - [x] `managed_bot`
+- [x] Add overridable handler methods for the update types above.
+- [x] Update `handle_update` to dispatch all supported update fields.
+- [x] Keep existing handler behavior backward-compatible.
 
 ## Phase 3: Modern Core Message Types
 

@@ -48,6 +48,41 @@ module TelegramBot
       raise "callback_query handler is not implemented"
     end
 
+    # handle business connection updates
+    def handle_business_connection(business_connection : BusinessConnection)
+      raise "business_connection handler is not implemented"
+    end
+
+    # handle business messages
+    def handle_business_message(message : Message)
+      raise "business_message handler is not implemented"
+    end
+
+    # handle edited business messages
+    def handle_edited_business_message(message : Message)
+      raise "edited_business_message handler is not implemented"
+    end
+
+    # handle deleted business messages
+    def handle_deleted_business_messages(deleted_business_messages : BusinessMessagesDeleted)
+      raise "deleted_business_messages handler is not implemented"
+    end
+
+    # handle guest messages
+    def handle_guest_message(message : Message)
+      raise "guest_message handler is not implemented"
+    end
+
+    # handle message reaction updates
+    def handle(message_reaction : MessageReactionUpdated)
+      raise "message_reaction handler is not implemented"
+    end
+
+    # handle message reaction count updates
+    def handle(message_reaction_count : MessageReactionCountUpdated)
+      raise "message_reaction_count handler is not implemented"
+    end
+
     # handle shipping query
     def handle(shipping_query : ShippingQuery)
       raise "shipping_query handler is not implemented"
@@ -56,6 +91,51 @@ module TelegramBot
     # handle pre-checkout query
     def handle(pre_checkout_query : PreCheckoutQuery)
       raise "pre_checkout_query handler is not implemented"
+    end
+
+    # handle purchased paid media updates
+    def handle(purchased_paid_media : PaidMediaPurchased)
+      raise "purchased_paid_media handler is not implemented"
+    end
+
+    # handle poll updates
+    def handle(poll : Poll)
+      raise "poll handler is not implemented"
+    end
+
+    # handle poll answer updates
+    def handle(poll_answer : PollAnswer)
+      raise "poll_answer handler is not implemented"
+    end
+
+    # handle bot chat member status updates
+    def handle_my_chat_member(my_chat_member : ChatMemberUpdated)
+      raise "my_chat_member handler is not implemented"
+    end
+
+    # handle chat member status updates
+    def handle(chat_member : ChatMemberUpdated)
+      raise "chat_member handler is not implemented"
+    end
+
+    # handle chat join requests
+    def handle(chat_join_request : ChatJoinRequest)
+      raise "chat_join_request handler is not implemented"
+    end
+
+    # handle chat boost updates
+    def handle(chat_boost : ChatBoostUpdated)
+      raise "chat_boost handler is not implemented"
+    end
+
+    # handle removed chat boost updates
+    def handle(removed_chat_boost : ChatBoostRemoved)
+      raise "removed_chat_boost handler is not implemented"
+    end
+
+    # handle managed bot updates
+    def handle(managed_bot : ManagedBotUpdated)
+      raise "managed_bot handler is not implemented"
     end
 
     # @name username of the bot
@@ -141,12 +221,47 @@ module TelegramBot
       elsif callback_query = u.callback_query
         return if !allowed_user?(callback_query)
         handle callback_query
+      elsif business_connection = u.business_connection
+        handle_business_connection business_connection
+      elsif message = u.business_message
+        return if !allowed_user?(message)
+        handle_business_message message
+      elsif message = u.edited_business_message
+        return if !allowed_user?(message)
+        handle_edited_business_message message
+      elsif deleted_business_messages = u.deleted_business_messages
+        handle_deleted_business_messages deleted_business_messages
+      elsif message = u.guest_message
+        return if !allowed_user?(message)
+        handle_guest_message message
+      elsif message_reaction = u.message_reaction
+        handle message_reaction
+      elsif message_reaction_count = u.message_reaction_count
+        handle message_reaction_count
       elsif shipping_query = u.shipping_query
         return if !allowed_user?(shipping_query)
         handle shipping_query
       elsif pre_checkout_query = u.pre_checkout_query
         return if !allowed_user?(pre_checkout_query)
         handle pre_checkout_query
+      elsif purchased_paid_media = u.purchased_paid_media
+        handle purchased_paid_media
+      elsif poll = u.poll
+        handle poll
+      elsif poll_answer = u.poll_answer
+        handle poll_answer
+      elsif my_chat_member = u.my_chat_member
+        handle_my_chat_member my_chat_member
+      elsif chat_member = u.chat_member
+        handle chat_member
+      elsif chat_join_request = u.chat_join_request
+        handle chat_join_request
+      elsif chat_boost = u.chat_boost
+        handle chat_boost
+      elsif removed_chat_boost = u.removed_chat_boost
+        handle removed_chat_boost
+      elsif managed_bot = u.managed_bot
+        handle managed_bot
       elsif message = u.edited_message
         return if !allowed_user?(message)
         handle_edited message

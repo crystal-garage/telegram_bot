@@ -1514,7 +1514,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def export_chat_invite_link(chat_id : Int | String)
+    def export_chat_invite_link(
+      chat_id : Int | String,
+    )
       res = def_request(
         "exportChatInviteLink",
         chat_id
@@ -1612,7 +1614,11 @@ module TelegramBot
       chat_id : Int | String,
       user_id : Int,
     )
-      res = def_request("approveChatJoinRequest", chat_id, user_id)
+      res = def_request(
+        "approveChatJoinRequest",
+        chat_id,
+        user_id
+      )
 
       res.as_bool if res
     end
@@ -1621,61 +1627,115 @@ module TelegramBot
       chat_id : Int | String,
       user_id : Int,
     )
-      res = def_request("declineChatJoinRequest", chat_id, user_id)
+      res = def_request(
+        "declineChatJoinRequest",
+        chat_id,
+        user_id
+      )
 
       res.as_bool if res
     end
 
     def set_chat_photo(chat_id : Int | String, photo : ::File)
-      res = def_request("setChatPhoto", chat_id, photo)
+      res = def_request(
+        "setChatPhoto",
+        chat_id,
+        photo
+      )
 
       res.as_bool if res
     end
 
     def delete_chat_photo(chat_id : Int | String)
-      res = def_request("deleteChatPhoto", chat_id)
+      res = def_request(
+        "deleteChatPhoto",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def set_chat_title(chat_id : Int | String, title : String)
-      res = def_request("setChatTitle", chat_id, title)
+    def set_chat_title(
+      chat_id : Int | String,
+      title : String,
+    )
+      res = def_request(
+        "setChatTitle",
+        chat_id,
+        title
+      )
 
       res.as_bool if res
     end
 
-    def set_chat_description(chat_id : Int | String, description : String)
-      res = def_request("setChatDescription", chat_id, description)
+    def set_chat_description(
+      chat_id : Int | String,
+      description : String,
+    )
+      res = def_request(
+        "setChatDescription",
+        chat_id,
+        description
+      )
 
       res.as_bool if res
     end
 
-    def pin_chat_message(chat_id : Int | String, message_id : Int, disable_notification : Bool? = nil)
-      res = def_request("pinChatMessage", chat_id, message_id, disable_notification)
+    def pin_chat_message(
+      chat_id : Int | String,
+      message_id : Int,
+      disable_notification : Bool? = nil,
+    )
+      res = def_request(
+        "pinChatMessage",
+        chat_id,
+        message_id,
+        disable_notification
+      )
 
       res.as_bool if res
     end
 
-    def unpin_chat_message(chat_id : Int | String)
-      res = def_request("unpinChatMessage", chat_id)
+    def unpin_chat_message(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "unpinChatMessage",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def get_chat(chat_id : Int | String)
-      res = def_request("getChat", chat_id)
+    def get_chat(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "getChat",
+        chat_id
+      )
 
       Chat.from_json(res.not_nil!.to_json)
     end
 
-    def leave_chat(chat_id : Int | String)
-      res = def_request("leaveChat", chat_id)
+    def leave_chat(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "leaveChat",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def get_chat_administrators(chat_id : Int | String)
-      res = def_request("getChatAdministrators", chat_id)
+    def get_chat_administrators(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "getChatAdministrators",
+        chat_id
+      )
       res = res.not_nil!.as_a
       admins = Array(ChatMember).new
       res.each { |m| admins << ChatMember.from_json(m.to_json) }
@@ -1683,32 +1743,59 @@ module TelegramBot
       admins
     end
 
-    def get_chat_member(chat_id : Int | String, user_id : Int32)
-      res = def_request("getChatMember", chat_id, user_id)
+    def get_chat_member(
+      chat_id : Int | String,
+      user_id : Int32,
+    )
+      res = def_request(
+        "getChatMember",
+        chat_id,
+        user_id
+      )
 
       ChatMember.from_json(res.not_nil!.to_json)
     end
 
-    def get_chat_member_count(chat_id : Int | String)
-      res = def_request("getChatMemberCount", chat_id)
+    def get_chat_member_count(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "getChatMemberCount",
+        chat_id
+      )
 
       res.as_i if res
     end
 
-    def set_chat_sticker_set(chat_id : Int | String, sticker_set_name : String)
-      res = def_request("setChatStickerSet", chat_id, sticker_set_name)
+    def set_chat_sticker_set(
+      chat_id : Int | String,
+      sticker_set_name : String,
+    )
+      res = def_request(
+        "setChatStickerSet",
+        chat_id,
+        sticker_set_name
+      )
 
       res.as_bool if res
     end
 
-    def delete_chat_sticker_set(chat_id : Int | String)
-      res = def_request("deleteChatStickerSet", chat_id)
+    def delete_chat_sticker_set(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "deleteChatStickerSet",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
     def get_forum_topic_icon_stickers : Array(Sticker)
-      res = request("getForumTopicIconStickers", force_http: true)
+      res = request(
+        "getForumTopicIconStickers",
+        force_http: true
+      )
       res = res.not_nil!.as_a
       stickers = Array(Sticker).new
       res.each { |sticker| stickers << Sticker.from_json(sticker.to_json) }
@@ -1722,7 +1809,13 @@ module TelegramBot
       icon_color : Int32? = nil,
       icon_custom_emoji_id : String? = nil,
     ) : ForumTopic?
-      res = def_request("createForumTopic", chat_id, name, icon_color, icon_custom_emoji_id)
+      res = def_request(
+        "createForumTopic",
+        chat_id,
+        name,
+        icon_color,
+        icon_custom_emoji_id
+      )
 
       ForumTopic.from_json(res.to_json) if res
     end
@@ -1733,7 +1826,13 @@ module TelegramBot
       name : String? = nil,
       icon_custom_emoji_id : String? = nil,
     )
-      res = def_request("editForumTopic", chat_id, message_thread_id, name, icon_custom_emoji_id)
+      res = def_request(
+        "editForumTopic",
+        chat_id,
+        message_thread_id,
+        name,
+        icon_custom_emoji_id
+      )
 
       res.as_bool if res
     end
@@ -1742,7 +1841,11 @@ module TelegramBot
       chat_id : Int | String,
       message_thread_id : Int,
     )
-      res = def_request("closeForumTopic", chat_id, message_thread_id)
+      res = def_request(
+        "closeForumTopic",
+        chat_id,
+        message_thread_id
+      )
 
       res.as_bool if res
     end
@@ -1751,7 +1854,11 @@ module TelegramBot
       chat_id : Int | String,
       message_thread_id : Int,
     )
-      res = def_request("reopenForumTopic", chat_id, message_thread_id)
+      res = def_request(
+        "reopenForumTopic",
+        chat_id,
+        message_thread_id
+      )
 
       res.as_bool if res
     end
@@ -1760,7 +1867,11 @@ module TelegramBot
       chat_id : Int | String,
       message_thread_id : Int,
     )
-      res = def_request("deleteForumTopic", chat_id, message_thread_id)
+      res = def_request(
+        "deleteForumTopic",
+        chat_id,
+        message_thread_id
+      )
 
       res.as_bool if res
     end
@@ -1769,7 +1880,11 @@ module TelegramBot
       chat_id : Int | String,
       message_thread_id : Int,
     )
-      res = def_request("unpinAllForumTopicMessages", chat_id, message_thread_id)
+      res = def_request(
+        "unpinAllForumTopicMessages",
+        chat_id,
+        message_thread_id
+      )
 
       res.as_bool if res
     end
@@ -1778,37 +1893,66 @@ module TelegramBot
       chat_id : Int | String,
       name : String,
     )
-      res = def_request("editGeneralForumTopic", chat_id, name)
+      res = def_request(
+        "editGeneralForumTopic",
+        chat_id,
+        name
+      )
 
       res.as_bool if res
     end
 
-    def close_general_forum_topic(chat_id : Int | String)
-      res = def_request("closeGeneralForumTopic", chat_id)
+    def close_general_forum_topic(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "closeGeneralForumTopic",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def reopen_general_forum_topic(chat_id : Int | String)
-      res = def_request("reopenGeneralForumTopic", chat_id)
+    def reopen_general_forum_topic(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "reopenGeneralForumTopic",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def hide_general_forum_topic(chat_id : Int | String)
-      res = def_request("hideGeneralForumTopic", chat_id)
+    def hide_general_forum_topic(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "hideGeneralForumTopic",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def unhide_general_forum_topic(chat_id : Int | String)
-      res = def_request("unhideGeneralForumTopic", chat_id)
+    def unhide_general_forum_topic(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "unhideGeneralForumTopic",
+        chat_id
+      )
 
       res.as_bool if res
     end
 
-    def unpin_all_general_forum_topic_messages(chat_id : Int | String)
-      res = def_request("unpinAllGeneralForumTopicMessages", chat_id)
+    def unpin_all_general_forum_topic_messages(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "unpinAllGeneralForumTopicMessages",
+        chat_id
+      )
 
       res.as_bool if res
     end
@@ -1820,7 +1964,14 @@ module TelegramBot
       url : String? = nil,
       cache_time : Int32? = nil,
     )
-      res = def_request("answerCallbackQuery", callback_query_id, text, show_alert, url, cache_time)
+      res = def_request(
+        "answerCallbackQuery",
+        callback_query_id,
+        text,
+        show_alert,
+        url,
+        cache_time
+      )
 
       res.as_bool if res
     end
@@ -1834,7 +1985,16 @@ module TelegramBot
       link_preview_options : LinkPreviewOptions? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
-      res = def_request("editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, link_preview_options, reply_markup)
+      res = def_request(
+        "editMessageText",
+        chat_id,
+        message_id,
+        inline_message_id,
+        text,
+        parse_mode,
+        link_preview_options,
+        reply_markup
+      )
 
       if res
         if res.as_bool?
@@ -1852,7 +2012,14 @@ module TelegramBot
       caption : String? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
-      res = def_request("editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup)
+      res = def_request(
+        "editMessageCaption",
+        chat_id,
+        message_id,
+        inline_message_id,
+        caption,
+        reply_markup
+      )
 
       if res
         if res.as_bool?
@@ -1869,7 +2036,13 @@ module TelegramBot
       inline_message_id : String? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
-      res = def_request("editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup)
+      res = def_request(
+        "editMessageReplyMarkup",
+        chat_id,
+        message_id,
+        inline_message_id,
+        reply_markup
+      )
 
       if res
         if res.as_bool?
@@ -1884,7 +2057,11 @@ module TelegramBot
       chat_id : Int | String,
       message_id : Int32,
     ) : Message | Bool?
-      res = def_request("deleteMessage", chat_id, message_id)
+      res = def_request(
+        "deleteMessage",
+        chat_id,
+        message_id
+      )
 
       if res
         if res.as_bool?
@@ -1922,7 +2099,11 @@ module TelegramBot
       web_app_query_id : String,
       result : InlineQueryResult,
     ) : SentWebAppMessage
-      res = def_request("answerWebAppQuery", web_app_query_id, result)
+      res = def_request(
+        "answerWebAppQuery",
+        web_app_query_id,
+        result
+      )
 
       SentWebAppMessage.from_json(res.to_json)
     end
@@ -1952,13 +2133,22 @@ module TelegramBot
       user_id : Int,
       button : KeyboardButton,
     ) : PreparedKeyboardButton
-      res = def_request("savePreparedKeyboardButton", user_id, button)
+      res = def_request(
+        "savePreparedKeyboardButton",
+        user_id,
+        button
+      )
 
       PreparedKeyboardButton.from_json(res.to_json)
     end
 
-    def get_file(file_id : String) : File
-      res = def_force_request("getFile", file_id)
+    def get_file(
+      file_id : String,
+    ) : File
+      res = def_force_request(
+        "getFile",
+        file_id
+      )
 
       File.from_json(res.to_json)
     end
@@ -2000,20 +2190,31 @@ module TelegramBot
       handle_http_response(response)
     end
 
-    def delete_webhook(drop_pending_updates : Bool? = nil) : Bool?
-      res = def_force_request("deleteWebhook", drop_pending_updates)
+    def delete_webhook(
+      drop_pending_updates : Bool? = nil,
+    ) : Bool?
+      res = def_force_request(
+        "deleteWebhook",
+        drop_pending_updates
+      )
 
       res.as_bool if res
     end
 
     def get_webhook_info : WebhookInfo
-      res = request("getWebhookInfo", force_http: true)
+      res = request(
+        "getWebhookInfo",
+        force_http: true
+      )
 
       WebhookInfo.from_json(res.to_json)
     end
 
     def get_available_gifts : Gifts
-      res = request("getAvailableGifts", force_http: true)
+      res = request(
+        "getAvailableGifts",
+        force_http: true
+      )
 
       Gifts.from_json(res.to_json)
     end
@@ -2049,7 +2250,15 @@ module TelegramBot
       text_parse_mode : String? = nil,
       text_entities : Array(MessageEntity)? = nil,
     )
-      res = def_force_request("giftPremiumSubscription", user_id, month_count, star_count, text, text_parse_mode, text_entities)
+      res = def_force_request(
+        "giftPremiumSubscription",
+        user_id,
+        month_count,
+        star_count,
+        text,
+        text_parse_mode,
+        text_entities
+      )
 
       res.as_bool if res
     end
@@ -2058,13 +2267,22 @@ module TelegramBot
       guest_query_id : String,
       result : InlineQueryResult,
     ) : SentGuestMessage
-      res = def_request("answerGuestQuery", guest_query_id, result)
+      res = def_request(
+        "answerGuestQuery",
+        guest_query_id,
+        result
+      )
 
       SentGuestMessage.from_json(res.to_json)
     end
 
-    def get_business_connection(business_connection_id : String) : BusinessConnection
-      res = def_force_request("getBusinessConnection", business_connection_id)
+    def get_business_connection(
+      business_connection_id : String,
+    ) : BusinessConnection
+      res = def_force_request(
+        "getBusinessConnection",
+        business_connection_id
+      )
 
       BusinessConnection.from_json(res.to_json)
     end
@@ -2074,7 +2292,12 @@ module TelegramBot
       chat_id : Int | String,
       message_id : Int,
     )
-      res = def_force_request("readBusinessMessage", business_connection_id, chat_id, message_id)
+      res = def_force_request(
+        "readBusinessMessage",
+        business_connection_id,
+        chat_id,
+        message_id
+      )
 
       res.as_bool if res
     end
@@ -2083,7 +2306,11 @@ module TelegramBot
       business_connection_id : String,
       message_ids : Array(Int32),
     )
-      res = def_force_request("deleteBusinessMessages", business_connection_id, message_ids)
+      res = def_force_request(
+        "deleteBusinessMessages",
+        business_connection_id,
+        message_ids
+      )
 
       res.as_bool if res
     end
@@ -2093,7 +2320,12 @@ module TelegramBot
       first_name : String,
       last_name : String? = nil,
     )
-      res = def_force_request("setBusinessAccountName", business_connection_id, first_name, last_name)
+      res = def_force_request(
+        "setBusinessAccountName",
+        business_connection_id,
+        first_name,
+        last_name
+      )
 
       res.as_bool if res
     end
@@ -2102,7 +2334,11 @@ module TelegramBot
       business_connection_id : String,
       username : String? = nil,
     )
-      res = def_force_request("setBusinessAccountUsername", business_connection_id, username)
+      res = def_force_request(
+        "setBusinessAccountUsername",
+        business_connection_id,
+        username
+      )
 
       res.as_bool if res
     end
@@ -2111,7 +2347,11 @@ module TelegramBot
       business_connection_id : String,
       bio : String? = nil,
     )
-      res = def_force_request("setBusinessAccountBio", business_connection_id, bio)
+      res = def_force_request(
+        "setBusinessAccountBio",
+        business_connection_id,
+        bio
+      )
 
       res.as_bool if res
     end
@@ -2121,7 +2361,12 @@ module TelegramBot
       photo : InputProfilePhoto,
       is_public : Bool? = nil,
     )
-      res = def_force_request("setBusinessAccountProfilePhoto", business_connection_id, photo, is_public)
+      res = def_force_request(
+        "setBusinessAccountProfilePhoto",
+        business_connection_id,
+        photo,
+        is_public
+      )
 
       res.as_bool if res
     end
@@ -2130,7 +2375,11 @@ module TelegramBot
       business_connection_id : String,
       is_public : Bool? = nil,
     )
-      res = def_force_request("removeBusinessAccountProfilePhoto", business_connection_id, is_public)
+      res = def_force_request(
+        "removeBusinessAccountProfilePhoto",
+        business_connection_id,
+        is_public
+      )
 
       res.as_bool if res
     end
@@ -2150,20 +2399,35 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def get_managed_bot_token(user_id : Int) : String
-      res = def_force_request("getManagedBotToken", user_id)
+    def get_managed_bot_token(
+      user_id : Int,
+    ) : String
+      res = def_force_request(
+        "getManagedBotToken",
+        user_id
+      )
 
       res.as_s
     end
 
-    def replace_managed_bot_token(user_id : Int) : String
-      res = def_force_request "replaceManagedBotToken", user_id
+    def replace_managed_bot_token(
+      user_id : Int,
+    ) : String
+      res = def_force_request(
+        "replaceManagedBotToken",
+        user_id
+      )
 
       res.as_s
     end
 
-    def get_managed_bot_access_settings(user_id : Int) : BotAccessSettings
-      res = def_force_request("getManagedBotAccessSettings", user_id)
+    def get_managed_bot_access_settings(
+      user_id : Int,
+    ) : BotAccessSettings
+      res = def_force_request(
+        "getManagedBotAccessSettings",
+        user_id
+      )
 
       BotAccessSettings.from_json(res.to_json)
     end
@@ -2173,7 +2437,12 @@ module TelegramBot
       is_access_restricted : Bool,
       added_user_ids : Array(Int64)? = nil,
     )
-      res = def_force_request("setManagedBotAccessSettings", user_id, is_access_restricted, added_user_ids)
+      res = def_force_request(
+        "setManagedBotAccessSettings",
+        user_id,
+        is_access_restricted,
+        added_user_ids
+      )
 
       res.as_bool if res
     end
@@ -2188,7 +2457,13 @@ module TelegramBot
       disable_notification : Bool? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message?
-      res = def_request("sendGame", chat_id, game_short_name, disable_notification, reply_markup)
+      res = def_request(
+        "sendGame",
+        chat_id,
+        game_short_name,
+        disable_notification,
+        reply_markup
+      )
 
       Message.from_json(res.to_json) if res
     end
@@ -2228,7 +2503,13 @@ module TelegramBot
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
     ) : Array(GameHighScore)
-      res = def_request("getGameHighScores", user_id, chat_id, message_id, inline_message_id)
+      res = def_request(
+        "getGameHighScores",
+        user_id,
+        chat_id,
+        message_id,
+        inline_message_id
+      )
 
       res = res.not_nil!.as_a
       r = Array(GameHighScore).new
@@ -2294,7 +2575,13 @@ module TelegramBot
       shipping_options : Array(ShippingOption)? = nil,
       error_message : String? = nil,
     ) : Bool | Message?
-      res = def_request("answerShippingQuery", shipping_query_id, ok, shipping_options, error_message)
+      res = def_request(
+        "answerShippingQuery",
+        shipping_query_id,
+        ok,
+        shipping_options,
+        error_message
+      )
 
       res.as_bool if res
     end
@@ -2304,13 +2591,21 @@ module TelegramBot
       ok : Bool,
       error_message : String? = nil,
     ) : Bool | Message?
-      res = def_request("answerPreCheckoutQuery", pre_checkout_query_id, ok, error_message)
+      res = def_request(
+        "answerPreCheckoutQuery",
+        pre_checkout_query_id,
+        ok,
+        error_message
+      )
 
       res.as_bool if res
     end
 
     def get_my_star_balance : StarAmount
-      res = request("getMyStarBalance", force_http: true)
+      res = request(
+        "getMyStarBalance",
+        force_http: true
+      )
 
       StarAmount.from_json(res.to_json)
     end
@@ -2319,7 +2614,11 @@ module TelegramBot
       offset : Int32? = nil,
       limit : Int32? = nil,
     ) : StarTransactions
-      res = def_force_request("getStarTransactions", offset, limit)
+      res = def_force_request(
+        "getStarTransactions",
+        offset,
+        limit
+      )
 
       StarTransactions.from_json(res.to_json)
     end
@@ -2328,7 +2627,11 @@ module TelegramBot
       user_id : Int,
       telegram_payment_charge_id : String,
     )
-      res = def_force_request("refundStarPayment", user_id, telegram_payment_charge_id)
+      res = def_force_request(
+        "refundStarPayment",
+        user_id,
+        telegram_payment_charge_id
+      )
 
       res.as_bool if res
     end
@@ -2338,7 +2641,12 @@ module TelegramBot
       telegram_payment_charge_id : String,
       is_canceled : Bool,
     )
-      res = def_force_request("editUserStarSubscription", user_id, telegram_payment_charge_id, is_canceled)
+      res = def_force_request(
+        "editUserStarSubscription",
+        user_id,
+        telegram_payment_charge_id,
+        is_canceled
+      )
 
       res.as_bool if res
     end
@@ -2348,13 +2656,20 @@ module TelegramBot
     #
 
     def get_sticker_set(name : String)
-      res = def_request("getStickerSet", name)
+      res = def_request(
+        "getStickerSet",
+        name
+      )
 
       StickerSet.from_json(res.to_json) if res
     end
 
     def upload_sticker_file(user_id : Int, png_sticker : ::File)
-      res = def_request("uploadStickerFile", user_id, png_sticker)
+      res = def_request(
+        "uploadStickerFile",
+        user_id,
+        png_sticker
+      )
       File.from_json(res.to_json) if res
     end
 
@@ -2388,19 +2703,33 @@ module TelegramBot
       emojis : String,
       mask_position : MaskPosition? = nil,
     )
-      res = def_request("addStickerToSet", user_id, name, png_sticker, emojis, mask_position)
+      res = def_request(
+        "addStickerToSet",
+        user_id,
+        name,
+        png_sticker,
+        emojis,
+        mask_position
+      )
 
       res.as_bool if res
     end
 
     def set_sticker_position_in_set(sticker : String, position : Int)
-      res = def_request("setStickerPositionInSet", sticker, position)
+      res = def_request(
+        "setStickerPositionInSet",
+        sticker,
+        position
+      )
 
       res.as_bool if res
     end
 
     def delete_sticker_position_in_set(sticker : String)
-      res = def_request("deleteStickerPositionInSet", sticker)
+      res = def_request(
+        "deleteStickerPositionInSet",
+        sticker
+      )
 
       res.as_bool if res
     end
@@ -2409,7 +2738,11 @@ module TelegramBot
       scope : BotCommandScope? = nil,
       language_code : String? = nil,
     ) : Array(BotCommand)
-      res = def_force_request("getMyCommands", scope, language_code)
+      res = def_force_request(
+        "getMyCommands",
+        scope,
+        language_code
+      )
       res = res.not_nil!.as_a
       commands = Array(BotCommand).new
       res.each { |command| commands << BotCommand.from_json(command.to_json) }
@@ -2422,7 +2755,12 @@ module TelegramBot
       scope : BotCommandScope? = nil,
       language_code : String? = nil,
     )
-      res = def_request("setMyCommands", commands, scope, language_code)
+      res = def_request(
+        "setMyCommands",
+        commands,
+        scope,
+        language_code
+      )
 
       res.as_bool if res
     end
@@ -2431,7 +2769,11 @@ module TelegramBot
       scope : BotCommandScope? = nil,
       language_code : String? = nil,
     )
-      res = def_force_request("deleteMyCommands", scope, language_code)
+      res = def_force_request(
+        "deleteMyCommands",
+        scope,
+        language_code
+      )
 
       res.as_bool if res
     end
@@ -2440,13 +2782,20 @@ module TelegramBot
       name : String? = nil,
       language_code : String? = nil,
     )
-      res = def_force_request("setMyName", name, language_code)
+      res = def_force_request(
+        "setMyName",
+        name,
+        language_code
+      )
 
       res.as_bool if res
     end
 
     def get_my_name(language_code : String? = nil) : BotName
-      res = def_force_request("getMyName", language_code)
+      res = def_force_request(
+        "getMyName",
+        language_code
+      )
 
       BotName.from_json(res.to_json)
     end
@@ -2455,13 +2804,20 @@ module TelegramBot
       description : String? = nil,
       language_code : String? = nil,
     )
-      res = def_force_request("setMyDescription", description, language_code)
+      res = def_force_request(
+        "setMyDescription",
+        description,
+        language_code
+      )
 
       res.as_bool if res
     end
 
     def get_my_description(language_code : String? = nil) : BotDescription
-      res = def_force_request("getMyDescription", language_code)
+      res = def_force_request(
+        "getMyDescription",
+        language_code
+      )
 
       BotDescription.from_json(res.to_json)
     end
@@ -2470,13 +2826,20 @@ module TelegramBot
       short_description : String? = nil,
       language_code : String? = nil,
     )
-      res = def_force_request("setMyShortDescription", short_description, language_code)
+      res = def_force_request(
+        "setMyShortDescription",
+        short_description,
+        language_code
+      )
 
       res.as_bool if res
     end
 
     def get_my_short_description(language_code : String? = nil) : BotShortDescription
-      res = def_force_request("getMyShortDescription", language_code)
+      res = def_force_request(
+        "getMyShortDescription",
+        language_code
+      )
 
       BotShortDescription.from_json(res.to_json)
     end
@@ -2485,13 +2848,20 @@ module TelegramBot
       rights : ChatAdministratorRights? = nil,
       for_channels : Bool? = nil,
     )
-      res = def_force_request("setMyDefaultAdministratorRights", rights, for_channels)
+      res = def_force_request(
+        "setMyDefaultAdministratorRights",
+        rights,
+        for_channels
+      )
 
       res.as_bool if res
     end
 
     def get_my_default_administrator_rights(for_channels : Bool? = nil) : ChatAdministratorRights
-      res = def_force_request("getMyDefaultAdministratorRights", for_channels)
+      res = def_force_request(
+        "getMyDefaultAdministratorRights",
+        for_channels
+      )
 
       ChatAdministratorRights.from_json(res.to_json)
     end

@@ -47,6 +47,7 @@ describe TelegramBot::Message do
         "effect_id": "effect-id",
         "show_caption_above_media": true,
         "has_media_spoiler": true,
+        "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
       JSON
@@ -75,6 +76,7 @@ describe TelegramBot::Message do
     message.effect_id.should eq("effect-id")
     message.show_caption_above_media?.should be_true
     message.has_media_spoiler?.should be_true
+    message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
   end
 end

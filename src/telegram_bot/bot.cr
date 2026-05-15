@@ -1088,6 +1088,28 @@ module TelegramBot
       res.as_bool if res
     end
 
+    def answer_web_app_query(web_app_query_id : String,
+                             result : InlineQueryResult) : SentWebAppMessage
+      res = def_request "answerWebAppQuery", web_app_query_id, result
+      SentWebAppMessage.from_json(res.to_json)
+    end
+
+    def save_prepared_inline_message(user_id : Int,
+                                     result : InlineQueryResult,
+                                     allow_user_chats : Bool? = nil,
+                                     allow_bot_chats : Bool? = nil,
+                                     allow_group_chats : Bool? = nil,
+                                     allow_channel_chats : Bool? = nil) : PreparedInlineMessage
+      res = def_request "savePreparedInlineMessage", user_id, result, allow_user_chats, allow_bot_chats, allow_group_chats, allow_channel_chats
+      PreparedInlineMessage.from_json(res.to_json)
+    end
+
+    def save_prepared_keyboard_button(user_id : Int,
+                                      button : KeyboardButton) : PreparedKeyboardButton
+      res = def_request "savePreparedKeyboardButton", user_id, button
+      PreparedKeyboardButton.from_json(res.to_json)
+    end
+
     def get_file(file_id : String) : File
       res = def_force_request "getFile", file_id
       File.from_json(res.to_json)

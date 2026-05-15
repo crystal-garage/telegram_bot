@@ -23,6 +23,12 @@ class RequestBuildingBot < TelegramBot::Bot
     case method
     when "answerInlineQuery", "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage", "sendMessageDraft", "setMyCommands"
       JSON.parse("true")
+    when "answerWebAppQuery"
+      JSON.parse(%({"inline_message_id":"inline-id"}))
+    when "savePreparedInlineMessage"
+      JSON.parse(%({"id":"prepared-inline-id","expiration_date":1800000000}))
+    when "savePreparedKeyboardButton"
+      JSON.parse(%({"id":"prepared-keyboard-id"}))
     when "copyMessage"
       JSON.parse(%({"message_id":100}))
     when "copyMessages", "forwardMessages"
@@ -351,6 +357,134 @@ describe TelegramBot::Bot do
     else
       fail "expected results param"
     end
+  end
+
+  it "serializes modern inline keyboard button fields" do
+    bot = RequestBuildingBot.new
+    markup = TelegramBot::InlineKeyboardMarkup.new([
+      [
+        TelegramBot::InlineKeyboardButton.new(
+          "Open",
+          icon_custom_emoji_id: "emoji-id",
+          style: "primary",
+          web_app: TelegramBot::WebAppInfo.new("https://example.com/app"),
+          login_url: TelegramBot::LoginUrl.new("https://example.com/login", request_write_access: true),
+          switch_inline_query_current_chat: "search",
+          switch_inline_query_chosen_chat: TelegramBot::SwitchInlineQueryChosenChat.new(
+            query: "chosen",
+            allow_user_chats: true
+          ),
+          copy_text: TelegramBot::CopyTextButton.new("copy me"),
+          pay: true
+        ),
+      ],
+    ])
+    params = bot.serialize_for_spec({"reply_markup" => markup})
+
+    JSON.parse(params["reply_markup"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "inline_keyboard": [[{
+          "text": "Open",
+          "icon_custom_emoji_id": "emoji-id",
+          "style": "primary",
+          "web_app": {"url": "https://example.com/app"},
+          "login_url": {"url": "https://example.com/login", "request_write_access": true},
+          "switch_inline_query_current_chat": "search",
+          "switch_inline_query_chosen_chat": {"query": "chosen", "allow_user_chats": true},
+          "copy_text": {"text": "copy me"},
+          "pay": true
+        }]]
+      }
+      JSON
+  end
+
+  it "serializes modern reply keyboard button fields" do
+    bot = RequestBuildingBot.new
+    markup = TelegramBot::ReplyKeyboardMarkup.new([
+      [
+        TelegramBot::KeyboardButton.new(
+          "Share",
+          icon_custom_emoji_id: "emoji-id",
+          style: "success",
+          request_users: TelegramBot::KeyboardButtonRequestUsers.new(
+            1,
+            user_is_bot: false,
+            max_quantity: 2,
+            request_username: true
+          ),
+          request_chat: TelegramBot::KeyboardButtonRequestChat.new(
+            2,
+            false,
+            bot_administrator_rights: TelegramBot::ChatAdministratorRights.new(can_invite_users: true),
+            request_title: true
+          ),
+          request_managed_bot: TelegramBot::KeyboardButtonRequestManagedBot.new(
+            3,
+            suggested_username: "managed_bot"
+          ),
+          request_poll: TelegramBot::KeyboardButtonPollType.new("quiz"),
+          web_app: TelegramBot::WebAppInfo.new("https://example.com/reply-app")
+        ),
+      ],
+    ])
+    params = bot.serialize_for_spec({"reply_markup" => markup})
+
+    JSON.parse(params["reply_markup"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "keyboard": [[{
+          "text": "Share",
+          "icon_custom_emoji_id": "emoji-id",
+          "style": "success",
+          "request_users": {
+            "request_id": 1,
+            "user_is_bot": false,
+            "max_quantity": 2,
+            "request_username": true
+          },
+          "request_chat": {
+            "request_id": 2,
+            "chat_is_channel": false,
+            "bot_administrator_rights": {"can_invite_users": true},
+            "request_title": true
+          },
+          "request_managed_bot": {
+            "request_id": 3,
+            "suggested_username": "managed_bot"
+          },
+          "request_poll": {"type": "quiz"},
+          "web_app": {"url": "https://example.com/reply-app"}
+        }]]
+      }
+      JSON
+  end
+
+  it "builds Web App and prepared message methods" do
+    bot = RequestBuildingBot.new
+    content = TelegramBot::InputTextMessageContent.new("Web App result")
+    result = TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)
+
+    sent = bot.answer_web_app_query("web-app-query-id", result)
+
+    sent.inline_message_id.should eq("inline-id")
+    bot.last_method.should eq("answerWebAppQuery")
+    bot.last_params["web_app_query_id"].should eq("web-app-query-id")
+    bot.param("result").should contain("InlineQueryResultArticle")
+
+    prepared_inline = bot.save_prepared_inline_message(1, result, allow_user_chats: true)
+
+    prepared_inline.id.should eq("prepared-inline-id")
+    prepared_inline.expiration_date.should eq(1_800_000_000)
+    bot.last_method.should eq("savePreparedInlineMessage")
+    bot.last_params["allow_user_chats"].should eq("true")
+
+    prepared_button = bot.save_prepared_keyboard_button(
+      1,
+      TelegramBot::KeyboardButton.new("Share user", request_users: TelegramBot::KeyboardButtonRequestUsers.new(1))
+    )
+
+    prepared_button.id.should eq("prepared-keyboard-id")
+    bot.last_method.should eq("savePreparedKeyboardButton")
+    bot.param("button").should contain("KeyboardButton")
   end
 
   it "builds multipart bodies with serialized non-file params" do

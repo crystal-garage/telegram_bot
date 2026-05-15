@@ -231,42 +231,42 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 8: Keyboard, Inline, And Web App Support
 
-- [ ] Expand `InlineKeyboardButton` with:
-  - [ ] `login_url`
-  - [ ] `web_app`
-  - [ ] `switch_inline_query_current_chat`
-  - [ ] `switch_inline_query_chosen_chat`
-  - [ ] `copy_text`
-  - [ ] `callback_game`
-  - [ ] `pay`
-  - [ ] `icon_custom_emoji_id`
-  - [ ] `style`
-- [ ] Add keyboard/web app types:
-  - [ ] `LoginUrl`
-  - [ ] `WebAppInfo`
-  - [ ] `WebAppData`
-  - [ ] `SwitchInlineQueryChosenChat`
-  - [ ] `CopyTextButton`
-- [ ] Expand `KeyboardButton` with:
-  - [ ] `request_users`
-  - [ ] `request_chat`
-  - [ ] `request_contact`
-  - [ ] `request_location`
-  - [ ] `request_poll`
-  - [ ] `web_app`
-  - [ ] `request_managed_bot`
-  - [ ] `icon_custom_emoji_id`
-  - [ ] `style`
-- [ ] Add `KeyboardButtonRequestUsers`.
-- [ ] Add `KeyboardButtonRequestChat`.
-- [ ] Add `KeyboardButtonPollType`.
-- [ ] Add `KeyboardButtonRequestManagedBot`.
-- [ ] Add `answer_web_app_query`.
-- [ ] Add `SentWebAppMessage`.
-- [ ] Add `save_prepared_inline_message`.
-- [ ] Add `PreparedInlineMessage`.
-- [ ] Add `save_prepared_keyboard_button`.
-- [ ] Add `PreparedKeyboardButton`.
+- [x] Expand `InlineKeyboardButton` with:
+  - [x] `login_url`
+  - [x] `web_app`
+  - [x] `switch_inline_query_current_chat`
+  - [x] `switch_inline_query_chosen_chat`
+  - [x] `copy_text`
+  - [x] `callback_game`
+  - [x] `pay`
+  - [x] `icon_custom_emoji_id`
+  - [x] `style`
+- [x] Add keyboard/web app types:
+  - [x] `LoginUrl`
+  - [x] `WebAppInfo`
+  - [x] `WebAppData`
+  - [x] `SwitchInlineQueryChosenChat`
+  - [x] `CopyTextButton`
+- [x] Expand `KeyboardButton` with:
+  - [x] `request_users`
+  - [x] `request_chat`
+  - [x] `request_contact`
+  - [x] `request_location`
+  - [x] `request_poll`
+  - [x] `web_app`
+  - [x] `request_managed_bot`
+  - [x] `icon_custom_emoji_id`
+  - [x] `style`
+- [x] Add `KeyboardButtonRequestUsers`.
+- [x] Add `KeyboardButtonRequestChat`.
+- [x] Add `KeyboardButtonPollType`.
+- [x] Add `KeyboardButtonRequestManagedBot`.
+- [x] Add `answer_web_app_query`.
+- [x] Add `SentWebAppMessage`.
+- [x] Add `save_prepared_inline_message`.
+- [x] Add `PreparedInlineMessage`.
+- [x] Add `save_prepared_keyboard_button`.
+- [x] Add `PreparedKeyboardButton`.
 
 ## Phase 9: Payments, Stars, Gifts, Paid Media
 

@@ -16,6 +16,16 @@ polls, reactions, keyboards, and Web App/Mini App helpers. See
 >
 > The original repository is no longer maintained and does not work with the latest Crystal version.
 
+## Installation
+
+Add this to your application's `shard.yml`:
+
+```yaml
+dependencies:
+  telegram_bot:
+    github: crystal-garage/telegram_bot
+```
+
 ## Current features
 
 api methods and types:
@@ -432,16 +442,6 @@ results, command arrays, media arrays, reply markup, `ReplyParameters`, and
 Some update types are parsed and dispatched before all related Bot API
 methods are implemented. For example, `chat_join_request` updates can be
 handled, but `approve_chat_join_request` is not available yet.
-
-## Installation
-
-Add this to your application's `shard.yml`:
-
-```yaml
-dependencies:
-  telegram_bot:
-    github: crystal-garage/telegram_bot
-```
 
 ## Contributing
 

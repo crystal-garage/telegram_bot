@@ -416,7 +416,8 @@ describe TelegramBot::Bot do
 
     bot.delete_business_messages("business-id", [10, 11]).should be_true
     bot.last_method.should eq("deleteBusinessMessages")
-    bot.last_params["message_ids"].should eq("[10,11]")
+    params = bot.serialize_for_spec({"message_ids" => [10, 11]})
+    params["message_ids"].should eq("[10,11]")
 
     bot.set_business_account_name("business-id", "First", "Last").should be_true
     bot.last_method.should eq("setBusinessAccountName")

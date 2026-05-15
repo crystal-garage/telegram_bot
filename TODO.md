@@ -102,36 +102,36 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 4: Common Media And Interaction Types
 
-- [ ] Add `Animation` sending support where missing from methods.
-- [ ] Add `Dice`.
-- [ ] Add poll types:
-  - [ ] `Poll`
-  - [ ] `PollOption`
-  - [ ] `InputPollOption`
-  - [ ] `InputPollMedia`
-  - [ ] `InputPollOptionMedia`
-  - [ ] `PollAnswer`
-  - [ ] `PollOptionAdded`
-  - [ ] `PollOptionDeleted`
-- [ ] Add reaction types:
-  - [ ] `ReactionTypeEmoji`
-  - [ ] `ReactionTypeCustomEmoji`
-  - [ ] `ReactionTypePaid`
-  - [ ] `MessageReactionUpdated`
-  - [ ] `MessageReactionCountUpdated`
-  - [ ] `ReactionCount`
-- [ ] Add forum topic service types:
-  - [ ] `ForumTopic`
-  - [ ] `ForumTopicCreated`
-  - [ ] `ForumTopicEdited`
-  - [ ] `ForumTopicClosed`
-  - [ ] `ForumTopicReopened`
-  - [ ] `GeneralForumTopicHidden`
-  - [ ] `GeneralForumTopicUnhidden`
+- [x] Add `Animation` sending support where missing from methods.
+- [x] Add `Dice`.
+- [x] Add poll types:
+  - [x] `Poll`
+  - [x] `PollOption`
+  - [x] `InputPollOption`
+  - [x] `InputPollMedia`
+  - [x] `InputPollOptionMedia`
+  - [x] `PollAnswer`
+  - [x] `PollOptionAdded`
+  - [x] `PollOptionDeleted`
+- [x] Add reaction types:
+  - [x] `ReactionTypeEmoji`
+  - [x] `ReactionTypeCustomEmoji`
+  - [x] `ReactionTypePaid`
+  - [x] `MessageReactionUpdated`
+  - [x] `MessageReactionCountUpdated`
+  - [x] `ReactionCount`
+- [x] Add forum topic service types:
+  - [x] `ForumTopic`
+  - [x] `ForumTopicCreated`
+  - [x] `ForumTopicEdited`
+  - [x] `ForumTopicClosed`
+  - [x] `ForumTopicReopened`
+  - [x] `GeneralForumTopicHidden`
+  - [x] `GeneralForumTopicUnhidden`
 
 ## Phase 5: Common Sending Methods
 
-- [ ] Add `send_animation`.
+- [x] Add `send_animation`.
 - [ ] Add `send_poll`.
 - [ ] Add `send_dice`.
 - [ ] Add `copy_message`.

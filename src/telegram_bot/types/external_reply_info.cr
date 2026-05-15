@@ -20,7 +20,7 @@ module TelegramBot
     property? has_media_spoiler : Bool?
     property checklist : JSON::Any?
     property contact : Contact?
-    property dice : JSON::Any?
+    property dice : Dice?
     property game : Game?
     property giveaway : JSON::Any?
     property giveaway_winners : JSON::Any?

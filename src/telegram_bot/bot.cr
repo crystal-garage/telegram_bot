@@ -513,6 +513,19 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
+    def send_animation(chat_id : Int | String,
+                       animation : ::File | String,
+                       duration : Int32? = nil,
+                       width : Int32? = nil,
+                       height : Int32? = nil,
+                       caption : String? = nil,
+                       disable_notification : Bool? = nil,
+                       reply_to_message_id : Int32? = nil,
+                       reply_markup : ReplyMarkup = nil) : Message?
+      res = def_request "sendAnimation", chat_id, animation, duration, width, height, caption, disable_notification, reply_to_message_id, reply_markup
+      Message.from_json res.to_json if res
+    end
+
     def send_voice(chat_id : Int | String,
                    voice : ::File | String,
                    duration : Int32? = nil,

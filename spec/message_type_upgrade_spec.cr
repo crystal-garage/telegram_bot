@@ -47,7 +47,7 @@ describe TelegramBot::Message do
         "effect_id": "effect-id",
         "show_caption_above_media": true,
         "has_media_spoiler": true,
-        "web_app_data": {"data": "{"action":"done"}", "button_text": "Finish"},
+        "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
       JSON

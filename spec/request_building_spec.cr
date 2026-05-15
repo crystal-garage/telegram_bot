@@ -27,6 +27,15 @@ class RequestBuildingBot < TelegramBot::Bot
     "editUserStarSubscription",
     "sendGift",
     "giftPremiumSubscription",
+    "readBusinessMessage",
+    "deleteBusinessMessages",
+    "setBusinessAccountName",
+    "setBusinessAccountUsername",
+    "setBusinessAccountBio",
+    "setBusinessAccountProfilePhoto",
+    "removeBusinessAccountProfilePhoto",
+    "setBusinessAccountGiftSettings",
+    "setManagedBotAccessSettings",
     "editForumTopic",
     "closeForumTopic",
     "reopenForumTopic",
@@ -64,6 +73,11 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),
     "getStarTransactions"              => %({"transactions":[{"id":"tx-id","amount":10,"date":1800000000,"source":{"type":"user","transaction_type":"paid_media_payment","user":{"id":1,"is_bot":false,"first_name":"User"},"paid_media_payload":"payload","paid_media":[{"type":"preview","width":320}]}}]}),
     "getAvailableGifts"                => %({"gifts":[{"id":"gift-id","sticker":{"file_id":"sticker-id","width":512,"height":512},"star_count":100,"upgrade_star_count":25}]}),
+    "answerGuestQuery"                 => %({"inline_message_id":"guest-inline-id"}),
+    "getBusinessConnection"            => %({"id":"business-id","user":{"id":1,"is_bot":false,"first_name":"User"},"user_chat_id":100,"date":1800000000,"rights":{"can_reply":true},"is_enabled":true}),
+    "getManagedBotToken"               => %("managed-token"),
+    "replaceManagedBotToken"           => %("new-managed-token"),
+    "getManagedBotAccessSettings"      => %({"is_access_restricted":true,"added_users":[{"id":1,"is_bot":false,"first_name":"User"}]}),
   }
 
   def initialize
@@ -376,6 +390,71 @@ describe TelegramBot::Bot do
     bot.last_force_http.should be_true
     bot.last_params["month_count"].should eq("3")
     bot.last_params["star_count"].should eq("1000")
+  end
+
+  it "builds business, guest, and managed bot methods" do
+    bot = RequestBuildingBot.new
+    content = TelegramBot::InputTextMessageContent.new("Guest reply")
+    result = TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)
+
+    sent = bot.answer_guest_query("guest-query-id", result)
+
+    sent.inline_message_id.should eq("guest-inline-id")
+    bot.last_method.should eq("answerGuestQuery")
+    bot.param("result").should contain("InlineQueryResultArticle")
+
+    connection = bot.get_business_connection("business-id")
+
+    connection.id.should eq("business-id")
+    connection.rights.try(&.can_reply?).should be_true
+    bot.last_method.should eq("getBusinessConnection")
+    bot.last_force_http.should be_true
+
+    bot.read_business_message("business-id", 1, 10).should be_true
+    bot.last_method.should eq("readBusinessMessage")
+    bot.last_params["message_id"].should eq("10")
+
+    bot.delete_business_messages("business-id", [10, 11]).should be_true
+    bot.last_method.should eq("deleteBusinessMessages")
+    bot.last_params["message_ids"].should eq("[10,11]")
+
+    bot.set_business_account_name("business-id", "First", "Last").should be_true
+    bot.last_method.should eq("setBusinessAccountName")
+    bot.last_params["first_name"].should eq("First")
+
+    bot.set_business_account_username("business-id", "username").should be_true
+    bot.last_method.should eq("setBusinessAccountUsername")
+
+    bot.set_business_account_bio("business-id", "bio").should be_true
+    bot.last_method.should eq("setBusinessAccountBio")
+
+    photo = TelegramBot::InputProfilePhoto.new("static", photo: "photo-id")
+    bot.set_business_account_profile_photo("business-id", photo, is_public: true).should be_true
+    bot.last_method.should eq("setBusinessAccountProfilePhoto")
+    bot.param("photo").should contain("InputProfilePhoto")
+
+    bot.remove_business_account_profile_photo("business-id", is_public: true).should be_true
+    bot.last_method.should eq("removeBusinessAccountProfilePhoto")
+
+    gift_types = TelegramBot::AcceptedGiftTypes.new(true, true, true, true, false)
+    bot.set_business_account_gift_settings("business-id", true, gift_types).should be_true
+    bot.last_method.should eq("setBusinessAccountGiftSettings")
+    bot.param("accepted_gift_types").should contain("AcceptedGiftTypes")
+
+    bot.get_managed_bot_token(1).should eq("managed-token")
+    bot.last_method.should eq("getManagedBotToken")
+
+    bot.replace_managed_bot_token(1).should eq("new-managed-token")
+    bot.last_method.should eq("replaceManagedBotToken")
+
+    access_settings = bot.get_managed_bot_access_settings(1)
+    access_settings.is_access_restricted?.should be_true
+    access_settings.added_users.try(&.first.first_name).should eq("User")
+    bot.last_method.should eq("getManagedBotAccessSettings")
+
+    bot.set_managed_bot_access_settings(1, true, [2_i64]).should be_true
+    bot.last_method.should eq("setManagedBotAccessSettings")
+    bot.last_params["added_user_ids"].should eq("[2]")
   end
 
   it "builds sendMessageDraft" do

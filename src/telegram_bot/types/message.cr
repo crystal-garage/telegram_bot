@@ -9,6 +9,9 @@ module TelegramBot
     property sender_chat : Chat?
     property sender_boost_count : Int32?
     property sender_business_bot : User?
+    property guest_bot_caller_user : User?
+    property guest_bot_caller_chat : Chat?
+    property guest_query_id : String?
     property date : Int32
     property business_connection_id : String?
     property chat : Chat
@@ -85,6 +88,7 @@ module TelegramBot
     property gift : GiftInfo?
     property unique_gift : UniqueGiftInfo?
     property gift_upgrade_sent : GiftInfo?
+    property managed_bot_created : ManagedBotCreated?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

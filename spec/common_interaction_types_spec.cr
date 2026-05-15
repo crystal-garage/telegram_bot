@@ -367,3 +367,92 @@ describe TelegramBot::Gift do
     transaction.gift.try(&.star_count).should eq(100)
   end
 end
+
+describe TelegramBot::BusinessConnection do
+  it "parses business, guest, and managed bot fields" do
+    connection = TelegramBot::BusinessConnection.from_json(<<-JSON)
+      {
+        "id": "business-id",
+        "user": {"id": 1, "is_bot": false, "first_name": "User"},
+        "user_chat_id": 100,
+        "date": 1800000000,
+        "rights": {
+          "can_reply": true,
+          "can_edit_bio": true,
+          "can_change_gift_settings": true
+        },
+        "is_enabled": true
+      }
+      JSON
+    chat = TelegramBot::Chat.from_json(<<-JSON)
+      {
+        "id": 1,
+        "type": "private",
+        "business_intro": {
+          "title": "Intro",
+          "message": "Hello"
+        },
+        "business_location": {
+          "address": "Main Street",
+          "location": {"longitude": 1.0, "latitude": 2.0}
+        },
+        "business_opening_hours": {
+          "time_zone_name": "Europe/Kiev",
+          "opening_hours": [
+            {"opening_minute": 60, "closing_minute": 120}
+          ]
+        },
+        "accepted_gift_types": {
+          "unlimited_gifts": true,
+          "limited_gifts": true,
+          "unique_gifts": true,
+          "premium_subscription": true,
+          "gifts_from_channels": false
+        }
+      }
+      JSON
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 1,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "guest_bot_caller_user": {"id": 2, "is_bot": false, "first_name": "Guest"},
+        "guest_bot_caller_chat": {"id": 3, "type": "private", "first_name": "Caller"},
+        "guest_query_id": "guest-query-id",
+        "managed_bot_created": {
+          "user": {"id": 4, "is_bot": true, "first_name": "Managed"},
+          "token": "managed-token"
+        }
+      }
+      JSON
+    access_settings = TelegramBot::BotAccessSettings.from_json(<<-JSON)
+      {
+        "is_access_restricted": true,
+        "added_users": [
+          {"id": 1, "is_bot": false, "first_name": "User"}
+        ]
+      }
+      JSON
+    user = TelegramBot::User.from_json(<<-JSON)
+      {
+        "id": 1,
+        "is_bot": false,
+        "first_name": "User",
+        "supports_guest_queries": true,
+        "can_manage_bots": true
+      }
+      JSON
+
+    connection.id.should eq("business-id")
+    connection.rights.try(&.can_edit_bio?).should be_true
+    chat.business_intro.try(&.title).should eq("Intro")
+    chat.business_location.try(&.address).should eq("Main Street")
+    chat.business_opening_hours.try(&.opening_hours.first.opening_minute).should eq(60)
+    chat.accepted_gift_types.try(&.unique_gifts?).should be_true
+    message.guest_query_id.should eq("guest-query-id")
+    message.managed_bot_created.try(&.token).should eq("managed-token")
+    access_settings.added_users.try(&.first.first_name).should eq("User")
+    user.supports_guest_queries?.should be_true
+    user.can_manage_bots?.should be_true
+  end
+end

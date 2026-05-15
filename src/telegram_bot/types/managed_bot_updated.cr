@@ -9,4 +9,11 @@ module TelegramBot
     property old_token : String?
     property new_token : String?
   end
+
+  class ManagedBotCreated
+    include JSON::Serializable
+
+    property user : User
+    property token : String
+  end
 end

@@ -136,6 +136,18 @@ describe TelegramBot::Bot do
     bot.last_params["length"].should eq("240")
   end
 
+  it "builds sendAnimation" do
+    bot = RequestBuildingBot.new
+    bot.send_animation(123, "animation-id", duration: 10, width: 320, height: 240, caption: "caption")
+
+    bot.last_method.should eq("sendAnimation")
+    bot.last_params["animation"].should eq("animation-id")
+    bot.last_params["duration"].should eq("10")
+    bot.last_params["width"].should eq("320")
+    bot.last_params["height"].should eq("240")
+    bot.last_params["caption"].should eq("caption")
+  end
+
   it "builds sendInvoice with title" do
     bot = RequestBuildingBot.new
     bot.send_invoice(

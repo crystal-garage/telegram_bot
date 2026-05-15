@@ -1,4 +1,21 @@
 module TelegramBot
+  class PollMedia
+    include JSON::Serializable
+
+    property animation : Animation?
+    property audio : Audio?
+    property document : Document?
+    property live_photo : JSON::Any?
+    property location : Location?
+    property photo : Array(PhotoSize)?
+    property sticker : Sticker?
+    property venue : Venue?
+    property video : Video?
+  end
+
+  alias InputPollMedia = InputMedia
+  alias InputPollOptionMedia = InputMedia
+
   class PollOption
     include JSON::Serializable
 
@@ -9,7 +26,25 @@ module TelegramBot
     property added_by_user : User?
     property added_by_chat : Chat?
     property addition_date : Int32?
-    property media : JSON::Any?
+    property media : PollMedia?
+  end
+
+  class InputPollOption
+    include JSON::Serializable
+
+    property text : String
+    property text_parse_mode : String?
+    property text_entities : Array(MessageEntity)?
+    property media : InputPollOptionMedia?
+
+    def initialize(
+      @text : String,
+      *,
+      @text_parse_mode = nil,
+      @text_entities = nil,
+      @media = nil,
+    )
+    end
   end
 
   class Poll
@@ -32,9 +67,27 @@ module TelegramBot
     property? allows_revoting : Bool?
     property description : String?
     property description_entities : Array(MessageEntity)?
-    property media : JSON::Any?
-    property explanation_media : JSON::Any?
+    property media : PollMedia?
+    property explanation_media : PollMedia?
     property? members_only : Bool?
     property country_codes : Array(String)?
+  end
+
+  class PollOptionAdded
+    include JSON::Serializable
+
+    property poll_message : JSON::Any?
+    property option_persistent_id : String
+    property option_text : String
+    property option_text_entities : Array(MessageEntity)?
+  end
+
+  class PollOptionDeleted
+    include JSON::Serializable
+
+    property poll_message : JSON::Any?
+    property option_persistent_id : String
+    property option_text : String
+    property option_text_entities : Array(MessageEntity)?
   end
 end

@@ -52,6 +52,9 @@ module TelegramBot
     property? show_caption_above_media : Bool?
     property? has_media_spoiler : Bool?
     property contact : Contact?
+    property dice : Dice?
+    property game : Game?
+    property poll : Poll?
     property location : Location?
     property venue : Venue?
     property new_chat_members : Array(User)?
@@ -60,9 +63,16 @@ module TelegramBot
     property new_chat_photo : Array(PhotoSize)?
     property? delete_chat_photo : Bool?
     property? group_chat_created : Bool?
-    property? group_chat_created : Bool?
     property? supergroup_chat_created : Bool?
     property? channel_chat_created : Bool?
+    property forum_topic_created : ForumTopicCreated?
+    property forum_topic_edited : ForumTopicEdited?
+    property forum_topic_closed : ForumTopicClosed?
+    property forum_topic_reopened : ForumTopicReopened?
+    property general_forum_topic_hidden : GeneralForumTopicHidden?
+    property general_forum_topic_unhidden : GeneralForumTopicUnhidden?
+    property poll_option_added : PollOptionAdded?
+    property poll_option_deleted : PollOptionDeleted?
     property migrate_to_chat_id : Int32?
     property migrate_from_chat_id : Int32?
     property pinned_message : Message?

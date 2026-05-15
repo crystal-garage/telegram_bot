@@ -11,6 +11,8 @@ module TelegramBot
     property? can_join_groups : Bool?
     property? can_read_all_group_messages : Bool?
     property? supports_inline_queries : Bool?
+    property? supports_guest_queries : Bool?
+    property? can_manage_bots : Bool?
 
     def initialize(
       @id : Int64,
@@ -23,6 +25,8 @@ module TelegramBot
       @can_join_groups = nil,
       @can_read_all_group_messages = nil,
       @supports_inline_queries = nil,
+      @supports_guest_queries = nil,
+      @can_manage_bots = nil,
     )
     end
   end

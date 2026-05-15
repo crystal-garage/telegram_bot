@@ -151,4 +151,23 @@ module TelegramBot
     property gifts : Array(OwnedGift)
     property next_offset : String?
   end
+
+  class AcceptedGiftTypes
+    include JSON::Serializable
+
+    property? unlimited_gifts : Bool
+    property? limited_gifts : Bool
+    property? unique_gifts : Bool
+    property? premium_subscription : Bool
+    property? gifts_from_channels : Bool
+
+    def initialize(
+      @unlimited_gifts : Bool,
+      @limited_gifts : Bool,
+      @unique_gifts : Bool,
+      @premium_subscription : Bool,
+      @gifts_from_channels : Bool,
+    )
+    end
+  end
 end

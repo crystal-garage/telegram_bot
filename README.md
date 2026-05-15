@@ -31,7 +31,7 @@ api methods and types:
 - [x] bot profile and default administrator-rights methods
 - [x] invite link, join request, forum topic, and reaction methods
 - [x] Stars, gifts, and paid media methods
-- [ ] full business, guest, and managed bot APIs
+- [x] business, guest, and managed bot helpers
 
 getting updates:
 
@@ -326,6 +326,14 @@ types, while unimplemented items are intentionally left out of the public API.
   `get_my_description`, `set_my_short_description`,
   `get_my_short_description`, `set_my_default_administrator_rights`,
   `get_my_default_administrator_rights`
+- Business, guest, and managed bots: `get_business_connection`,
+  `read_business_message`, `delete_business_messages`,
+  `set_business_account_name`, `set_business_account_username`,
+  `set_business_account_bio`, `set_business_account_profile_photo`,
+  `remove_business_account_profile_photo`,
+  `set_business_account_gift_settings`, `answer_guest_query`,
+  `get_managed_bot_token`, `replace_managed_bot_token`,
+  `get_managed_bot_access_settings`, `set_managed_bot_access_settings`
 
 ### Implemented update handlers
 
@@ -400,6 +408,10 @@ Override these methods in your bot subclass:
 - Selected business and managed bot update containers:
   `BusinessConnection`, `BusinessMessagesDeleted`, `PaidMediaPurchased`,
   `ChatBoostUpdated`, `ChatBoostRemoved`, `ManagedBotUpdated`
+- Business, guest, and managed bot support: `BusinessBotRights`,
+  `BusinessIntro`, `BusinessLocation`, `BusinessOpeningHours`,
+  `BusinessOpeningHoursInterval`, `InputProfilePhoto`, `SentGuestMessage`,
+  `ManagedBotCreated`, `BotAccessSettings`
 
 ### Not implemented yet
 
@@ -407,7 +419,7 @@ Override these methods in your bot subclass:
 - Profile photo and chat menu button methods
 - Newer chat administration APIs outside Phase 7, such as `set_chat_member_tag`
   and user profile audio methods
-- Business-account owned gift management methods
+- Business-account owned gift management methods beyond gift settings
 - Full business, guest, and managed bot method/type support
 
 ## Compatibility notes

@@ -27,7 +27,8 @@ api methods and types:
 - [x] games
 - [x] polls and dice
 - [x] modern keyboard and Web App helpers
-- [ ] webhook metadata and command scopes
+- [x] webhook metadata and command scopes
+- [x] bot profile and default administrator-rights methods
 - [ ] full chat administration methods
 - [ ] Stars, gifts, and paid media methods
 - [ ] full business, guest, and managed bot APIs
@@ -240,6 +241,16 @@ Another option is to use the [`setWebhook`](https://core.telegram.org/bots/api#s
 bot.set_webhook(url, certificate)
 ```
 
+Modern webhook options can be passed as keyword arguments:
+
+```crystal
+bot.set_webhook(
+  "https://example.com/telegram",
+  secret_token: "secret-token",
+  drop_pending_updates: true
+)
+```
+
 After invoking `setWebhook`, have your bot start an HTTPS server with the `serve` command:
 
 ```crystal
@@ -250,10 +261,10 @@ If you run your bot behind a proxy that performs SSL offloading (ie the proxy pr
 
 When running your bot in `serve` mode, the bot will favour executing any methods by sending a response as part of the Telegram request, rather than executing a new request.
 
-Telegram's modern `setWebhook` parameters `ip_address`,
-`drop_pending_updates`, and `secret_token` are not implemented yet. Do not rely
-on `serve` to validate `X-Telegram-Bot-Api-Secret-Token` until that support is
-added.
+`set_webhook` supports Telegram's `secret_token` parameter, but `serve` does not
+validate the `X-Telegram-Bot-Api-Secret-Token` header yet. If you need strict
+validation, terminate webhooks behind middleware or a proxy that checks the
+header before forwarding requests to the bot.
 
 ### Allow/blocklists
 
@@ -284,7 +295,7 @@ types, while unimplemented items are intentionally left out of the public API.
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,
   `set_game_score`, `get_game_high_scores`, `get_file`, `download`,
-  `set_webhook`, `serve`
+  `set_webhook`, `delete_webhook`, `get_webhook_info`, `serve`
 - Chat basics: `kick_chat_member`, `unban_chat_member`,
   `restrict_chat_member`, `promote_chat_member`, `export_chat_invite_link`,
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
@@ -295,7 +306,11 @@ types, while unimplemented items are intentionally left out of the public API.
   `answer_pre_checkout_query`, `get_sticker_set`, `upload_sticker_file`,
   `create_new_sticker_set`, `add_sticker_to_set`,
   `set_sticker_position_in_set`, `delete_sticker_position_in_set`
-- Bot commands: `set_my_commands`
+- Bot commands and profile: `set_my_commands`, `get_my_commands`,
+  `delete_my_commands`, `set_my_name`, `get_my_name`, `set_my_description`,
+  `get_my_description`, `set_my_short_description`,
+  `get_my_short_description`, `set_my_default_administrator_rights`,
+  `get_my_default_administrator_rights`
 
 ### Implemented update handlers
 
@@ -349,14 +364,20 @@ Override these methods in your bot subclass:
   `KeyboardButtonRequestManagedBot`, `KeyboardButtonPollType`,
   `ChatAdministratorRights`, `SentWebAppMessage`, `PreparedInlineMessage`,
   `PreparedKeyboardButton`
+- Webhook, command scope, and bot profile: `WebhookInfo`,
+  `BotCommandScopeDefault`, `BotCommandScopeAllPrivateChats`,
+  `BotCommandScopeAllGroupChats`, `BotCommandScopeAllChatAdministrators`,
+  `BotCommandScopeChat`, `BotCommandScopeChatAdministrators`,
+  `BotCommandScopeChatMember`, `BotName`, `BotDescription`,
+  `BotShortDescription`
 - Selected business and managed bot update containers:
   `BusinessConnection`, `BusinessMessagesDeleted`, `PaidMediaPurchased`,
   `ChatBoostUpdated`, `ChatBoostRemoved`, `ManagedBotUpdated`
 
 ### Not implemented yet
 
-- `get_webhook_info`, modern `set_webhook` options, `delete_webhook`, command
-  scopes, and bot profile/default administrator-rights methods
+- Webhook secret-token validation in `serve`
+- Profile photo and chat menu button methods
 - Full modern chat administration, invite link, join request, forum management,
   and reaction management methods
 - Stars, gifts, paid media methods, and their full type graph

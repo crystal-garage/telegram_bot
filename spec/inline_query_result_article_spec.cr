@@ -7,13 +7,13 @@ describe TelegramBot::InlineQueryResultArticle do
       id: "id",
       title: "title",
       input_message_content: input_text_message_content,
-      thumb_width: 64,
-      thumb_height: 64
+      thumbnail_width: 64,
+      thumbnail_height: 64
     )
 
     inline_query_result_article.type.should eq("article")
     inline_query_result_article.title.should eq("title")
-    inline_query_result_article.thumb_width.should eq(64)
-    inline_query_result_article.thumb_height.should eq(64)
+    inline_query_result_article.thumbnail_width.should eq(64)
+    inline_query_result_article.thumbnail_height.should eq(64)
   end
 end

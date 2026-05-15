@@ -10,9 +10,9 @@ module TelegramBot
     property url : String?
     property? hide_url : Bool?
     property description : String?
-    property thumb_url : String?
-    property thumb_width : Int32?
-    property thumb_height : Int32?
+    property thumbnail_url : String?
+    property thumbnail_width : Int32?
+    property thumbnail_height : Int32?
 
     def initialize(
       @id : String,
@@ -23,9 +23,9 @@ module TelegramBot
       @url : String? = nil,
       @hide_url = nil,
       @description = nil,
-      @thumb_url = nil,
-      @thumb_width = nil,
-      @thumb_height = nil,
+      @thumbnail_url = nil,
+      @thumbnail_width = nil,
+      @thumbnail_height = nil,
     )
     end
   end

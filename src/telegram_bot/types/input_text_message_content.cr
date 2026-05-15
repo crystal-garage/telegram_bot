@@ -4,13 +4,13 @@ module TelegramBot
 
     property message_text : String
     property parse_mode : String?
-    property? disable_web_page_preview : Bool?
+    property link_preview_options : LinkPreviewOptions?
 
     def initialize(
       @message_text : String,
       *,
       @parse_mode = nil,
-      @disable_web_page_preview = nil,
+      @link_preview_options = nil,
     )
     end
   end

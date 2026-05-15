@@ -8,7 +8,7 @@ module TelegramBot
     # Mime type of the content of video url, "text/html" or "video/mp4"
     property mime_type : String
     # URL of the thumbnail (jpeg only) for the video
-    property thumb_url : String
+    property thumbnail_url : String
     property title : String
     property caption : String?
     property parse_mode : String?
@@ -23,7 +23,7 @@ module TelegramBot
       @id : String,
       @video_url : String,
       @mime_type : String,
-      @thumb_url : String,
+      @thumbnail_url : String,
       @title : String,
       *,
       @caption = nil,

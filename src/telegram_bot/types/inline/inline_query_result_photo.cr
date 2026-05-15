@@ -5,7 +5,7 @@ module TelegramBot
     property type : String = "photo"
     property id : String
     property photo_url : String
-    property thumb_url : String
+    property thumbnail_url : String
     property photo_width : Int32?
     property photo_height : Int32?
     property title : String?
@@ -17,7 +17,7 @@ module TelegramBot
     def initialize(
       @id : String,
       @photo_url : String,
-      @thumb_url : String,
+      @thumbnail_url : String,
       *,
       @photo_width = nil,
       @photo_height = nil,

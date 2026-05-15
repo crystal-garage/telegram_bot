@@ -7,7 +7,7 @@ module TelegramBot
     property width : Int32
     property height : Int32
     property duration : Int32
-    property thumb : PhotoSize?
+    property thumbnail : PhotoSize?
     property mime_type : String?
     property file_size : Int32?
   end

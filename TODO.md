@@ -291,7 +291,7 @@ keeping backward-compatible method signatures where practical.
   - [x] `get_star_transactions`
   - [x] `refund_star_payment`
   - [x] `edit_user_star_subscription`
-- [ ] Add gift types and methods if needed by downstream users.
+- [x] Add gift types and methods if needed by downstream users.
 
 ## Phase 10: Business, Guest, And Managed Bot Support
 

@@ -3,6 +3,7 @@ Lint/NotNil:
   Description: Identifies usage of `not_nil!` calls
   Excluded:
   - src/telegram_bot/bot.cr
+  - src/telegram_bot/bot/**/*.cr
   Enabled: true
   Severity: Warning
 
@@ -12,6 +13,7 @@ Metrics/CyclomaticComplexity:
   MaxComplexity: 10
   Excluded:
   - src/telegram_bot/bot.cr
+  - src/telegram_bot/bot/**/*.cr
   Enabled: true
   Severity: Warning
 

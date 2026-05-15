@@ -24,13 +24,13 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 1: Request Serialization Foundation
 
-- [ ] Add a shared helper for JSON-serializing API parameters that are arrays or
+- [x] Add a shared helper for JSON-serializing API parameters that are arrays or
       `JSON::Serializable` objects.
-- [ ] Ensure `allowed_updates`, media arrays, command arrays, inline results,
+- [x] Ensure `allowed_updates`, media arrays, command arrays, inline results,
       reply markup, and future object parameters are serialized consistently.
-- [ ] Decide whether to keep form-encoded requests as the default or introduce
+- [x] Decide whether to keep form-encoded requests as the default or introduce
       JSON request bodies for non-file requests.
-- [ ] Improve multipart handling enough for binary-safe file uploads.
+- [x] Improve multipart handling enough for binary-safe file uploads.
 
 ## Phase 2: Core Update Dispatch
 

@@ -1,5 +1,8 @@
 module TelegramBot
   abstract class Bot
+    # Returns a sticker set.
+    #
+    # See: https://core.telegram.org/bots/api#getstickerset
     def get_sticker_set(
       name : String,
     )
@@ -11,6 +14,9 @@ module TelegramBot
       StickerSet.from_json(res.to_json) if res
     end
 
+    # Uploads a sticker file for later use.
+    #
+    # See: https://core.telegram.org/bots/api#uploadstickerfile
     def upload_sticker_file(
       user_id : Int,
       png_sticker : ::File,
@@ -23,6 +29,9 @@ module TelegramBot
       File.from_json(res.to_json) if res
     end
 
+    # Creates a new sticker set for a user.
+    #
+    # See: https://core.telegram.org/bots/api#createnewstickerset
     def create_new_sticker_set(
       user_id : Int,
       name : String,
@@ -46,6 +55,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Adds a sticker to an existing sticker set.
+    #
+    # See: https://core.telegram.org/bots/api#addstickertoset
     def add_sticker_to_set(
       user_id : Int,
       name : String,
@@ -65,6 +77,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Moves a sticker in a sticker set.
+    #
+    # See: https://core.telegram.org/bots/api#setstickerpositioninset
     def set_sticker_position_in_set(
       sticker : String,
       position : Int,
@@ -78,6 +93,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Deletes a sticker from a sticker set.
+    #
+    # See: https://core.telegram.org/bots/api#deletestickerfromset
     def delete_sticker_position_in_set(sticker : String)
       res = def_request(
         "deleteStickerFromSet",

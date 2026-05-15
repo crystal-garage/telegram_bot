@@ -1,5 +1,8 @@
 module TelegramBot
   abstract class Bot
+    # Sends an answer to a callback query.
+    #
+    # See: https://core.telegram.org/bots/api#answercallbackquery
     def answer_callback_query(
       callback_query_id : String,
       text : String? = nil,
@@ -19,6 +22,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Edits text and game messages.
+    #
+    # See: https://core.telegram.org/bots/api#editmessagetext
     def edit_message_text(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -48,6 +54,9 @@ module TelegramBot
       end
     end
 
+    # Edits captions of messages.
+    #
+    # See: https://core.telegram.org/bots/api#editmessagecaption
     def edit_message_caption(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -73,6 +82,9 @@ module TelegramBot
       end
     end
 
+    # Edits only the reply markup of messages.
+    #
+    # See: https://core.telegram.org/bots/api#editmessagereplymarkup
     def edit_message_reply_markup(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -96,6 +108,9 @@ module TelegramBot
       end
     end
 
+    # Deletes a message.
+    #
+    # See: https://core.telegram.org/bots/api#deletemessage
     def delete_message(
       chat_id : Int | String,
       message_id : Int32,
@@ -115,6 +130,9 @@ module TelegramBot
       end
     end
 
+    # Sends answers to an inline query.
+    #
+    # See: https://core.telegram.org/bots/api#answerinlinequery
     def answer_inline_query(
       inline_query_id : String,
       results : Array(InlineQueryResult),
@@ -138,6 +156,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Sends an answer to a Web App query.
+    #
+    # See: https://core.telegram.org/bots/api#answerwebappquery
     def answer_web_app_query(
       web_app_query_id : String,
       result : InlineQueryResult,
@@ -151,6 +172,9 @@ module TelegramBot
       SentWebAppMessage.from_json(res.to_json)
     end
 
+    # Stores an inline message for later use.
+    #
+    # See: https://core.telegram.org/bots/api#savepreparedinlinemessage
     def save_prepared_inline_message(
       user_id : Int,
       result : InlineQueryResult,
@@ -172,6 +196,9 @@ module TelegramBot
       PreparedInlineMessage.from_json(res.to_json)
     end
 
+    # Stores a keyboard button for later use.
+    #
+    # See: https://core.telegram.org/bots/api#savepreparedkeyboardbutton
     def save_prepared_keyboard_button(
       user_id : Int,
       button : KeyboardButton,

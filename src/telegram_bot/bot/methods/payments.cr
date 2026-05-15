@@ -1,5 +1,8 @@
 module TelegramBot
   abstract class Bot
+    # Sends invoices.
+    #
+    # See: https://core.telegram.org/bots/api#sendinvoice
     def send_invoice(
       chat_id : Int,
       title : String,
@@ -47,6 +50,9 @@ module TelegramBot
       Message.from_json(res.to_json) if res
     end
 
+    # Sends an answer to a shipping query.
+    #
+    # See: https://core.telegram.org/bots/api#answershippingquery
     def answer_shipping_query(
       shipping_query_id : String,
       ok : Bool,
@@ -64,6 +70,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Sends an answer to a pre-checkout query.
+    #
+    # See: https://core.telegram.org/bots/api#answerprecheckoutquery
     def answer_pre_checkout_query(
       pre_checkout_query_id : String,
       ok : Bool,
@@ -79,6 +88,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Returns the bot's Telegram Star balance.
+    #
+    # See: https://core.telegram.org/bots/api#getmystarbalance
     def get_my_star_balance : StarAmount
       res = request(
         "getMyStarBalance",
@@ -88,6 +100,9 @@ module TelegramBot
       StarAmount.from_json(res.to_json)
     end
 
+    # Returns the bot's Telegram Star transactions.
+    #
+    # See: https://core.telegram.org/bots/api#getstartransactions
     def get_star_transactions(
       offset : Int32? = nil,
       limit : Int32? = nil,
@@ -101,6 +116,9 @@ module TelegramBot
       StarTransactions.from_json(res.to_json)
     end
 
+    # Refunds a Telegram Star payment.
+    #
+    # See: https://core.telegram.org/bots/api#refundstarpayment
     def refund_star_payment(
       user_id : Int,
       telegram_payment_charge_id : String,
@@ -114,6 +132,9 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Edits a user's Telegram Star subscription.
+    #
+    # See: https://core.telegram.org/bots/api#edituserstarsubscription
     def edit_user_star_subscription(
       user_id : Int,
       telegram_payment_charge_id : String,

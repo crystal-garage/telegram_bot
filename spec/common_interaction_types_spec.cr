@@ -138,3 +138,59 @@ describe TelegramBot::ForumTopic do
     topic.icon_custom_emoji_id.should eq("emoji-id")
   end
 end
+
+describe TelegramBot::ChatMember do
+  it "parses modern member and invite link fields" do
+    member = TelegramBot::ChatMember.from_json(<<-JSON)
+      {
+        "status": "restricted",
+        "user": {"id": 1, "is_bot": false, "first_name": "User"},
+        "is_member": true,
+        "can_send_messages": true,
+        "can_send_photos": true,
+        "can_react_to_messages": true,
+        "until_date": 1800000000
+      }
+      JSON
+    link = TelegramBot::ChatInviteLink.from_json(<<-JSON)
+      {
+        "invite_link": "https://t.me/+invite",
+        "creator": {"id": 2, "is_bot": true, "first_name": "Bot"},
+        "creates_join_request": true,
+        "is_primary": false,
+        "is_revoked": false,
+        "subscription_period": 2592000,
+        "subscription_price": 100
+      }
+      JSON
+    update = TelegramBot::ChatMemberUpdated.from_json(<<-JSON)
+      {
+        "chat": {"id": -100, "type": "supergroup", "title": "Group"},
+        "from": {"id": 3, "is_bot": false, "first_name": "Admin"},
+        "date": 0,
+        "old_chat_member": {
+          "status": "left",
+          "user": {"id": 1, "is_bot": false, "first_name": "User"}
+        },
+        "new_chat_member": {
+          "status": "member",
+          "user": {"id": 1, "is_bot": false, "first_name": "User"}
+        },
+        "invite_link": {
+          "invite_link": "https://t.me/+invite",
+          "creator": {"id": 2, "is_bot": true, "first_name": "Bot"},
+          "creates_join_request": false,
+          "is_primary": false,
+          "is_revoked": false
+        }
+      }
+      JSON
+
+    member.status.should eq("restricted")
+    member.is_member?.should be_true
+    member.can_send_photos?.should be_true
+    member.can_react_to_messages?.should be_true
+    link.subscription_price.should eq(100)
+    update.invite_link.try(&.invite_link).should eq("https://t.me/+invite")
+  end
+end

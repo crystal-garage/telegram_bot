@@ -29,7 +29,7 @@ api methods and types:
 - [x] modern keyboard and Web App helpers
 - [x] webhook metadata and command scopes
 - [x] bot profile and default administrator-rights methods
-- [ ] full chat administration methods
+- [x] invite link, join request, forum topic, and reaction methods
 - [ ] Stars, gifts, and paid media methods
 - [ ] full business, guest, and managed bot APIs
 
@@ -298,10 +298,22 @@ types, while unimplemented items are intentionally left out of the public API.
   `set_webhook`, `delete_webhook`, `get_webhook_info`, `serve`
 - Chat basics: `kick_chat_member`, `unban_chat_member`,
   `restrict_chat_member`, `promote_chat_member`, `export_chat_invite_link`,
+  `create_chat_invite_link`, `edit_chat_invite_link`,
+  `create_chat_subscription_invite_link`,
+  `edit_chat_subscription_invite_link`, `revoke_chat_invite_link`,
+  `approve_chat_join_request`, `decline_chat_join_request`,
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
   `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
   `get_chat`, `leave_chat`, `get_chat_administrators`, `get_chat_member`,
   `get_chat_members_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
+- Forum and reactions: `get_forum_topic_icon_stickers`,
+  `create_forum_topic`, `edit_forum_topic`, `close_forum_topic`,
+  `reopen_forum_topic`, `delete_forum_topic`,
+  `unpin_all_forum_topic_messages`, `edit_general_forum_topic`,
+  `close_general_forum_topic`, `reopen_general_forum_topic`,
+  `hide_general_forum_topic`, `unhide_general_forum_topic`,
+  `unpin_all_general_forum_topic_messages`, `set_message_reaction`,
+  `delete_message_reaction`, `delete_all_message_reactions`
 - Payments and stickers: `send_invoice`, `answer_shipping_query`,
   `answer_pre_checkout_query`, `get_sticker_set`, `upload_sticker_file`,
   `create_new_sticker_set`, `add_sticker_to_set`,
@@ -357,6 +369,8 @@ Override these methods in your bot subclass:
   `ForumTopicCreated`, `ForumTopicEdited`, `ForumTopicClosed`,
   `ForumTopicReopened`, `GeneralForumTopicHidden`,
   `GeneralForumTopicUnhidden`
+- Chat administration: `ChatPermissions`, `ChatMember`,
+  `ChatMemberUpdated`, `ChatInviteLink`, `ChatJoinRequest`
 - Keyboards and Web Apps: `InlineKeyboardButton`, `InlineKeyboardMarkup`,
   `KeyboardButton`, `ReplyKeyboardMarkup`, `LoginUrl`, `WebAppInfo`,
   `WebAppData`, `SwitchInlineQueryChosenChat`, `CopyTextButton`,
@@ -378,8 +392,8 @@ Override these methods in your bot subclass:
 
 - Webhook secret-token validation in `serve`
 - Profile photo and chat menu button methods
-- Full modern chat administration, invite link, join request, forum management,
-  and reaction management methods
+- Newer chat administration APIs outside Phase 7, such as `set_chat_member_tag`
+  and user profile audio methods
 - Stars, gifts, paid media methods, and their full type graph
 - Full business, guest, and managed bot method/type support
 

@@ -190,44 +190,44 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 7: Chat Administration
 
-- [ ] Add `ChatPermissions`.
-- [ ] Add modern `ChatMember` variants or expand current `ChatMember`:
-  - [ ] owner
-  - [ ] administrator
-  - [ ] member
-  - [ ] restricted
-  - [ ] left
-  - [ ] banned
-- [ ] Add `ChatMemberUpdated`.
-- [ ] Add `ChatInviteLink`.
-- [ ] Add `ChatJoinRequest`.
-- [ ] Add invite link methods:
-  - [ ] `create_chat_invite_link`
-  - [ ] `edit_chat_invite_link`
-  - [ ] `create_chat_subscription_invite_link`
-  - [ ] `edit_chat_subscription_invite_link`
-  - [ ] `revoke_chat_invite_link`
-- [ ] Add join request methods:
-  - [ ] `approve_chat_join_request`
-  - [ ] `decline_chat_join_request`
-- [ ] Add forum methods:
-  - [ ] `get_forum_topic_icon_stickers`
-  - [ ] `create_forum_topic`
-  - [ ] `edit_forum_topic`
-  - [ ] `close_forum_topic`
-  - [ ] `reopen_forum_topic`
-  - [ ] `delete_forum_topic`
-  - [ ] `unpin_all_forum_topic_messages`
-  - [ ] `edit_general_forum_topic`
-  - [ ] `close_general_forum_topic`
-  - [ ] `reopen_general_forum_topic`
-  - [ ] `hide_general_forum_topic`
-  - [ ] `unhide_general_forum_topic`
-  - [ ] `unpin_all_general_forum_topic_messages`
-- [ ] Add reaction methods:
-  - [ ] `set_message_reaction`
-  - [ ] `delete_message_reaction`
-  - [ ] `delete_all_message_reactions`
+- [x] Add `ChatPermissions`.
+- [x] Add modern `ChatMember` variants or expand current `ChatMember`:
+  - [x] owner
+  - [x] administrator
+  - [x] member
+  - [x] restricted
+  - [x] left
+  - [x] banned
+- [x] Add `ChatMemberUpdated`.
+- [x] Add `ChatInviteLink`.
+- [x] Add `ChatJoinRequest`.
+- [x] Add invite link methods:
+  - [x] `create_chat_invite_link`
+  - [x] `edit_chat_invite_link`
+  - [x] `create_chat_subscription_invite_link`
+  - [x] `edit_chat_subscription_invite_link`
+  - [x] `revoke_chat_invite_link`
+- [x] Add join request methods:
+  - [x] `approve_chat_join_request`
+  - [x] `decline_chat_join_request`
+- [x] Add forum methods:
+  - [x] `get_forum_topic_icon_stickers`
+  - [x] `create_forum_topic`
+  - [x] `edit_forum_topic`
+  - [x] `close_forum_topic`
+  - [x] `reopen_forum_topic`
+  - [x] `delete_forum_topic`
+  - [x] `unpin_all_forum_topic_messages`
+  - [x] `edit_general_forum_topic`
+  - [x] `close_general_forum_topic`
+  - [x] `reopen_general_forum_topic`
+  - [x] `hide_general_forum_topic`
+  - [x] `unhide_general_forum_topic`
+  - [x] `unpin_all_general_forum_topic_messages`
+- [x] Add reaction methods:
+  - [x] `set_message_reaction`
+  - [x] `delete_message_reaction`
+  - [x] `delete_all_message_reactions`
 
 ## Phase 8: Keyboard, Inline, And Web App Support
 

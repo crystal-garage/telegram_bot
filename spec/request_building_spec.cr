@@ -642,7 +642,25 @@ describe TelegramBot::Bot do
     bot.last_params["use_independent_chat_permissions"].should eq("true")
 
     bot.restrict_chat_member("@group", 123, can_send_media_messages: true)
-    bot.param("permissions").should contain("can_send_photos")
+    legacy_permissions = TelegramBot::ChatPermissions.new(
+      can_send_audios: true,
+      can_send_documents: true,
+      can_send_photos: true,
+      can_send_videos: true,
+      can_send_video_notes: true,
+      can_send_voice_notes: true
+    )
+    params = bot.serialize_for_spec({"permissions" => legacy_permissions})
+    JSON.parse(params["permissions"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "can_send_audios": true,
+        "can_send_documents": true,
+        "can_send_photos": true,
+        "can_send_videos": true,
+        "can_send_video_notes": true,
+        "can_send_voice_notes": true
+      }
+      JSON
 
     invite = bot.create_chat_invite_link("@group", name: "Invite", creates_join_request: true)
 

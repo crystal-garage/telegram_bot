@@ -3,7 +3,7 @@ module TelegramBot
     include JSON::Serializable
 
     property message_id : Int32
-    property chat_id : Int64 | String | Nil
+    property chat_id : Int64 | String?
     property? allow_sending_without_reply : Bool?
     property quote : String?
     property quote_parse_mode : String?

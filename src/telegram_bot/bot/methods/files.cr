@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Returns file metadata and a download path.
     #
-    # See: https://core.telegram.org/bots/api#getfile
+    # See: <https://core.telegram.org/bots/api#getfile>
     def get_file(
       file_id : String,
     ) : File

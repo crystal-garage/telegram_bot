@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Sends text messages.
     #
-    # See: https://core.telegram.org/bots/api#sendmessage
+    # See: <https://core.telegram.org/bots/api#sendmessage>
     def send_message(
       chat_id : Int | String,
       text : String,
@@ -49,7 +49,7 @@ module TelegramBot
 
     # Forwards a message.
     #
-    # See: https://core.telegram.org/bots/api#forwardmessage
+    # See: <https://core.telegram.org/bots/api#forwardmessage>
     def forward_message(
       chat_id : Int | String,
       from_chat_id : Int | String,
@@ -81,7 +81,7 @@ module TelegramBot
 
     # Forwards multiple messages.
     #
-    # See: https://core.telegram.org/bots/api#forwardmessages
+    # See: <https://core.telegram.org/bots/api#forwardmessages>
     def forward_messages(
       chat_id : Int | String,
       from_chat_id : Int | String,
@@ -108,7 +108,7 @@ module TelegramBot
 
     # Copies a message without a link to the original message.
     #
-    # See: https://core.telegram.org/bots/api#copymessage
+    # See: <https://core.telegram.org/bots/api#copymessage>
     def copy_message(
       chat_id : Int | String,
       from_chat_id : Int | String,
@@ -154,7 +154,7 @@ module TelegramBot
 
     # Copies multiple messages without links to the original messages.
     #
-    # See: https://core.telegram.org/bots/api#copymessages
+    # See: <https://core.telegram.org/bots/api#copymessages>
     def copy_messages(
       chat_id : Int | String,
       from_chat_id : Int | String,
@@ -183,7 +183,7 @@ module TelegramBot
 
     # Sends photos.
     #
-    # See: https://core.telegram.org/bots/api#sendphoto
+    # See: <https://core.telegram.org/bots/api#sendphoto>
     def send_photo(
       chat_id : Int | String,
       photo : ::File | String,
@@ -229,7 +229,7 @@ module TelegramBot
 
     # Sends audio files.
     #
-    # See: https://core.telegram.org/bots/api#sendaudio
+    # See: <https://core.telegram.org/bots/api#sendaudio>
     def send_audio(
       chat_id : Int | String,
       audio : ::File | String,
@@ -279,7 +279,7 @@ module TelegramBot
 
     # Sends general files.
     #
-    # See: https://core.telegram.org/bots/api#senddocument
+    # See: <https://core.telegram.org/bots/api#senddocument>
     def send_document(
       chat_id : Int | String,
       document : ::File | String,
@@ -325,7 +325,7 @@ module TelegramBot
 
     # Sends stickers.
     #
-    # See: https://core.telegram.org/bots/api#sendsticker
+    # See: <https://core.telegram.org/bots/api#sendsticker>
     def send_sticker(
       chat_id : Int | String,
       sticker : ::File | String,
@@ -363,7 +363,7 @@ module TelegramBot
 
     # Sends video files.
     #
-    # See: https://core.telegram.org/bots/api#sendvideo
+    # See: <https://core.telegram.org/bots/api#sendvideo>
     def send_video(
       chat_id : Int | String,
       video : ::File | String,
@@ -423,7 +423,7 @@ module TelegramBot
 
     # Sends animation files.
     #
-    # See: https://core.telegram.org/bots/api#sendanimation
+    # See: <https://core.telegram.org/bots/api#sendanimation>
     def send_animation(
       chat_id : Int | String,
       animation : ::File | String,
@@ -477,7 +477,7 @@ module TelegramBot
 
     # Sends voice messages.
     #
-    # See: https://core.telegram.org/bots/api#sendvoice
+    # See: <https://core.telegram.org/bots/api#sendvoice>
     def send_voice(
       chat_id : Int | String,
       voice : ::File | String,
@@ -521,7 +521,7 @@ module TelegramBot
 
     # Sends video notes.
     #
-    # See: https://core.telegram.org/bots/api#sendvideonote
+    # See: <https://core.telegram.org/bots/api#sendvideonote>
     def send_video_note(
       chat_id : Int | String,
       video_note : ::File | String,
@@ -563,7 +563,7 @@ module TelegramBot
 
     # Sends paid media messages.
     #
-    # See: https://core.telegram.org/bots/api#sendpaidmedia
+    # See: <https://core.telegram.org/bots/api#sendpaidmedia>
     def send_paid_media(
       chat_id : Int | String,
       star_count : Int,
@@ -609,7 +609,7 @@ module TelegramBot
 
     # Sends a group of photos, videos, documents, or audios.
     #
-    # See: https://core.telegram.org/bots/api#sendmediagroup
+    # See: <https://core.telegram.org/bots/api#sendmediagroup>
     def send_media_group(
       chat_id : Int | String,
       media : Array(InputMedia),
@@ -644,7 +644,7 @@ module TelegramBot
 
     # Sends point locations.
     #
-    # See: https://core.telegram.org/bots/api#sendlocation
+    # See: <https://core.telegram.org/bots/api#sendlocation>
     def send_location(
       chat_id : Int | String,
       latitude : Float,
@@ -690,7 +690,7 @@ module TelegramBot
 
     # Edits live location messages.
     #
-    # See: https://core.telegram.org/bots/api#editmessagelivelocation
+    # See: <https://core.telegram.org/bots/api#editmessagelivelocation>
     def edit_message_live_location(
       latitude : Float,
       longitude : Float,
@@ -720,7 +720,7 @@ module TelegramBot
 
     # Stops updating a live location message.
     #
-    # See: https://core.telegram.org/bots/api#stopmessagelivelocation
+    # See: <https://core.telegram.org/bots/api#stopmessagelivelocation>
     def stop_message_live_location(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -746,7 +746,7 @@ module TelegramBot
 
     # Sends venue information.
     #
-    # See: https://core.telegram.org/bots/api#sendvenue
+    # See: <https://core.telegram.org/bots/api#sendvenue>
     def send_venue(
       chat_id : Int | String,
       latitude : Float,
@@ -796,7 +796,7 @@ module TelegramBot
 
     # Sends phone contacts.
     #
-    # See: https://core.telegram.org/bots/api#sendcontact
+    # See: <https://core.telegram.org/bots/api#sendcontact>
     def send_contact(
       chat_id : Int | String,
       phone_number : String,
@@ -838,7 +838,7 @@ module TelegramBot
 
     # Sends native polls.
     #
-    # See: https://core.telegram.org/bots/api#sendpoll
+    # See: <https://core.telegram.org/bots/api#sendpoll>
     def send_poll(
       chat_id : Int | String,
       question : String,
@@ -918,7 +918,7 @@ module TelegramBot
 
     # Sends an animated dice message.
     #
-    # See: https://core.telegram.org/bots/api#senddice
+    # See: <https://core.telegram.org/bots/api#senddice>
     def send_dice(
       chat_id : Int | String,
       emoji : String? = nil,
@@ -954,7 +954,7 @@ module TelegramBot
 
     # Sends a message draft.
     #
-    # See: https://core.telegram.org/bots/api#sendmessagedraft
+    # See: <https://core.telegram.org/bots/api#sendmessagedraft>
     def send_message_draft(
       chat_id : Int,
       draft_id : Int,

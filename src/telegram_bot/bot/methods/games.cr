@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Sends a game.
     #
-    # See: https://core.telegram.org/bots/api#sendgame
+    # See: <https://core.telegram.org/bots/api#sendgame>
     def send_game(
       chat_id : Int | String,
       game_short_name : String,
@@ -22,7 +22,7 @@ module TelegramBot
 
     # Sets a user's score in a game.
     #
-    # See: https://core.telegram.org/bots/api#setgamescore
+    # See: <https://core.telegram.org/bots/api#setgamescore>
     def set_game_score(
       user_id : Int32,
       score : Int32,
@@ -54,7 +54,7 @@ module TelegramBot
 
     # Returns high scores for a game.
     #
-    # See: https://core.telegram.org/bots/api#getgamehighscores
+    # See: <https://core.telegram.org/bots/api#getgamehighscores>
     def get_game_high_scores(
       user_id : Int32,
       chat_id : Int | String? = nil,

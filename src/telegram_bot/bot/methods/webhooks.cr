@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Sets a webhook for receiving incoming updates.
     #
-    # See: https://core.telegram.org/bots/api#setwebhook
+    # See: <https://core.telegram.org/bots/api#setwebhook>
     def set_webhook(
       url : String,
       certificate : ::File | String? = nil,
@@ -30,7 +30,7 @@ module TelegramBot
 
     # Removes webhook integration.
     #
-    # See: https://core.telegram.org/bots/api#deletewebhook
+    # See: <https://core.telegram.org/bots/api#deletewebhook>
     def delete_webhook(
       drop_pending_updates : Bool? = nil,
     ) : Bool?
@@ -44,7 +44,7 @@ module TelegramBot
 
     # Returns current webhook status.
     #
-    # See: https://core.telegram.org/bots/api#getwebhookinfo
+    # See: <https://core.telegram.org/bots/api#getwebhookinfo>
     def get_webhook_info : WebhookInfo
       res = request("getWebhookInfo", force_http: true)
       WebhookInfo.from_json(res.to_json)

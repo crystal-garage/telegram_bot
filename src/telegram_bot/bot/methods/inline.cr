@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Sends an answer to a callback query.
     #
-    # See: https://core.telegram.org/bots/api#answercallbackquery
+    # See: <https://core.telegram.org/bots/api#answercallbackquery>
     def answer_callback_query(
       callback_query_id : String,
       text : String? = nil,
@@ -24,7 +24,7 @@ module TelegramBot
 
     # Edits text and game messages.
     #
-    # See: https://core.telegram.org/bots/api#editmessagetext
+    # See: <https://core.telegram.org/bots/api#editmessagetext>
     def edit_message_text(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -56,7 +56,7 @@ module TelegramBot
 
     # Edits captions of messages.
     #
-    # See: https://core.telegram.org/bots/api#editmessagecaption
+    # See: <https://core.telegram.org/bots/api#editmessagecaption>
     def edit_message_caption(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -84,7 +84,7 @@ module TelegramBot
 
     # Edits only the reply markup of messages.
     #
-    # See: https://core.telegram.org/bots/api#editmessagereplymarkup
+    # See: <https://core.telegram.org/bots/api#editmessagereplymarkup>
     def edit_message_reply_markup(
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
@@ -110,7 +110,7 @@ module TelegramBot
 
     # Deletes a message.
     #
-    # See: https://core.telegram.org/bots/api#deletemessage
+    # See: <https://core.telegram.org/bots/api#deletemessage>
     def delete_message(
       chat_id : Int | String,
       message_id : Int32,
@@ -132,7 +132,7 @@ module TelegramBot
 
     # Sends answers to an inline query.
     #
-    # See: https://core.telegram.org/bots/api#answerinlinequery
+    # See: <https://core.telegram.org/bots/api#answerinlinequery>
     def answer_inline_query(
       inline_query_id : String,
       results : Array(InlineQueryResult),
@@ -158,7 +158,7 @@ module TelegramBot
 
     # Sends an answer to a Web App query.
     #
-    # See: https://core.telegram.org/bots/api#answerwebappquery
+    # See: <https://core.telegram.org/bots/api#answerwebappquery>
     def answer_web_app_query(
       web_app_query_id : String,
       result : InlineQueryResult,
@@ -174,7 +174,7 @@ module TelegramBot
 
     # Stores an inline message for later use.
     #
-    # See: https://core.telegram.org/bots/api#savepreparedinlinemessage
+    # See: <https://core.telegram.org/bots/api#savepreparedinlinemessage>
     def save_prepared_inline_message(
       user_id : Int,
       result : InlineQueryResult,
@@ -198,7 +198,7 @@ module TelegramBot
 
     # Stores a keyboard button for later use.
     #
-    # See: https://core.telegram.org/bots/api#savepreparedkeyboardbutton
+    # See: <https://core.telegram.org/bots/api#savepreparedkeyboardbutton>
     def save_prepared_keyboard_button(
       user_id : Int,
       button : KeyboardButton,

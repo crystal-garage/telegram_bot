@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Sends a chat action indicator.
     #
-    # See: https://core.telegram.org/bots/api#sendchataction
+    # See: <https://core.telegram.org/bots/api#sendchataction>
     def send_chat_action(
       chat_id : Int | String,
       action : String,
@@ -18,7 +18,7 @@ module TelegramBot
 
     # Sets reactions on a message.
     #
-    # See: https://core.telegram.org/bots/api#setmessagereaction
+    # See: <https://core.telegram.org/bots/api#setmessagereaction>
     def set_message_reaction(
       chat_id : Int | String,
       message_id : Int,
@@ -38,7 +38,7 @@ module TelegramBot
 
     # Deletes one reaction from a message.
     #
-    # See: https://core.telegram.org/bots/api#deletemessagereaction
+    # See: <https://core.telegram.org/bots/api#deletemessagereaction>
     def delete_message_reaction(
       chat_id : Int | String,
       message_id : Int,
@@ -56,7 +56,7 @@ module TelegramBot
 
     # Deletes all reactions from a message.
     #
-    # See: https://core.telegram.org/bots/api#deleteallmessagereactions
+    # See: <https://core.telegram.org/bots/api#deleteallmessagereactions>
     def delete_all_message_reactions(
       chat_id : Int | String,
       message_id : Int,
@@ -72,7 +72,7 @@ module TelegramBot
 
     # Returns profile photos for a user.
     #
-    # See: https://core.telegram.org/bots/api#getuserprofilephotos
+    # See: <https://core.telegram.org/bots/api#getuserprofilephotos>
     def get_user_profile_photos(
       user_id : Int32,
       offset : Int32? = nil,
@@ -90,7 +90,7 @@ module TelegramBot
 
     # Bans a user from a chat.
     #
-    # See: https://core.telegram.org/bots/api#banchatmember
+    # See: <https://core.telegram.org/bots/api#banchatmember>
     def ban_chat_member(
       chat_id : Int | String,
       user_id : Int,
@@ -110,7 +110,7 @@ module TelegramBot
 
     # Unbans a previously banned user in a chat.
     #
-    # See: https://core.telegram.org/bots/api#unbanchatmember
+    # See: <https://core.telegram.org/bots/api#unbanchatmember>
     def unban_chat_member(
       chat_id : Int | String,
       user_id : Int32,
@@ -126,7 +126,7 @@ module TelegramBot
 
     # Restricts a user in a supergroup.
     #
-    # See: https://core.telegram.org/bots/api#restrictchatmember
+    # See: <https://core.telegram.org/bots/api#restrictchatmember>
     def restrict_chat_member(
       chat_id : Int | String,
       user_id : Int,
@@ -148,7 +148,7 @@ module TelegramBot
 
     # Promotes or demotes a user in a supergroup or channel.
     #
-    # See: https://core.telegram.org/bots/api#promotechatmember
+    # See: <https://core.telegram.org/bots/api#promotechatmember>
     def promote_chat_member(
       chat_id : Int | String,
       user_id : Int,
@@ -180,7 +180,7 @@ module TelegramBot
 
     # Exports the primary invite link for a chat.
     #
-    # See: https://core.telegram.org/bots/api#exportchatinvitelink
+    # See: <https://core.telegram.org/bots/api#exportchatinvitelink>
     def export_chat_invite_link(
       chat_id : Int | String,
     )
@@ -194,7 +194,7 @@ module TelegramBot
 
     # Creates an additional invite link for a chat.
     #
-    # See: https://core.telegram.org/bots/api#createchatinvitelink
+    # See: <https://core.telegram.org/bots/api#createchatinvitelink>
     def create_chat_invite_link(
       chat_id : Int | String,
       name : String? = nil,
@@ -216,7 +216,7 @@ module TelegramBot
 
     # Edits a non-primary invite link for a chat.
     #
-    # See: https://core.telegram.org/bots/api#editchatinvitelink
+    # See: <https://core.telegram.org/bots/api#editchatinvitelink>
     def edit_chat_invite_link(
       chat_id : Int | String,
       invite_link : String,
@@ -240,7 +240,7 @@ module TelegramBot
 
     # Creates a subscription invite link for a channel chat.
     #
-    # See: https://core.telegram.org/bots/api#createchatsubscriptioninvitelink
+    # See: <https://core.telegram.org/bots/api#createchatsubscriptioninvitelink>
     def create_chat_subscription_invite_link(
       chat_id : Int | String,
       subscription_period : Int,
@@ -260,7 +260,7 @@ module TelegramBot
 
     # Edits a subscription invite link for a channel chat.
     #
-    # See: https://core.telegram.org/bots/api#editchatsubscriptioninvitelink
+    # See: <https://core.telegram.org/bots/api#editchatsubscriptioninvitelink>
     def edit_chat_subscription_invite_link(
       chat_id : Int | String,
       invite_link : String,
@@ -278,7 +278,7 @@ module TelegramBot
 
     # Revokes an invite link created by the bot.
     #
-    # See: https://core.telegram.org/bots/api#revokechatinvitelink
+    # See: <https://core.telegram.org/bots/api#revokechatinvitelink>
     def revoke_chat_invite_link(
       chat_id : Int | String,
       invite_link : String,
@@ -294,7 +294,7 @@ module TelegramBot
 
     # Approves a chat join request.
     #
-    # See: https://core.telegram.org/bots/api#approvechatjoinrequest
+    # See: <https://core.telegram.org/bots/api#approvechatjoinrequest>
     def approve_chat_join_request(
       chat_id : Int | String,
       user_id : Int,
@@ -310,7 +310,7 @@ module TelegramBot
 
     # Declines a chat join request.
     #
-    # See: https://core.telegram.org/bots/api#declinechatjoinrequest
+    # See: <https://core.telegram.org/bots/api#declinechatjoinrequest>
     def decline_chat_join_request(
       chat_id : Int | String,
       user_id : Int,
@@ -326,7 +326,7 @@ module TelegramBot
 
     # Sets a chat photo.
     #
-    # See: https://core.telegram.org/bots/api#setchatphoto
+    # See: <https://core.telegram.org/bots/api#setchatphoto>
     def set_chat_photo(
       chat_id : Int | String,
       photo : ::File,
@@ -342,7 +342,7 @@ module TelegramBot
 
     # Deletes a chat photo.
     #
-    # See: https://core.telegram.org/bots/api#deletechatphoto
+    # See: <https://core.telegram.org/bots/api#deletechatphoto>
     def delete_chat_photo(
       chat_id : Int | String,
     )
@@ -356,7 +356,7 @@ module TelegramBot
 
     # Sets a chat title.
     #
-    # See: https://core.telegram.org/bots/api#setchattitle
+    # See: <https://core.telegram.org/bots/api#setchattitle>
     def set_chat_title(
       chat_id : Int | String,
       title : String,
@@ -372,7 +372,7 @@ module TelegramBot
 
     # Sets a chat description.
     #
-    # See: https://core.telegram.org/bots/api#setchatdescription
+    # See: <https://core.telegram.org/bots/api#setchatdescription>
     def set_chat_description(
       chat_id : Int | String,
       description : String,
@@ -388,7 +388,7 @@ module TelegramBot
 
     # Pins a message in a chat.
     #
-    # See: https://core.telegram.org/bots/api#pinchatmessage
+    # See: <https://core.telegram.org/bots/api#pinchatmessage>
     def pin_chat_message(
       chat_id : Int | String,
       message_id : Int,
@@ -406,7 +406,7 @@ module TelegramBot
 
     # Unpins a message in a chat.
     #
-    # See: https://core.telegram.org/bots/api#unpinchatmessage
+    # See: <https://core.telegram.org/bots/api#unpinchatmessage>
     def unpin_chat_message(
       chat_id : Int | String,
     )
@@ -420,7 +420,7 @@ module TelegramBot
 
     # Returns information about a chat.
     #
-    # See: https://core.telegram.org/bots/api#getchat
+    # See: <https://core.telegram.org/bots/api#getchat>
     def get_chat(
       chat_id : Int | String,
     )
@@ -434,7 +434,7 @@ module TelegramBot
 
     # Leaves a chat.
     #
-    # See: https://core.telegram.org/bots/api#leavechat
+    # See: <https://core.telegram.org/bots/api#leavechat>
     def leave_chat(
       chat_id : Int | String,
     )
@@ -448,7 +448,7 @@ module TelegramBot
 
     # Returns the list of chat administrators.
     #
-    # See: https://core.telegram.org/bots/api#getchatadministrators
+    # See: <https://core.telegram.org/bots/api#getchatadministrators>
     def get_chat_administrators(
       chat_id : Int | String,
     )
@@ -465,7 +465,7 @@ module TelegramBot
 
     # Returns information about a chat member.
     #
-    # See: https://core.telegram.org/bots/api#getchatmember
+    # See: <https://core.telegram.org/bots/api#getchatmember>
     def get_chat_member(
       chat_id : Int | String,
       user_id : Int32,
@@ -481,7 +481,7 @@ module TelegramBot
 
     # Returns the number of members in a chat.
     #
-    # See: https://core.telegram.org/bots/api#getchatmembercount
+    # See: <https://core.telegram.org/bots/api#getchatmembercount>
     def get_chat_member_count(
       chat_id : Int | String,
     )
@@ -495,7 +495,7 @@ module TelegramBot
 
     # Sets a group sticker set for a supergroup.
     #
-    # See: https://core.telegram.org/bots/api#setchatstickerset
+    # See: <https://core.telegram.org/bots/api#setchatstickerset>
     def set_chat_sticker_set(
       chat_id : Int | String,
       sticker_set_name : String,
@@ -511,7 +511,7 @@ module TelegramBot
 
     # Deletes the group sticker set from a supergroup.
     #
-    # See: https://core.telegram.org/bots/api#deletechatstickerset
+    # See: <https://core.telegram.org/bots/api#deletechatstickerset>
     def delete_chat_sticker_set(
       chat_id : Int | String,
     )
@@ -525,7 +525,7 @@ module TelegramBot
 
     # Returns custom emoji stickers available as forum topic icons.
     #
-    # See: https://core.telegram.org/bots/api#getforumtopiciconstickers
+    # See: <https://core.telegram.org/bots/api#getforumtopiciconstickers>
     def get_forum_topic_icon_stickers : Array(Sticker)
       res = request(
         "getForumTopicIconStickers",
@@ -540,7 +540,7 @@ module TelegramBot
 
     # Creates a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#createforumtopic
+    # See: <https://core.telegram.org/bots/api#createforumtopic>
     def create_forum_topic(
       chat_id : Int | String,
       name : String,
@@ -560,7 +560,7 @@ module TelegramBot
 
     # Edits a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#editforumtopic
+    # See: <https://core.telegram.org/bots/api#editforumtopic>
     def edit_forum_topic(
       chat_id : Int | String,
       message_thread_id : Int,
@@ -580,7 +580,7 @@ module TelegramBot
 
     # Closes a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#closeforumtopic
+    # See: <https://core.telegram.org/bots/api#closeforumtopic>
     def close_forum_topic(
       chat_id : Int | String,
       message_thread_id : Int,
@@ -596,7 +596,7 @@ module TelegramBot
 
     # Reopens a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#reopenforumtopic
+    # See: <https://core.telegram.org/bots/api#reopenforumtopic>
     def reopen_forum_topic(
       chat_id : Int | String,
       message_thread_id : Int,
@@ -612,7 +612,7 @@ module TelegramBot
 
     # Deletes a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#deleteforumtopic
+    # See: <https://core.telegram.org/bots/api#deleteforumtopic>
     def delete_forum_topic(
       chat_id : Int | String,
       message_thread_id : Int,
@@ -628,7 +628,7 @@ module TelegramBot
 
     # Unpins all messages in a forum topic.
     #
-    # See: https://core.telegram.org/bots/api#unpinallforumtopicmessages
+    # See: <https://core.telegram.org/bots/api#unpinallforumtopicmessages>
     def unpin_all_forum_topic_messages(
       chat_id : Int | String,
       message_thread_id : Int,
@@ -644,7 +644,7 @@ module TelegramBot
 
     # Edits the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#editgeneralforumtopic
+    # See: <https://core.telegram.org/bots/api#editgeneralforumtopic>
     def edit_general_forum_topic(
       chat_id : Int | String,
       name : String,
@@ -660,7 +660,7 @@ module TelegramBot
 
     # Closes the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#closegeneralforumtopic
+    # See: <https://core.telegram.org/bots/api#closegeneralforumtopic>
     def close_general_forum_topic(
       chat_id : Int | String,
     )
@@ -674,7 +674,7 @@ module TelegramBot
 
     # Reopens the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#reopengeneralforumtopic
+    # See: <https://core.telegram.org/bots/api#reopengeneralforumtopic>
     def reopen_general_forum_topic(
       chat_id : Int | String,
     )
@@ -688,7 +688,7 @@ module TelegramBot
 
     # Hides the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#hidegeneralforumtopic
+    # See: <https://core.telegram.org/bots/api#hidegeneralforumtopic>
     def hide_general_forum_topic(
       chat_id : Int | String,
     )
@@ -702,7 +702,7 @@ module TelegramBot
 
     # Unhides the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#unhidegeneralforumtopic
+    # See: <https://core.telegram.org/bots/api#unhidegeneralforumtopic>
     def unhide_general_forum_topic(
       chat_id : Int | String,
     )
@@ -716,7 +716,7 @@ module TelegramBot
 
     # Unpins all messages in the general forum topic.
     #
-    # See: https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages
+    # See: <https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages>
     def unpin_all_general_forum_topic_messages(
       chat_id : Int | String,
     )

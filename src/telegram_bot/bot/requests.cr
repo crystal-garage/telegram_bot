@@ -86,14 +86,14 @@ module TelegramBot
 
     # Returns basic information about the bot.
     #
-    # See: https://core.telegram.org/bots/api#getme
+    # See: <https://core.telegram.org/bots/api#getme>
     def get_me
       request("getMe", force_http: true)
     end
 
     # Receives incoming updates using long polling.
     #
-    # See: https://core.telegram.org/bots/api#getupdates
+    # See: <https://core.telegram.org/bots/api#getupdates>
     private def get_updates(
       offset = @nextoffset,
       limit : Int32? = nil,

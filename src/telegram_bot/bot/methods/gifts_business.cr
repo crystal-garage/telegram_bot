@@ -2,7 +2,7 @@ module TelegramBot
   abstract class Bot
     # Returns gifts that can be sent by the bot.
     #
-    # See: https://core.telegram.org/bots/api#getavailablegifts
+    # See: <https://core.telegram.org/bots/api#getavailablegifts>
     def get_available_gifts : Gifts
       res = request(
         "getAvailableGifts",
@@ -14,7 +14,7 @@ module TelegramBot
 
     # Sends a gift to a user or chat.
     #
-    # See: https://core.telegram.org/bots/api#sendgift
+    # See: <https://core.telegram.org/bots/api#sendgift>
     def send_gift(
       gift_id : String,
       user_id : Int? = nil,
@@ -40,7 +40,7 @@ module TelegramBot
 
     # Gifts a Telegram Premium subscription to a user.
     #
-    # See: https://core.telegram.org/bots/api#giftpremiumsubscription
+    # See: <https://core.telegram.org/bots/api#giftpremiumsubscription>
     def gift_premium_subscription(
       user_id : Int,
       month_count : Int,
@@ -64,7 +64,7 @@ module TelegramBot
 
     # Sends an answer to a guest query.
     #
-    # See: https://core.telegram.org/bots/api#answerguestquery
+    # See: <https://core.telegram.org/bots/api#answerguestquery>
     def answer_guest_query(
       guest_query_id : String,
       result : InlineQueryResult,
@@ -80,7 +80,7 @@ module TelegramBot
 
     # Returns information about a business connection.
     #
-    # See: https://core.telegram.org/bots/api#getbusinessconnection
+    # See: <https://core.telegram.org/bots/api#getbusinessconnection>
     def get_business_connection(
       business_connection_id : String,
     ) : BusinessConnection
@@ -94,7 +94,7 @@ module TelegramBot
 
     # Marks a business message as read.
     #
-    # See: https://core.telegram.org/bots/api#readbusinessmessage
+    # See: <https://core.telegram.org/bots/api#readbusinessmessage>
     def read_business_message(
       business_connection_id : String,
       chat_id : Int | String,
@@ -112,7 +112,7 @@ module TelegramBot
 
     # Deletes messages on behalf of a business account.
     #
-    # See: https://core.telegram.org/bots/api#deletebusinessmessages
+    # See: <https://core.telegram.org/bots/api#deletebusinessmessages>
     def delete_business_messages(
       business_connection_id : String,
       message_ids : Array(Int32),
@@ -128,7 +128,7 @@ module TelegramBot
 
     # Sets the name of a business account.
     #
-    # See: https://core.telegram.org/bots/api#setbusinessaccountname
+    # See: <https://core.telegram.org/bots/api#setbusinessaccountname>
     def set_business_account_name(
       business_connection_id : String,
       first_name : String,
@@ -146,7 +146,7 @@ module TelegramBot
 
     # Sets the username of a business account.
     #
-    # See: https://core.telegram.org/bots/api#setbusinessaccountusername
+    # See: <https://core.telegram.org/bots/api#setbusinessaccountusername>
     def set_business_account_username(
       business_connection_id : String,
       username : String? = nil,
@@ -162,7 +162,7 @@ module TelegramBot
 
     # Sets the bio of a business account.
     #
-    # See: https://core.telegram.org/bots/api#setbusinessaccountbio
+    # See: <https://core.telegram.org/bots/api#setbusinessaccountbio>
     def set_business_account_bio(
       business_connection_id : String,
       bio : String? = nil,
@@ -178,7 +178,7 @@ module TelegramBot
 
     # Sets a business account profile photo.
     #
-    # See: https://core.telegram.org/bots/api#setbusinessaccountprofilephoto
+    # See: <https://core.telegram.org/bots/api#setbusinessaccountprofilephoto>
     def set_business_account_profile_photo(
       business_connection_id : String,
       photo : InputProfilePhoto,
@@ -196,7 +196,7 @@ module TelegramBot
 
     # Removes a business account profile photo.
     #
-    # See: https://core.telegram.org/bots/api#removebusinessaccountprofilephoto
+    # See: <https://core.telegram.org/bots/api#removebusinessaccountprofilephoto>
     def remove_business_account_profile_photo(
       business_connection_id : String,
       is_public : Bool? = nil,
@@ -212,7 +212,7 @@ module TelegramBot
 
     # Sets gift settings for a business account.
     #
-    # See: https://core.telegram.org/bots/api#setbusinessaccountgiftsettings
+    # See: <https://core.telegram.org/bots/api#setbusinessaccountgiftsettings>
     def set_business_account_gift_settings(
       business_connection_id : String,
       show_gift_button : Bool,
@@ -230,7 +230,7 @@ module TelegramBot
 
     # Returns a token for a managed bot.
     #
-    # See: https://core.telegram.org/bots/api#getmanagedbottoken
+    # See: <https://core.telegram.org/bots/api#getmanagedbottoken>
     def get_managed_bot_token(
       user_id : Int,
     ) : String
@@ -244,7 +244,7 @@ module TelegramBot
 
     # Replaces the token for a managed bot.
     #
-    # See: https://core.telegram.org/bots/api#replacemanagedbottoken
+    # See: <https://core.telegram.org/bots/api#replacemanagedbottoken>
     def replace_managed_bot_token(
       user_id : Int,
     ) : String
@@ -258,7 +258,7 @@ module TelegramBot
 
     # Returns access settings for a managed bot.
     #
-    # See: https://core.telegram.org/bots/api#getmanagedbotaccesssettings
+    # See: <https://core.telegram.org/bots/api#getmanagedbotaccesssettings>
     def get_managed_bot_access_settings(
       user_id : Int,
     ) : BotAccessSettings
@@ -272,7 +272,7 @@ module TelegramBot
 
     # Sets access settings for a managed bot.
     #
-    # See: https://core.telegram.org/bots/api#setmanagedbotaccesssettings
+    # See: <https://core.telegram.org/bots/api#setmanagedbotaccesssettings>
     def set_managed_bot_access_settings(
       user_id : Int,
       is_access_restricted : Bool,

@@ -1,0 +1,32 @@
+module TelegramBot
+  class ExternalReplyInfo
+    include JSON::Serializable
+
+    property origin : MessageOrigin
+    property chat : Chat?
+    property message_id : Int32?
+    property link_preview_options : LinkPreviewOptions?
+    property animation : Animation?
+    property audio : Audio?
+    property document : Document?
+    property live_photo : JSON::Any?
+    property paid_media : JSON::Any?
+    property photo : Array(PhotoSize)?
+    property sticker : Sticker?
+    property story : JSON::Any?
+    property video : Video?
+    property video_note : VideoNote?
+    property voice : Voice?
+    property? has_media_spoiler : Bool?
+    property checklist : JSON::Any?
+    property contact : Contact?
+    property dice : JSON::Any?
+    property game : Game?
+    property giveaway : JSON::Any?
+    property giveaway_winners : JSON::Any?
+    property invoice : Invoice?
+    property location : Location?
+    property poll : Poll?
+    property venue : Venue?
+  end
+end

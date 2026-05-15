@@ -8,6 +8,9 @@ module TelegramBot
     property url : String?
     property user : User?
     property language : String?
+    property custom_emoji_id : String?
+    property unix_time : Int32?
+    property date_time_format : String?
 
     def initialize(
       @type : String,
@@ -17,6 +20,9 @@ module TelegramBot
       @url = nil,
       @user = nil,
       @language : String? = nil,
+      @custom_emoji_id = nil,
+      @unix_time = nil,
+      @date_time_format = nil,
     )
     end
   end

@@ -9,8 +9,8 @@ module TelegramBot
     property animation : Animation?
     property audio : Audio?
     property document : Document?
-    property live_photo : JSON::Any?
-    property paid_media : JSON::Any?
+    property live_photo : LivePhoto?
+    property paid_media : PaidMediaInfo?
     property photo : Array(PhotoSize)?
     property sticker : Sticker?
     property story : JSON::Any?

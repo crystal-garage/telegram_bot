@@ -270,27 +270,27 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 9: Payments, Stars, Gifts, Paid Media
 
-- [ ] Add modern payment fields:
-  - [ ] `RefundedPayment`
-  - [ ] `RevenueWithdrawalState`
-  - [ ] `TransactionPartner`
-  - [ ] `StarTransaction`
-  - [ ] `StarTransactions`
-  - [ ] `StarAmount`
-- [ ] Add paid media types:
-  - [ ] `PaidMediaInfo`
-  - [ ] `PaidMediaPreview`
-  - [ ] `PaidMediaPhoto`
-  - [ ] `PaidMediaVideo`
-  - [ ] `PaidMediaLivePhoto`
-  - [ ] `InputPaidMediaPhoto`
-  - [ ] `InputPaidMediaVideo`
-  - [ ] `InputPaidMediaLivePhoto`
-- [ ] Add paid media methods:
-  - [ ] `send_paid_media`
-  - [ ] `get_star_transactions`
-  - [ ] `refund_star_payment`
-  - [ ] `edit_user_star_subscription`
+- [x] Add modern payment fields:
+  - [x] `RefundedPayment`
+  - [x] `RevenueWithdrawalState`
+  - [x] `TransactionPartner`
+  - [x] `StarTransaction`
+  - [x] `StarTransactions`
+  - [x] `StarAmount`
+- [x] Add paid media types:
+  - [x] `PaidMediaInfo`
+  - [x] `PaidMediaPreview`
+  - [x] `PaidMediaPhoto`
+  - [x] `PaidMediaVideo`
+  - [x] `PaidMediaLivePhoto`
+  - [x] `InputPaidMediaPhoto`
+  - [x] `InputPaidMediaVideo`
+  - [x] `InputPaidMediaLivePhoto`
+- [x] Add paid media methods:
+  - [x] `send_paid_media`
+  - [x] `get_star_transactions`
+  - [x] `refund_star_payment`
+  - [x] `edit_user_star_subscription`
 - [ ] Add gift types and methods if needed by downstream users.
 
 ## Phase 10: Business, Guest, And Managed Bot Support

@@ -23,6 +23,8 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMessageReaction",
     "deleteMessageReaction",
     "deleteAllMessageReactions",
+    "refundStarPayment",
+    "editUserStarSubscription",
     "editForumTopic",
     "closeForumTopic",
     "reopenForumTopic",
@@ -56,6 +58,9 @@ class RequestBuildingBot < TelegramBot::Bot
     "revokeChatInviteLink"             => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":true}),
     "getForumTopicIconStickers"        => %([{"file_id":"sticker-id","width":512,"height":512}]),
     "createForumTopic"                 => %({"message_thread_id":42,"name":"Topic","icon_color":7322096,"icon_custom_emoji_id":"emoji-id"}),
+    "sendPaidMedia"                    => %({"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"paid_media":{"star_count":10,"paid_media":[{"type":"preview","width":320,"height":240}]}}),
+    "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),
+    "getStarTransactions"              => %({"transactions":[{"id":"tx-id","amount":10,"date":1800000000,"source":{"type":"user","transaction_type":"paid_media_payment","user":{"id":1,"is_bot":false,"first_name":"User"},"paid_media_payload":"payload","paid_media":[{"type":"preview","width":320}]}}]}),
   }
 
   def initialize
@@ -280,6 +285,70 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("sendDice")
     bot.last_params["emoji"].should eq("🎲")
     bot.last_params["protect_content"].should eq("true")
+  end
+
+  it "builds sendPaidMedia and Star payment methods" do
+    bot = RequestBuildingBot.new
+    media = [
+      TelegramBot::InputPaidMediaPhoto.new("photo-id"),
+      TelegramBot::InputPaidMediaVideo.new("video-id", thumbnail: "thumb-id", supports_streaming: true),
+    ] of TelegramBot::InputPaidMedia
+
+    message = bot.send_paid_media(
+      123,
+      10,
+      media,
+      payload: "payload",
+      caption: "caption",
+      show_caption_above_media: true,
+      protect_content: true
+    )
+
+    message.try(&.paid_media.try(&.star_count)).should eq(10)
+    bot.last_method.should eq("sendPaidMedia")
+    bot.last_params["star_count"].should eq("10")
+    bot.param("media").should contain("InputPaidMediaPhoto")
+    bot.last_params["payload"].should eq("payload")
+    bot.last_params["show_caption_above_media"].should eq("true")
+
+    params = bot.serialize_for_spec({"media" => media})
+    JSON.parse(params["media"].as(String)).should eq(JSON.parse(<<-JSON))
+      [
+        {"type": "photo", "media": "photo-id"},
+        {
+          "type": "video",
+          "media": "video-id",
+          "thumbnail": "thumb-id",
+          "supports_streaming": true
+        }
+      ]
+      JSON
+
+    balance = bot.get_my_star_balance
+
+    balance.amount.should eq(100)
+    balance.nanostar_amount.should eq(500)
+    bot.last_method.should eq("getMyStarBalance")
+    bot.last_force_http.should be_true
+
+    transactions = bot.get_star_transactions(offset: 1, limit: 10)
+
+    transactions.transactions.first.id.should eq("tx-id")
+    transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
+    bot.last_method.should eq("getStarTransactions")
+    bot.last_force_http.should be_true
+    bot.last_params["offset"].should eq("1")
+    bot.last_params["limit"].should eq("10")
+
+    bot.refund_star_payment(1, "charge-id").should be_true
+    bot.last_method.should eq("refundStarPayment")
+    bot.last_force_http.should be_true
+    bot.last_params["telegram_payment_charge_id"].should eq("charge-id")
+
+    bot.edit_user_star_subscription(1, "charge-id", true).should be_true
+    bot.last_method.should eq("editUserStarSubscription")
+    bot.last_force_http.should be_true
+    bot.last_params["is_canceled"].should eq("true")
   end
 
   it "builds sendMessageDraft" do

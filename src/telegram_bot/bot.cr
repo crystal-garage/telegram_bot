@@ -707,6 +707,27 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
+    def send_paid_media(chat_id : Int | String,
+                        star_count : Int,
+                        media : Array(InputPaidMedia),
+                        business_connection_id : String? = nil,
+                        message_thread_id : Int32? = nil,
+                        direct_messages_topic_id : Int64? = nil,
+                        payload : String? = nil,
+                        caption : String? = nil,
+                        parse_mode : String? = nil,
+                        caption_entities : Array(MessageEntity)? = nil,
+                        show_caption_above_media : Bool? = nil,
+                        disable_notification : Bool? = nil,
+                        protect_content : Bool? = nil,
+                        allow_paid_broadcast : Bool? = nil,
+                        suggested_post_parameters : SuggestedPostParameters? = nil,
+                        reply_parameters : ReplyParameters? = nil,
+                        reply_markup : ReplyMarkup = nil) : Message?
+      res = def_request "sendPaidMedia", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, star_count, media, payload, caption, parse_mode, caption_entities, show_caption_above_media, disable_notification, protect_content, allow_paid_broadcast, suggested_post_parameters, reply_parameters, reply_markup
+      Message.from_json res.to_json if res
+    end
+
     def send_media_group(chat_id : Int | String,
                          media : Array(InputMedia),
                          disable_notification : Bool? = nil,
@@ -1405,6 +1426,30 @@ module TelegramBot
                                   ok : Bool,
                                   error_message : String? = nil) : Bool | Message?
       res = def_request "answerPreCheckoutQuery", pre_checkout_query_id, ok, error_message
+      res.as_bool if res
+    end
+
+    def get_my_star_balance : StarAmount
+      res = request "getMyStarBalance", force_http: true
+      StarAmount.from_json(res.to_json)
+    end
+
+    def get_star_transactions(offset : Int32? = nil,
+                              limit : Int32? = nil) : StarTransactions
+      res = def_force_request "getStarTransactions", offset, limit
+      StarTransactions.from_json(res.to_json)
+    end
+
+    def refund_star_payment(user_id : Int,
+                            telegram_payment_charge_id : String)
+      res = def_force_request "refundStarPayment", user_id, telegram_payment_charge_id
+      res.as_bool if res
+    end
+
+    def edit_user_star_subscription(user_id : Int,
+                                    telegram_payment_charge_id : String,
+                                    is_canceled : Bool)
+      res = def_force_request "editUserStarSubscription", user_id, telegram_payment_charge_id, is_canceled
       res.as_bool if res
     end
 

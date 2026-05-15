@@ -194,3 +194,81 @@ describe TelegramBot::ChatMember do
     update.invite_link.try(&.invite_link).should eq("https://t.me/+invite")
   end
 end
+
+describe TelegramBot::PaidMediaInfo do
+  it "parses paid media, live photos, and refunded payments" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 1,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "live_photo": {
+          "file_id": "live-video-id",
+          "file_unique_id": "live-video-unique-id",
+          "width": 320,
+          "height": 240,
+          "duration": 3,
+          "photo": [
+            {"file_id": "photo-id", "file_unique_id": "photo-unique-id", "width": 320, "height": 240}
+          ]
+        },
+        "paid_media": {
+          "star_count": 10,
+          "paid_media": [
+            {"type": "preview", "width": 320, "height": 240, "duration": 3},
+            {
+              "type": "photo",
+              "photo": [
+                {"file_id": "photo-id", "file_unique_id": "photo-unique-id", "width": 320, "height": 240}
+              ]
+            }
+          ]
+        },
+        "successful_payment": {
+          "currency": "XTR",
+          "total_amount": 10,
+          "invoice_payload": "invoice-payload",
+          "subscription_expiration_date": 1800000000,
+          "is_recurring": true,
+          "is_first_recurring": true,
+          "telegram_payment_charge_id": "telegram-charge-id",
+          "provider_payment_charge_id": "provider-charge-id"
+        },
+        "refunded_payment": {
+          "currency": "XTR",
+          "total_amount": 10,
+          "invoice_payload": "invoice-payload",
+          "telegram_payment_charge_id": "telegram-charge-id"
+        }
+      }
+      JSON
+    transactions = TelegramBot::StarTransactions.from_json(<<-JSON)
+      {
+        "transactions": [
+          {
+            "id": "tx-id",
+            "amount": 10,
+            "date": 1800000000,
+            "source": {
+              "type": "user",
+              "transaction_type": "paid_media_payment",
+              "user": {"id": 1, "is_bot": false, "first_name": "User"},
+              "paid_media_payload": "payload",
+              "paid_media": [{"type": "preview", "width": 320}]
+            }
+          }
+        ]
+      }
+      JSON
+
+    message.live_photo.try(&.file_id).should eq("live-video-id")
+    message.paid_media.try(&.star_count).should eq(10)
+    message.paid_media.try(&.paid_media.first.type).should eq("preview")
+    message.paid_media.try(&.paid_media.last.photo.try(&.first.file_id)).should eq("photo-id")
+    message.successful_payment.try(&.subscription_expiration_date).should eq(1_800_000_000)
+    message.successful_payment.try(&.is_recurring?).should be_true
+    message.refunded_payment.try(&.telegram_payment_charge_id).should eq("telegram-charge-id")
+    transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
+    transactions.transactions.first.source.try(&.paid_media.try(&.first.type)).should eq("preview")
+  end
+end

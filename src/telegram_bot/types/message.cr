@@ -42,6 +42,8 @@ module TelegramBot
     property animation : Animation?
     property audio : Audio?
     property document : Document?
+    property live_photo : LivePhoto?
+    property paid_media : PaidMediaInfo?
     property photo : Array(PhotoSize)?
     property sticker : Sticker?
     property video : Video?
@@ -79,6 +81,7 @@ module TelegramBot
     property pinned_message : Message?
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
+    property refunded_payment : RefundedPayment?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

@@ -8,7 +8,7 @@ module TelegramBot
     property mpeg4_width : Int32?
     property mpeg4_height : Int32?
     property mpeg4_duration : Int32?
-    property thumb_url : String
+    property thumbnail_url : String
     property title : String?
     property caption : String?
     property reply_markup : InlineKeyboardMarkup?
@@ -21,7 +21,7 @@ module TelegramBot
       @mpeg4_width = nil,
       @mpeg4_height = nil,
       @mpeg4_duration = nil,
-      @thumb_url = nil,
+      @thumbnail_url = nil,
       @title : String,
       @caption = nil,
       @reply_markup = nil,

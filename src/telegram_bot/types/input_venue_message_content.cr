@@ -6,7 +6,7 @@ module TelegramBot
     property longitude : Float64
     property title : String
     property address : String
-    property forsquare_id : String?
+    property foursquare_id : String?
     property foursquare_type : String?
 
     def initialize(
@@ -15,7 +15,7 @@ module TelegramBot
       @title : String,
       @address : String,
       *,
-      @forsquare_id = nil,
+      @foursquare_id = nil,
       @foursquare_type = nil,
     )
     end

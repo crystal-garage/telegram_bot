@@ -8,8 +8,8 @@ module TelegramBot
     property gif_width : Int32?
     property gif_height : Int32?
     property gif_duration : Int32?
-    property thumb_url : String
-    property thumb_mime_type : String?
+    property thumbnail_url : String
+    property thumbnail_mime_type : String?
     property title : String?
     property caption : String?
     property parse_mode : String?
@@ -23,8 +23,8 @@ module TelegramBot
       @gif_width = nil,
       @gif_height = nil,
       @gif_duration = nil,
-      @thumb_url : String,
-      @thumb_mime_type = nil,
+      @thumbnail_url : String,
+      @thumbnail_mime_type = nil,
       @title = nil,
       @caption = nil,
       @parse_mode = nil,

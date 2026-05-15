@@ -34,7 +34,6 @@ module TelegramBot
     property? can_send_video_notes : Bool?
     property? can_send_voice_notes : Bool?
     property? can_send_polls : Bool?
-    property? can_send_media_messages : Bool?
     property? can_send_other_messages : Bool?
     property? can_add_web_page_previews : Bool?
     property? can_react_to_messages : Bool?

@@ -17,6 +17,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyShortDescription",
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
+    "banChatMember",
     "restrictChatMember",
     "approveChatJoinRequest",
     "declineChatJoinRequest",
@@ -56,6 +57,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyShortDescription"            => %({"short_description":"Short description"}),
     "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
+    "getChatMemberCount"               => %(12),
     "answerWebAppQuery"                => %({"inline_message_id":"inline-id"}),
     "savePreparedInlineMessage"        => %({"id":"prepared-inline-id","expiration_date":1800000000}),
     "savePreparedKeyboardButton"       => %({"id":"prepared-keyboard-id"}),
@@ -811,14 +813,17 @@ describe TelegramBot::Bot do
       can_react_to_messages: true
     )
 
+    bot.ban_chat_member("@group", 123, revoke_messages: true).should be_true
+    bot.last_method.should eq("banChatMember")
+    bot.last_params["revoke_messages"].should eq("true")
+
     bot.restrict_chat_member("@group", 123, permissions: permissions, use_independent_chat_permissions: true)
 
     bot.last_method.should eq("restrictChatMember")
     bot.param("permissions").should contain("ChatPermissions")
     bot.last_params["use_independent_chat_permissions"].should eq("true")
 
-    bot.restrict_chat_member("@group", 123, can_send_media_messages: true)
-    legacy_permissions = TelegramBot::ChatPermissions.new(
+    media_permissions = TelegramBot::ChatPermissions.new(
       can_send_audios: true,
       can_send_documents: true,
       can_send_photos: true,
@@ -826,7 +831,7 @@ describe TelegramBot::Bot do
       can_send_video_notes: true,
       can_send_voice_notes: true
     )
-    params = bot.serialize_for_spec({"permissions" => legacy_permissions})
+    params = bot.serialize_for_spec({"permissions" => media_permissions})
     JSON.parse(params["permissions"].as(String)).should eq(JSON.parse(<<-JSON))
       {
         "can_send_audios": true,
@@ -861,6 +866,9 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("approveChatJoinRequest")
     bot.decline_chat_join_request("@group", 123).should be_true
     bot.last_method.should eq("declineChatJoinRequest")
+
+    bot.get_chat_member_count("@group").should eq(12)
+    bot.last_method.should eq("getChatMemberCount")
 
     JSON.parse(permissions.to_json).should eq(JSON.parse(<<-JSON))
       {

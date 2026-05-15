@@ -5,7 +5,7 @@ module TelegramBot
     property file_id : String
     property width : Int32
     property height : Int32
-    property thumb : PhotoSize?
+    property thumbnail : PhotoSize?
     property emoji : String?
     property set_name : String?
     property mask_position : MaskPosition?

@@ -444,8 +444,18 @@ module TelegramBot
                      disable_web_page_preview : Bool? = nil,
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendMessage", chat_id, text, parse_mode, disable_notification, disable_web_page_preview, reply_to_message_id, reply_markup
+                     reply_markup : ReplyMarkup = nil,
+                     business_connection_id : String? = nil,
+                     message_thread_id : Int32? = nil,
+                     direct_messages_topic_id : Int64? = nil,
+                     entities : Array(MessageEntity)? = nil,
+                     link_preview_options : LinkPreviewOptions? = nil,
+                     protect_content : Bool? = nil,
+                     reply_parameters : ReplyParameters? = nil,
+                     message_effect_id : String? = nil,
+                     allow_paid_broadcast : Bool? = nil,
+                     suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendMessage", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, text, parse_mode, entities, link_preview_options, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, disable_web_page_preview, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -453,9 +463,65 @@ module TelegramBot
       send_message(message.chat.id, text, reply_to_message_id: message.message_id)
     end
 
-    def forward_message(chat_id : Int | String, from_chat_id : Int | String, message_id : Int32, disable_notification : Bool? = nil) : Message?
-      res = def_request "forwardMessage", chat_id, from_chat_id, message_id, disable_notification
+    def forward_message(chat_id : Int | String,
+                        from_chat_id : Int | String,
+                        message_id : Int32,
+                        disable_notification : Bool? = nil,
+                        message_thread_id : Int32? = nil,
+                        direct_messages_topic_id : Int64? = nil,
+                        video_start_timestamp : Int32? = nil,
+                        protect_content : Bool? = nil,
+                        message_effect_id : String? = nil,
+                        suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "forwardMessage", chat_id, message_thread_id, direct_messages_topic_id, from_chat_id, video_start_timestamp, disable_notification, protect_content, message_effect_id, suggested_post_parameters, message_id
       Message.from_json res.to_json if res
+    end
+
+    def forward_messages(chat_id : Int | String,
+                         from_chat_id : Int | String,
+                         message_ids : Array(Int32),
+                         disable_notification : Bool? = nil,
+                         message_thread_id : Int32? = nil,
+                         direct_messages_topic_id : Int64? = nil,
+                         protect_content : Bool? = nil) : Array(MessageId)
+      res = def_request "forwardMessages", chat_id, message_thread_id, direct_messages_topic_id, from_chat_id, message_ids, disable_notification, protect_content
+      res = res.not_nil!.as_a
+      res.map { |message_id| MessageId.from_json(message_id.to_json) }
+    end
+
+    def copy_message(chat_id : Int | String,
+                     from_chat_id : Int | String,
+                     message_id : Int32,
+                     caption : String? = nil,
+                     parse_mode : String? = nil,
+                     caption_entities : Array(MessageEntity)? = nil,
+                     disable_notification : Bool? = nil,
+                     reply_to_message_id : Int32? = nil,
+                     reply_markup : ReplyMarkup = nil,
+                     message_thread_id : Int32? = nil,
+                     direct_messages_topic_id : Int64? = nil,
+                     video_start_timestamp : Int32? = nil,
+                     show_caption_above_media : Bool? = nil,
+                     protect_content : Bool? = nil,
+                     allow_paid_broadcast : Bool? = nil,
+                     message_effect_id : String? = nil,
+                     suggested_post_parameters : SuggestedPostParameters? = nil,
+                     reply_parameters : ReplyParameters? = nil) : MessageId?
+      res = def_request "copyMessage", chat_id, message_thread_id, direct_messages_topic_id, from_chat_id, message_id, video_start_timestamp, caption, parse_mode, caption_entities, show_caption_above_media, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
+      MessageId.from_json res.to_json if res
+    end
+
+    def copy_messages(chat_id : Int | String,
+                      from_chat_id : Int | String,
+                      message_ids : Array(Int32),
+                      disable_notification : Bool? = nil,
+                      message_thread_id : Int32? = nil,
+                      direct_messages_topic_id : Int64? = nil,
+                      remove_caption : Bool? = nil,
+                      protect_content : Bool? = nil) : Array(MessageId)
+      res = def_request "copyMessages", chat_id, message_thread_id, direct_messages_topic_id, from_chat_id, message_ids, disable_notification, protect_content, remove_caption
+      res = res.not_nil!.as_a
+      res.map { |message_id| MessageId.from_json(message_id.to_json) }
     end
 
     # @photo file or file id
@@ -464,8 +530,20 @@ module TelegramBot
                    caption : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendPhoto", chat_id, photo, caption, disable_notification, reply_to_message_id, reply_markup
+                   reply_markup : ReplyMarkup = nil,
+                   business_connection_id : String? = nil,
+                   message_thread_id : Int32? = nil,
+                   direct_messages_topic_id : Int64? = nil,
+                   parse_mode : String? = nil,
+                   caption_entities : Array(MessageEntity)? = nil,
+                   show_caption_above_media : Bool? = nil,
+                   has_spoiler : Bool? = nil,
+                   protect_content : Bool? = nil,
+                   reply_parameters : ReplyParameters? = nil,
+                   message_effect_id : String? = nil,
+                   allow_paid_broadcast : Bool? = nil,
+                   suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendPhoto", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, photo, caption, parse_mode, caption_entities, show_caption_above_media, has_spoiler, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -476,8 +554,20 @@ module TelegramBot
                    title : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendAudio", chat_id, audio, duration, performer, title, disable_notification, reply_to_message_id, reply_markup
+                   reply_markup : ReplyMarkup = nil,
+                   business_connection_id : String? = nil,
+                   message_thread_id : Int32? = nil,
+                   direct_messages_topic_id : Int64? = nil,
+                   thumbnail : ::File | String | Nil = nil,
+                   caption : String? = nil,
+                   parse_mode : String? = nil,
+                   caption_entities : Array(MessageEntity)? = nil,
+                   protect_content : Bool? = nil,
+                   reply_parameters : ReplyParameters? = nil,
+                   message_effect_id : String? = nil,
+                   allow_paid_broadcast : Bool? = nil,
+                   suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendAudio", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, audio, caption, parse_mode, caption_entities, duration, performer, title, thumbnail, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -486,8 +576,20 @@ module TelegramBot
                       caption : String? = nil,
                       disable_notification : Bool? = nil,
                       reply_to_message_id : Int32? = nil,
-                      reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendDocument", chat_id, document, caption, disable_notification, reply_to_message_id, reply_markup
+                      reply_markup : ReplyMarkup = nil,
+                      business_connection_id : String? = nil,
+                      message_thread_id : Int32? = nil,
+                      direct_messages_topic_id : Int64? = nil,
+                      thumbnail : ::File | String | Nil = nil,
+                      parse_mode : String? = nil,
+                      caption_entities : Array(MessageEntity)? = nil,
+                      disable_content_type_detection : Bool? = nil,
+                      protect_content : Bool? = nil,
+                      reply_parameters : ReplyParameters? = nil,
+                      message_effect_id : String? = nil,
+                      allow_paid_broadcast : Bool? = nil,
+                      suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendDocument", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, document, thumbnail, caption, parse_mode, caption_entities, disable_content_type_detection, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -495,8 +597,17 @@ module TelegramBot
                      sticker : ::File | String,
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendSticker", chat_id, sticker, disable_notification, reply_to_message_id, reply_markup
+                     reply_markup : ReplyMarkup = nil,
+                     business_connection_id : String? = nil,
+                     message_thread_id : Int32? = nil,
+                     direct_messages_topic_id : Int64? = nil,
+                     emoji : String? = nil,
+                     protect_content : Bool? = nil,
+                     reply_parameters : ReplyParameters? = nil,
+                     message_effect_id : String? = nil,
+                     allow_paid_broadcast : Bool? = nil,
+                     suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendSticker", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, sticker, emoji, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -508,8 +619,24 @@ module TelegramBot
                    caption : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendVideo", chat_id, video, duration, width, height, disable_notification, caption, reply_to_message_id, reply_markup
+                   reply_markup : ReplyMarkup = nil,
+                   business_connection_id : String? = nil,
+                   message_thread_id : Int32? = nil,
+                   direct_messages_topic_id : Int64? = nil,
+                   thumbnail : ::File | String | Nil = nil,
+                   cover : ::File | String | Nil = nil,
+                   start_timestamp : Int32? = nil,
+                   parse_mode : String? = nil,
+                   caption_entities : Array(MessageEntity)? = nil,
+                   show_caption_above_media : Bool? = nil,
+                   has_spoiler : Bool? = nil,
+                   supports_streaming : Bool? = nil,
+                   protect_content : Bool? = nil,
+                   reply_parameters : ReplyParameters? = nil,
+                   message_effect_id : String? = nil,
+                   allow_paid_broadcast : Bool? = nil,
+                   suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendVideo", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, video, duration, width, height, thumbnail, cover, start_timestamp, caption, parse_mode, caption_entities, show_caption_above_media, has_spoiler, supports_streaming, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -521,8 +648,21 @@ module TelegramBot
                        caption : String? = nil,
                        disable_notification : Bool? = nil,
                        reply_to_message_id : Int32? = nil,
-                       reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendAnimation", chat_id, animation, duration, width, height, caption, disable_notification, reply_to_message_id, reply_markup
+                       reply_markup : ReplyMarkup = nil,
+                       business_connection_id : String? = nil,
+                       message_thread_id : Int32? = nil,
+                       direct_messages_topic_id : Int64? = nil,
+                       thumbnail : ::File | String | Nil = nil,
+                       parse_mode : String? = nil,
+                       caption_entities : Array(MessageEntity)? = nil,
+                       show_caption_above_media : Bool? = nil,
+                       has_spoiler : Bool? = nil,
+                       protect_content : Bool? = nil,
+                       reply_parameters : ReplyParameters? = nil,
+                       message_effect_id : String? = nil,
+                       allow_paid_broadcast : Bool? = nil,
+                       suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendAnimation", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, animation, duration, width, height, thumbnail, caption, parse_mode, caption_entities, show_caption_above_media, has_spoiler, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -531,8 +671,19 @@ module TelegramBot
                    duration : Int32? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendVoice", chat_id, voice, duration, disable_notification, reply_to_message_id, reply_markup
+                   reply_markup : ReplyMarkup = nil,
+                   business_connection_id : String? = nil,
+                   message_thread_id : Int32? = nil,
+                   direct_messages_topic_id : Int64? = nil,
+                   caption : String? = nil,
+                   parse_mode : String? = nil,
+                   caption_entities : Array(MessageEntity)? = nil,
+                   protect_content : Bool? = nil,
+                   reply_parameters : ReplyParameters? = nil,
+                   message_effect_id : String? = nil,
+                   allow_paid_broadcast : Bool? = nil,
+                   suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendVoice", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, voice, caption, parse_mode, caption_entities, duration, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -542,17 +693,35 @@ module TelegramBot
                         length : Int32? = nil,
                         disable_notification : Bool? = nil,
                         reply_to_message_id : Int32? = nil,
-                        reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendVideoNote", chat_id, video_note, duration, length, disable_notification, reply_to_message_id, reply_markup
+                        reply_markup : ReplyMarkup = nil,
+                        business_connection_id : String? = nil,
+                        message_thread_id : Int32? = nil,
+                        direct_messages_topic_id : Int64? = nil,
+                        thumbnail : ::File | String | Nil = nil,
+                        protect_content : Bool? = nil,
+                        reply_parameters : ReplyParameters? = nil,
+                        message_effect_id : String? = nil,
+                        allow_paid_broadcast : Bool? = nil,
+                        suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendVideoNote", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, video_note, duration, length, thumbnail, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
     def send_media_group(chat_id : Int | String,
                          media : Array(InputMedia),
                          disable_notification : Bool? = nil,
-                         reply_to_message_id : Int32? = nil) : Message?
-      res = def_request "sendMediaGroup", chat_id, media, disable_notification, reply_to_message_id
-      Message.from_json res.to_json if res
+                         reply_to_message_id : Int32? = nil,
+                         business_connection_id : String? = nil,
+                         message_thread_id : Int32? = nil,
+                         direct_messages_topic_id : Int64? = nil,
+                         protect_content : Bool? = nil,
+                         reply_parameters : ReplyParameters? = nil,
+                         message_effect_id : String? = nil,
+                         allow_paid_broadcast : Bool? = nil,
+                         suggested_post_parameters : SuggestedPostParameters? = nil) : Array(Message)
+      res = def_request "sendMediaGroup", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, media, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id
+      res = res.not_nil!.as_a
+      res.map { |message| Message.from_json(message.to_json) }
     end
 
     def send_location(chat_id : Int | String,
@@ -561,8 +730,19 @@ module TelegramBot
                       live_period : Int32? = nil,
                       disable_notification : Bool? = nil,
                       reply_to_message_id : Int32? = nil,
-                      reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendLocation", chat_id, latitude, longitude, live_period, disable_notification, reply_to_message_id, reply_markup
+                      reply_markup : ReplyMarkup = nil,
+                      business_connection_id : String? = nil,
+                      message_thread_id : Int32? = nil,
+                      direct_messages_topic_id : Int64? = nil,
+                      horizontal_accuracy : Float? = nil,
+                      heading : Int32? = nil,
+                      proximity_alert_radius : Int32? = nil,
+                      protect_content : Bool? = nil,
+                      reply_parameters : ReplyParameters? = nil,
+                      message_effect_id : String? = nil,
+                      allow_paid_broadcast : Bool? = nil,
+                      suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendLocation", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, latitude, longitude, horizontal_accuracy, live_period, heading, proximity_alert_radius, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -604,8 +784,19 @@ module TelegramBot
                    forsquare_id : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup? = nil) : Message?
-      res = def_request "sendVenue", chat_id, latitude, longitude, title, address, forsquare_id, disable_notification, reply_to_message_id, reply_markup
+                   reply_markup : ReplyMarkup? = nil,
+                   business_connection_id : String? = nil,
+                   message_thread_id : Int32? = nil,
+                   direct_messages_topic_id : Int64? = nil,
+                   foursquare_type : String? = nil,
+                   google_place_id : String? = nil,
+                   google_place_type : String? = nil,
+                   protect_content : Bool? = nil,
+                   reply_parameters : ReplyParameters? = nil,
+                   message_effect_id : String? = nil,
+                   allow_paid_broadcast : Bool? = nil,
+                   suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendVenue", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, latitude, longitude, title, address, forsquare_id, foursquare_type, google_place_id, google_place_type, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
 
@@ -615,9 +806,82 @@ module TelegramBot
                      last_name : String? = nil,
                      reply_to_message_id : Int32? = nil,
                      reply_markup : ReplyMarkup = nil,
-                     disable_notification : Bool? = nil) : Message?
-      res = def_request "sendContact", chat_id, phone_number, first_name, last_name, disable_notification, reply_to_message_id, reply_markup
+                     disable_notification : Bool? = nil,
+                     business_connection_id : String? = nil,
+                     message_thread_id : Int32? = nil,
+                     direct_messages_topic_id : Int64? = nil,
+                     vcard : String? = nil,
+                     protect_content : Bool? = nil,
+                     reply_parameters : ReplyParameters? = nil,
+                     message_effect_id : String? = nil,
+                     allow_paid_broadcast : Bool? = nil,
+                     suggested_post_parameters : SuggestedPostParameters? = nil) : Message?
+      res = def_request "sendContact", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, phone_number, first_name, last_name, vcard, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
+    end
+
+    def send_poll(chat_id : Int | String,
+                  question : String,
+                  options : Array(InputPollOption) | Array(String),
+                  business_connection_id : String? = nil,
+                  message_thread_id : Int32? = nil,
+                  question_parse_mode : String? = nil,
+                  question_entities : Array(MessageEntity)? = nil,
+                  is_anonymous : Bool? = nil,
+                  type : String? = nil,
+                  allows_multiple_answers : Bool? = nil,
+                  allows_revoting : Bool? = nil,
+                  shuffle_options : Bool? = nil,
+                  allow_adding_options : Bool? = nil,
+                  hide_results_until_closes : Bool? = nil,
+                  members_only : Bool? = nil,
+                  country_codes : Array(String)? = nil,
+                  correct_option_ids : Array(Int32)? = nil,
+                  explanation : String? = nil,
+                  explanation_parse_mode : String? = nil,
+                  explanation_entities : Array(MessageEntity)? = nil,
+                  explanation_media : InputPollMedia? = nil,
+                  open_period : Int32? = nil,
+                  close_date : Int32? = nil,
+                  is_closed : Bool? = nil,
+                  description : String? = nil,
+                  description_parse_mode : String? = nil,
+                  description_entities : Array(MessageEntity)? = nil,
+                  media : InputPollMedia? = nil,
+                  disable_notification : Bool? = nil,
+                  protect_content : Bool? = nil,
+                  allow_paid_broadcast : Bool? = nil,
+                  message_effect_id : String? = nil,
+                  reply_parameters : ReplyParameters? = nil,
+                  reply_markup : ReplyMarkup = nil) : Message?
+      res = def_request "sendPoll", business_connection_id, chat_id, message_thread_id, question, question_parse_mode, question_entities, options, is_anonymous, type, allows_multiple_answers, allows_revoting, shuffle_options, allow_adding_options, hide_results_until_closes, members_only, country_codes, correct_option_ids, explanation, explanation_parse_mode, explanation_entities, explanation_media, open_period, close_date, is_closed, description, description_parse_mode, description_entities, media, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, reply_parameters, reply_markup
+      Message.from_json res.to_json if res
+    end
+
+    def send_dice(chat_id : Int | String,
+                  emoji : String? = nil,
+                  business_connection_id : String? = nil,
+                  message_thread_id : Int32? = nil,
+                  direct_messages_topic_id : Int64? = nil,
+                  disable_notification : Bool? = nil,
+                  protect_content : Bool? = nil,
+                  allow_paid_broadcast : Bool? = nil,
+                  message_effect_id : String? = nil,
+                  suggested_post_parameters : SuggestedPostParameters? = nil,
+                  reply_parameters : ReplyParameters? = nil,
+                  reply_markup : ReplyMarkup = nil) : Message?
+      res = def_request "sendDice", business_connection_id, chat_id, message_thread_id, direct_messages_topic_id, emoji, disable_notification, protect_content, allow_paid_broadcast, message_effect_id, suggested_post_parameters, reply_parameters, reply_markup
+      Message.from_json res.to_json if res
+    end
+
+    def send_message_draft(chat_id : Int,
+                           draft_id : Int,
+                           text : String? = nil,
+                           message_thread_id : Int32? = nil,
+                           parse_mode : String? = nil,
+                           entities : Array(MessageEntity)? = nil) : Bool?
+      res = def_force_request "sendMessageDraft", chat_id, message_thread_id, draft_id, text, parse_mode, entities
+      res.as_bool if res
     end
 
     def send_chat_action(chat_id : Int | String,

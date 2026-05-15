@@ -25,6 +25,8 @@ class RequestBuildingBot < TelegramBot::Bot
     "deleteAllMessageReactions",
     "refundStarPayment",
     "editUserStarSubscription",
+    "sendGift",
+    "giftPremiumSubscription",
     "editForumTopic",
     "closeForumTopic",
     "reopenForumTopic",
@@ -61,6 +63,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "sendPaidMedia"                    => %({"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"paid_media":{"star_count":10,"paid_media":[{"type":"preview","width":320,"height":240}]}}),
     "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),
     "getStarTransactions"              => %({"transactions":[{"id":"tx-id","amount":10,"date":1800000000,"source":{"type":"user","transaction_type":"paid_media_payment","user":{"id":1,"is_bot":false,"first_name":"User"},"paid_media_payload":"payload","paid_media":[{"type":"preview","width":320}]}}]}),
+    "getAvailableGifts"                => %({"gifts":[{"id":"gift-id","sticker":{"file_id":"sticker-id","width":512,"height":512},"star_count":100,"upgrade_star_count":25}]}),
   }
 
   def initialize
@@ -349,6 +352,30 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("editUserStarSubscription")
     bot.last_force_http.should be_true
     bot.last_params["is_canceled"].should eq("true")
+
+    gifts = bot.get_available_gifts
+
+    gifts.gifts.first.id.should eq("gift-id")
+    gifts.gifts.first.star_count.should eq(100)
+    bot.last_method.should eq("getAvailableGifts")
+    bot.last_force_http.should be_true
+
+    entities = [TelegramBot::MessageEntity.new("bold", 0, 4)]
+    bot.send_gift("gift-id", user_id: 1, pay_for_upgrade: true, text: "gift", text_entities: entities).should be_true
+
+    bot.last_method.should eq("sendGift")
+    bot.last_force_http.should be_true
+    bot.last_params["gift_id"].should eq("gift-id")
+    bot.last_params["user_id"].should eq("1")
+    bot.last_params["pay_for_upgrade"].should eq("true")
+    bot.param("text_entities").should contain("MessageEntity")
+
+    bot.gift_premium_subscription(1, 3, 1000, text: "premium").should be_true
+
+    bot.last_method.should eq("giftPremiumSubscription")
+    bot.last_force_http.should be_true
+    bot.last_params["month_count"].should eq("3")
+    bot.last_params["star_count"].should eq("1000")
   end
 
   it "builds sendMessageDraft" do

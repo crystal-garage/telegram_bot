@@ -272,3 +272,98 @@ describe TelegramBot::PaidMediaInfo do
     transactions.transactions.first.source.try(&.paid_media.try(&.first.type)).should eq("preview")
   end
 end
+
+describe TelegramBot::Gift do
+  it "parses gifts and gift message fields" do
+    gifts = TelegramBot::Gifts.from_json(<<-JSON)
+      {
+        "gifts": [
+          {
+            "id": "gift-id",
+            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "star_count": 100,
+            "upgrade_star_count": 25,
+            "background": {
+              "center_color": 16777215,
+              "edge_color": 0,
+              "text_color": 255
+            }
+          }
+        ]
+      }
+      JSON
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 1,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "gift": {
+          "gift": {
+            "id": "gift-id",
+            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "star_count": 100
+          },
+          "owned_gift_id": "owned-gift-id",
+          "can_be_upgraded": true,
+          "text": "Thanks"
+        },
+        "unique_gift": {
+          "origin": "upgrade",
+          "gift": {
+            "gift_id": "gift-id",
+            "base_name": "Gift",
+            "name": "Gift #1",
+            "number": 1,
+            "model": {
+              "name": "Model",
+              "sticker": {"file_id": "model-sticker-id", "width": 512, "height": 512},
+              "rarity_per_mille": 100
+            },
+            "symbol": {
+              "name": "Symbol",
+              "sticker": {"file_id": "symbol-sticker-id", "width": 512, "height": 512},
+              "rarity_per_mille": 100
+            },
+            "backdrop": {
+              "name": "Backdrop",
+              "colors": {
+                "center_color": 1,
+                "edge_color": 2,
+                "symbol_color": 3,
+                "text_color": 4
+              },
+              "rarity_per_mille": 100
+            }
+          }
+        },
+        "gift_upgrade_sent": {
+          "gift": {
+            "id": "gift-id",
+            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "star_count": 100
+          }
+        }
+      }
+      JSON
+    transaction = TelegramBot::TransactionPartner.from_json(<<-JSON)
+      {
+        "type": "user",
+        "transaction_type": "gift_purchase",
+        "user": {"id": 1, "is_bot": false, "first_name": "User"},
+        "gift": {
+          "id": "gift-id",
+          "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+          "star_count": 100
+        }
+      }
+      JSON
+
+    gifts.gifts.first.id.should eq("gift-id")
+    gifts.gifts.first.background.try(&.text_color).should eq(255)
+    message.gift.try(&.owned_gift_id).should eq("owned-gift-id")
+    message.gift.try(&.can_be_upgraded?).should be_true
+    message.unique_gift.try(&.gift.name).should eq("Gift #1")
+    message.gift_upgrade_sent.try(&.gift.id).should eq("gift-id")
+    transaction.gift.try(&.star_count).should eq(100)
+  end
+end

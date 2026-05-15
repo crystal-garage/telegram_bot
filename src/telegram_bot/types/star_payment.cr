@@ -46,7 +46,7 @@ module TelegramBot
     property subscription_period : Int32?
     property paid_media : Array(PaidMedia)?
     property paid_media_payload : String?
-    property gift : JSON::Any?
+    property gift : Gift?
     property premium_subscription_duration : Int32?
     property sponsor_user : User?
     property commission_per_mille : Int32?

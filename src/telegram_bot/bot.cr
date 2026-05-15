@@ -1344,6 +1344,32 @@ module TelegramBot
       WebhookInfo.from_json(res.to_json)
     end
 
+    def get_available_gifts : Gifts
+      res = request "getAvailableGifts", force_http: true
+      Gifts.from_json(res.to_json)
+    end
+
+    def send_gift(gift_id : String,
+                  user_id : Int? = nil,
+                  chat_id : Int | String? = nil,
+                  pay_for_upgrade : Bool? = nil,
+                  text : String? = nil,
+                  text_parse_mode : String? = nil,
+                  text_entities : Array(MessageEntity)? = nil)
+      res = def_force_request "sendGift", user_id, chat_id, gift_id, pay_for_upgrade, text, text_parse_mode, text_entities
+      res.as_bool if res
+    end
+
+    def gift_premium_subscription(user_id : Int,
+                                  month_count : Int,
+                                  star_count : Int,
+                                  text : String? = nil,
+                                  text_parse_mode : String? = nil,
+                                  text_entities : Array(MessageEntity)? = nil)
+      res = def_force_request "giftPremiumSubscription", user_id, month_count, star_count, text, text_parse_mode, text_entities
+      res.as_bool if res
+    end
+
     #
     # Games
     #

@@ -82,6 +82,9 @@ module TelegramBot
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
     property refunded_payment : RefundedPayment?
+    property gift : GiftInfo?
+    property unique_gift : UniqueGiftInfo?
+    property gift_upgrade_sent : GiftInfo?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

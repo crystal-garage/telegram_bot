@@ -296,7 +296,7 @@ types, while unimplemented items are intentionally left out of the public API.
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,
   `set_game_score`, `get_game_high_scores`, `get_file`, `download`,
   `set_webhook`, `delete_webhook`, `get_webhook_info`, `serve`
-- Chat basics: `kick_chat_member`, `unban_chat_member`,
+- Chat basics: `ban_chat_member`, `unban_chat_member`,
   `restrict_chat_member`, `promote_chat_member`, `export_chat_invite_link`,
   `create_chat_invite_link`, `edit_chat_invite_link`,
   `create_chat_subscription_invite_link`,
@@ -305,7 +305,7 @@ types, while unimplemented items are intentionally left out of the public API.
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
   `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
   `get_chat`, `leave_chat`, `get_chat_administrators`, `get_chat_member`,
-  `get_chat_members_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
+  `get_chat_member_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
 - Forum and reactions: `get_forum_topic_icon_stickers`,
   `create_forum_topic`, `edit_forum_topic`, `close_forum_topic`,
   `reopen_forum_topic`, `delete_forum_topic`,
@@ -428,13 +428,6 @@ Request parameters that are arrays or `JSON::Serializable` objects are
 JSON-serialized before they are sent to Telegram. This includes inline query
 results, command arrays, media arrays, reply markup, `ReplyParameters`, and
 `LinkPreviewOptions`.
-
-Deprecated Telegram aliases are kept where they already existed in the shard.
-For example, `reply_to_message_id` remains on sending methods for backward
-compatibility, while new code should prefer `reply_parameters` because it maps
-to Telegram's modern API and supports quote, checklist task, and poll option
-replies. When both old and new reply arguments are supplied, Telegram receives
-both parameters; callers should normally choose one.
 
 Some modern update types are parsed and dispatched before all related Bot API
 methods are implemented. For example, `chat_join_request` updates can be

@@ -55,6 +55,7 @@ module TelegramBot
     property dice : Dice?
     property game : Game?
     property poll : Poll?
+    property web_app_data : WebAppData?
     property location : Location?
     property venue : Venue?
     property new_chat_members : Array(User)?

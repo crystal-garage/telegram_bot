@@ -3,14 +3,28 @@ module TelegramBot
     include JSON::Serializable
 
     property text : String
+    property icon_custom_emoji_id : String?
+    property style : String?
+    property request_users : KeyboardButtonRequestUsers?
+    property request_chat : KeyboardButtonRequestChat?
+    property request_managed_bot : KeyboardButtonRequestManagedBot?
     property? request_contact : Bool?
     property? request_location : Bool?
+    property request_poll : KeyboardButtonPollType?
+    property web_app : WebAppInfo?
 
     def initialize(
       @text : String,
       *,
+      @icon_custom_emoji_id : String? = nil,
+      @style : String? = nil,
+      @request_users : KeyboardButtonRequestUsers? = nil,
+      @request_chat : KeyboardButtonRequestChat? = nil,
+      @request_managed_bot : KeyboardButtonRequestManagedBot? = nil,
       @request_contact = nil,
       @request_location = nil,
+      @request_poll : KeyboardButtonPollType? = nil,
+      @web_app : WebAppInfo? = nil,
     )
     end
   end

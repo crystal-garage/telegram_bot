@@ -132,34 +132,34 @@ keeping backward-compatible method signatures where practical.
 ## Phase 5: Common Sending Methods
 
 - [x] Add `send_animation`.
-- [ ] Add `send_poll`.
-- [ ] Add `send_dice`.
-- [ ] Add `copy_message`.
-- [ ] Add `copy_messages`.
-- [ ] Add `forward_messages`.
-- [ ] Add `send_message_draft`.
-- [ ] Add shared modern optional params to sending methods:
-  - [ ] `business_connection_id`
-  - [ ] `message_thread_id`
-  - [ ] `direct_messages_topic_id`
-  - [ ] `parse_mode`
-  - [ ] `entities`
-  - [ ] `caption_entities`
-  - [ ] `link_preview_options`
-  - [ ] `protect_content`
-  - [ ] `disable_notification`
-  - [ ] `reply_parameters`
-  - [ ] `reply_markup`
-  - [ ] `message_effect_id`
-  - [ ] `allow_paid_broadcast`
-  - [ ] `suggested_post_parameters`
-- [ ] Add media-specific modern params where applicable:
-  - [ ] `thumbnail`
-  - [ ] `cover`
-  - [ ] `start_timestamp`
-  - [ ] `has_spoiler`
-  - [ ] `show_caption_above_media`
-  - [ ] `supports_streaming`
+- [x] Add `send_poll`.
+- [x] Add `send_dice`.
+- [x] Add `copy_message`.
+- [x] Add `copy_messages`.
+- [x] Add `forward_messages`.
+- [x] Add `send_message_draft`.
+- [x] Add shared modern optional params to sending methods:
+  - [x] `business_connection_id`
+  - [x] `message_thread_id`
+  - [x] `direct_messages_topic_id`
+  - [x] `parse_mode`
+  - [x] `entities`
+  - [x] `caption_entities`
+  - [x] `link_preview_options`
+  - [x] `protect_content`
+  - [x] `disable_notification`
+  - [x] `reply_parameters`
+  - [x] `reply_markup`
+  - [x] `message_effect_id`
+  - [x] `allow_paid_broadcast`
+  - [x] `suggested_post_parameters`
+- [x] Add media-specific modern params where applicable:
+  - [x] `thumbnail`
+  - [x] `cover`
+  - [x] `start_timestamp`
+  - [x] `has_spoiler`
+  - [x] `show_caption_above_media`
+  - [x] `supports_streaming`
 
 ## Phase 6: Webhook And Bot Metadata Methods
 

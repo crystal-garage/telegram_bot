@@ -21,8 +21,12 @@ class RequestBuildingBot < TelegramBot::Bot
     end
 
     case method
-    when "answerInlineQuery", "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage", "setMyCommands"
+    when "answerInlineQuery", "answerShippingQuery", "answerPreCheckoutQuery", "pinChatMessage", "unpinChatMessage", "sendMessageDraft", "setMyCommands"
       JSON.parse("true")
+    when "copyMessage"
+      JSON.parse(%({"message_id":100}))
+    when "copyMessages", "forwardMessages"
+      JSON.parse(%([{"message_id":100},{"message_id":101}]))
     else
       JSON.parse(%({"message_id":1,"date":0,"chat":{"id":1,"type":"private"}}))
     end
@@ -30,6 +34,14 @@ class RequestBuildingBot < TelegramBot::Bot
 
   def serialize_for_spec(params : Hash)
     serialize_params(params)
+  end
+
+  def param(name : String) : String
+    if value = last_params[name]?
+      value
+    else
+      fail "expected #{name} param"
+    end
   end
 
   def handle(shipping_query : TelegramBot::ShippingQuery)
@@ -115,6 +127,42 @@ describe TelegramBot::Bot do
     bot.last_params["caption"].should eq("caption")
   end
 
+  it "builds sendMessage with modern shared params" do
+    bot = RequestBuildingBot.new
+    reply_parameters = TelegramBot::ReplyParameters.new(42)
+    suggested_post_parameters = TelegramBot::SuggestedPostParameters.new(
+      price: TelegramBot::SuggestedPostPrice.new("XTR", 100_i64),
+      send_date: 1_800_000_000
+    )
+
+    bot.send_message(
+      123,
+      "hello",
+      entities: [TelegramBot::MessageEntity.new("bold", 0, 5)],
+      link_preview_options: TelegramBot::LinkPreviewOptions.new(is_disabled: true),
+      protect_content: true,
+      reply_parameters: reply_parameters,
+      message_effect_id: "effect-id",
+      allow_paid_broadcast: true,
+      suggested_post_parameters: suggested_post_parameters,
+      business_connection_id: "business-id",
+      message_thread_id: 10,
+      direct_messages_topic_id: 20_i64
+    )
+
+    bot.last_method.should eq("sendMessage")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["message_thread_id"].should eq("10")
+    bot.last_params["direct_messages_topic_id"].should eq("20")
+    bot.param("entities").should contain("MessageEntity")
+    bot.param("link_preview_options").should contain("LinkPreviewOptions")
+    bot.last_params["protect_content"].should eq("true")
+    bot.param("reply_parameters").should contain("ReplyParameters")
+    bot.last_params["message_effect_id"].should eq("effect-id")
+    bot.last_params["allow_paid_broadcast"].should eq("true")
+    bot.param("suggested_post_parameters").should contain("SuggestedPostParameters")
+  end
+
   it "builds sendAudio with the correct method" do
     bot = RequestBuildingBot.new
     bot.send_audio(123, "audio-id", duration: 10, performer: "performer", title: "title")
@@ -146,6 +194,53 @@ describe TelegramBot::Bot do
     bot.last_params["width"].should eq("320")
     bot.last_params["height"].should eq("240")
     bot.last_params["caption"].should eq("caption")
+  end
+
+  it "builds copy and forward batch methods" do
+    bot = RequestBuildingBot.new
+
+    copied = bot.copy_message(123, 456, 7, caption: "copy", protect_content: true)
+    copied_messages = bot.copy_messages(123, 456, [7, 8], remove_caption: true)
+    forwarded_messages = bot.forward_messages(123, 456, [7, 8], protect_content: true)
+
+    copied.try(&.message_id).should eq(100)
+    copied_messages.map(&.message_id).should eq([100, 101])
+    forwarded_messages.map(&.message_id).should eq([100, 101])
+  end
+
+  it "builds sendPoll and sendDice" do
+    bot = RequestBuildingBot.new
+    options = [
+      TelegramBot::InputPollOption.new("A"),
+      TelegramBot::InputPollOption.new("B"),
+    ]
+
+    bot.send_poll(123, "Question?", options, allows_multiple_answers: true, country_codes: ["US"])
+
+    bot.last_method.should eq("sendPoll")
+    bot.last_params["question"].should eq("Question?")
+    bot.param("options").should contain("InputPollOption")
+    bot.last_params["allows_multiple_answers"].should eq("true")
+    bot.last_params["country_codes"].should eq("[\"US\"]")
+
+    bot.send_dice(123, "🎲", protect_content: true)
+
+    bot.last_method.should eq("sendDice")
+    bot.last_params["emoji"].should eq("🎲")
+    bot.last_params["protect_content"].should eq("true")
+  end
+
+  it "builds sendMessageDraft" do
+    bot = RequestBuildingBot.new
+
+    bot.send_message_draft(123, 99, text: "draft", entities: [TelegramBot::MessageEntity.new("bold", 0, 5)])
+
+    bot.last_method.should eq("sendMessageDraft")
+    bot.last_force_http.should be_true
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["draft_id"].should eq("99")
+    bot.last_params["text"].should eq("draft")
+    bot.param("entities").should contain("MessageEntity")
   end
 
   it "builds sendInvoice with title" do

@@ -8,8 +8,8 @@
 [Telegram Bot API](https://core.telegram.org/bots/api) wrapper for Crystal.
 
 The shard has partial compatibility with Telegram Bot API 10.0. It supports the
-older Bot API surface plus selected modern updates, message fields, sending
-methods, polls, reactions, keyboards, and Web App/Mini App helpers. See
+older Bot API surface plus selected updates, message fields, sending methods,
+polls, reactions, keyboards, and Web App/Mini App helpers. See
 [Bot API support](#bot-api-support) for the current implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
@@ -26,7 +26,7 @@ api methods and types:
 - [x] payments
 - [x] games
 - [x] polls and dice
-- [x] modern keyboard and Web App helpers
+- [x] keyboard and Web App helpers
 - [x] webhook metadata and command scopes
 - [x] bot profile and default administrator-rights methods
 - [x] invite link, join request, forum topic, and reaction methods
@@ -241,7 +241,7 @@ Another option is to use the [`setWebhook`](https://core.telegram.org/bots/api#s
 bot.set_webhook(url, certificate)
 ```
 
-Modern webhook options can be passed as keyword arguments:
+Webhook options can be passed as keyword arguments:
 
 ```crystal
 bot.set_webhook(
@@ -365,7 +365,7 @@ Override these methods in your bot subclass:
 - `handle(removed_chat_boost : ChatBoostRemoved)`
 - `handle(managed_bot : ManagedBotUpdated)`
 
-### Implemented modern types
+### Implemented Types
 
 - Message compatibility: `MessageId`, `InaccessibleMessage`,
   `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
@@ -429,7 +429,7 @@ JSON-serialized before they are sent to Telegram. This includes inline query
 results, command arrays, media arrays, reply markup, `ReplyParameters`, and
 `LinkPreviewOptions`.
 
-Some modern update types are parsed and dispatched before all related Bot API
+Some update types are parsed and dispatched before all related Bot API
 methods are implemented. For example, `chat_join_request` updates can be
 handled, but `approve_chat_join_request` is not available yet.
 

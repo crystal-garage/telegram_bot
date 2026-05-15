@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 describe TelegramBot::Message do
-  it "parses modern core message fields" do
+  it "parses core message fields" do
     message = TelegramBot::Message.from_json(<<-JSON)
       {
         "message_id": 42,
@@ -82,7 +82,7 @@ describe TelegramBot::Message do
 end
 
 describe TelegramBot::MessageEntity do
-  it "parses modern entity fields" do
+  it "parses entity fields" do
     custom_emoji = TelegramBot::MessageEntity.from_json(<<-JSON)
       {
         "type": "custom_emoji",

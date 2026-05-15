@@ -203,7 +203,7 @@ describe TelegramBot::Bot do
     bot.last_params["caption"].should eq("caption")
   end
 
-  it "builds sendMessage with modern shared params" do
+  it "builds sendMessage with shared params" do
     bot = RequestBuildingBot.new
     reply_parameters = TelegramBot::ReplyParameters.new(42)
     suggested_post_parameters = TelegramBot::SuggestedPostParameters.new(
@@ -583,7 +583,7 @@ describe TelegramBot::Bot do
     end
   end
 
-  it "serializes modern inline keyboard button fields" do
+  it "serializes inline keyboard button fields" do
     bot = RequestBuildingBot.new
     markup = TelegramBot::InlineKeyboardMarkup.new([
       [
@@ -622,7 +622,7 @@ describe TelegramBot::Bot do
       JSON
   end
 
-  it "serializes modern reply keyboard button fields" do
+  it "serializes reply keyboard button fields" do
     bot = RequestBuildingBot.new
     markup = TelegramBot::ReplyKeyboardMarkup.new([
       [
@@ -991,7 +991,7 @@ describe TelegramBot::Bot do
     bot.handled_update.should eq("pre-checkout-id")
   end
 
-  it "dispatches modern update fields" do
+  it "dispatches update fields" do
     cases = {
       {
         <<-JSON,

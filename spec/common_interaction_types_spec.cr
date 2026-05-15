@@ -140,7 +140,7 @@ describe TelegramBot::ForumTopic do
 end
 
 describe TelegramBot::ChatMember do
-  it "parses modern member and invite link fields" do
+  it "parses member and invite link fields" do
     member = TelegramBot::ChatMember.from_json(<<-JSON)
       {
         "status": "restricted",

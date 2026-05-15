@@ -295,34 +295,34 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 10: Business, Guest, And Managed Bot Support
 
-- [ ] Add business connection types:
-  - [ ] `BusinessConnection`
-  - [ ] `BusinessMessagesDeleted`
-  - [ ] `BusinessBotRights`
-  - [ ] `BusinessIntro`
-  - [ ] `BusinessLocation`
-  - [ ] `BusinessOpeningHours`
-- [ ] Add business methods:
-  - [ ] `get_business_connection`
-  - [ ] `read_business_message`
-  - [ ] `delete_business_messages`
-  - [ ] `set_business_account_name`
-  - [ ] `set_business_account_username`
-  - [ ] `set_business_account_bio`
-  - [ ] `set_business_account_profile_photo`
-  - [ ] `remove_business_account_profile_photo`
-  - [ ] `set_business_account_gift_settings`
-- [ ] Add guest mode support:
-  - [ ] `SentGuestMessage`
-  - [ ] `answer_guest_query`
-- [ ] Add managed bot support:
-  - [ ] `ManagedBotUpdated`
-  - [ ] `ManagedBotCreated`
-  - [ ] `BotAccessSettings`
-  - [ ] `get_managed_bot_token`
-  - [ ] `replace_managed_bot_token`
-  - [ ] `get_managed_bot_access_settings`
-  - [ ] `set_managed_bot_access_settings`
+- [x] Add business connection types:
+  - [x] `BusinessConnection`
+  - [x] `BusinessMessagesDeleted`
+  - [x] `BusinessBotRights`
+  - [x] `BusinessIntro`
+  - [x] `BusinessLocation`
+  - [x] `BusinessOpeningHours`
+- [x] Add business methods:
+  - [x] `get_business_connection`
+  - [x] `read_business_message`
+  - [x] `delete_business_messages`
+  - [x] `set_business_account_name`
+  - [x] `set_business_account_username`
+  - [x] `set_business_account_bio`
+  - [x] `set_business_account_profile_photo`
+  - [x] `remove_business_account_profile_photo`
+  - [x] `set_business_account_gift_settings`
+- [x] Add guest mode support:
+  - [x] `SentGuestMessage`
+  - [x] `answer_guest_query`
+- [x] Add managed bot support:
+  - [x] `ManagedBotUpdated`
+  - [x] `ManagedBotCreated`
+  - [x] `BotAccessSettings`
+  - [x] `get_managed_bot_token`
+  - [x] `replace_managed_bot_token`
+  - [x] `get_managed_bot_access_settings`
+  - [x] `set_managed_bot_access_settings`
 
 ## Phase 11: Documentation And Compatibility
 

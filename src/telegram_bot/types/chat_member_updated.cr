@@ -7,7 +7,7 @@ module TelegramBot
     property date : Int32?
     property old_chat_member : ChatMember?
     property new_chat_member : ChatMember?
-    property invite_link : JSON::Any?
+    property invite_link : ChatInviteLink?
     property? via_join_request : Bool?
     property? via_chat_folder_invite_link : Bool?
   end

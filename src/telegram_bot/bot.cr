@@ -890,6 +890,27 @@ module TelegramBot
       res.as_bool if res
     end
 
+    def set_message_reaction(chat_id : Int | String,
+                             message_id : Int,
+                             reaction : Array(ReactionType)? = nil,
+                             is_big : Bool? = nil)
+      res = def_request "setMessageReaction", chat_id, message_id, reaction, is_big
+      res.as_bool if res
+    end
+
+    def delete_message_reaction(chat_id : Int | String,
+                                message_id : Int,
+                                reaction : ReactionType)
+      res = def_request "deleteMessageReaction", chat_id, message_id, reaction
+      res.as_bool if res
+    end
+
+    def delete_all_message_reactions(chat_id : Int | String,
+                                     message_id : Int)
+      res = def_request "deleteAllMessageReactions", chat_id, message_id
+      res.as_bool if res
+    end
+
     def get_user_profile_photos(user_id : Int32,
                                 offset : Int32? = nil,
                                 limit : Int32? = nil)
@@ -916,8 +937,21 @@ module TelegramBot
                              can_send_messages : Bool? = nil,
                              can_send_media_messages : Bool? = nil,
                              can_send_other_messages : Bool? = nil,
-                             can_add_web_page_previews : Bool? = nil)
-      res = def_request "restrictChatMember", chat_id, user_id, until_date, can_send_messages, can_send_media_messages, can_send_other_messages, can_add_web_page_previews
+                             can_add_web_page_previews : Bool? = nil,
+                             permissions : ChatPermissions? = nil,
+                             use_independent_chat_permissions : Bool? = nil)
+      permissions ||= ChatPermissions.new(
+        can_send_messages: can_send_messages,
+        can_send_audios: can_send_media_messages,
+        can_send_documents: can_send_media_messages,
+        can_send_photos: can_send_media_messages,
+        can_send_videos: can_send_media_messages,
+        can_send_video_notes: can_send_media_messages,
+        can_send_voice_notes: can_send_media_messages,
+        can_send_other_messages: can_send_other_messages,
+        can_add_web_page_previews: can_add_web_page_previews
+      )
+      res = def_request "restrictChatMember", chat_id, user_id, permissions, use_independent_chat_permissions, until_date
       res.as_bool if res
     end
 
@@ -938,6 +972,58 @@ module TelegramBot
     def export_chat_invite_link(chat_id : Int | String)
       res = def_request "exportChatInviteLink", chat_id
       res if res
+    end
+
+    def create_chat_invite_link(chat_id : Int | String,
+                                name : String? = nil,
+                                expire_date : Int? = nil,
+                                member_limit : Int32? = nil,
+                                creates_join_request : Bool? = nil) : ChatInviteLink?
+      res = def_request "createChatInviteLink", chat_id, name, expire_date, member_limit, creates_join_request
+      ChatInviteLink.from_json res.to_json if res
+    end
+
+    def edit_chat_invite_link(chat_id : Int | String,
+                              invite_link : String,
+                              name : String? = nil,
+                              expire_date : Int? = nil,
+                              member_limit : Int32? = nil,
+                              creates_join_request : Bool? = nil) : ChatInviteLink?
+      res = def_request "editChatInviteLink", chat_id, invite_link, name, expire_date, member_limit, creates_join_request
+      ChatInviteLink.from_json res.to_json if res
+    end
+
+    def create_chat_subscription_invite_link(chat_id : Int | String,
+                                             subscription_period : Int,
+                                             subscription_price : Int,
+                                             name : String? = nil) : ChatInviteLink?
+      res = def_request "createChatSubscriptionInviteLink", chat_id, name, subscription_period, subscription_price
+      ChatInviteLink.from_json res.to_json if res
+    end
+
+    def edit_chat_subscription_invite_link(chat_id : Int | String,
+                                           invite_link : String,
+                                           name : String? = nil) : ChatInviteLink?
+      res = def_request "editChatSubscriptionInviteLink", chat_id, invite_link, name
+      ChatInviteLink.from_json res.to_json if res
+    end
+
+    def revoke_chat_invite_link(chat_id : Int | String,
+                                invite_link : String) : ChatInviteLink?
+      res = def_request "revokeChatInviteLink", chat_id, invite_link
+      ChatInviteLink.from_json res.to_json if res
+    end
+
+    def approve_chat_join_request(chat_id : Int | String,
+                                  user_id : Int)
+      res = def_request "approveChatJoinRequest", chat_id, user_id
+      res.as_bool if res
+    end
+
+    def decline_chat_join_request(chat_id : Int | String,
+                                  user_id : Int)
+      res = def_request "declineChatJoinRequest", chat_id, user_id
+      res.as_bool if res
     end
 
     def set_chat_photo(chat_id : Int | String, photo : ::File)
@@ -1006,6 +1092,85 @@ module TelegramBot
 
     def delete_chat_sticker_set(chat_id : Int | String)
       res = def_request "deleteChatStickerSet", chat_id
+      res.as_bool if res
+    end
+
+    def get_forum_topic_icon_stickers : Array(Sticker)
+      res = request "getForumTopicIconStickers", force_http: true
+      res = res.not_nil!.as_a
+      stickers = Array(Sticker).new
+      res.each { |sticker| stickers << Sticker.from_json(sticker.to_json) }
+      stickers
+    end
+
+    def create_forum_topic(chat_id : Int | String,
+                           name : String,
+                           icon_color : Int32? = nil,
+                           icon_custom_emoji_id : String? = nil) : ForumTopic?
+      res = def_request "createForumTopic", chat_id, name, icon_color, icon_custom_emoji_id
+      ForumTopic.from_json res.to_json if res
+    end
+
+    def edit_forum_topic(chat_id : Int | String,
+                         message_thread_id : Int,
+                         name : String? = nil,
+                         icon_custom_emoji_id : String? = nil)
+      res = def_request "editForumTopic", chat_id, message_thread_id, name, icon_custom_emoji_id
+      res.as_bool if res
+    end
+
+    def close_forum_topic(chat_id : Int | String,
+                          message_thread_id : Int)
+      res = def_request "closeForumTopic", chat_id, message_thread_id
+      res.as_bool if res
+    end
+
+    def reopen_forum_topic(chat_id : Int | String,
+                           message_thread_id : Int)
+      res = def_request "reopenForumTopic", chat_id, message_thread_id
+      res.as_bool if res
+    end
+
+    def delete_forum_topic(chat_id : Int | String,
+                           message_thread_id : Int)
+      res = def_request "deleteForumTopic", chat_id, message_thread_id
+      res.as_bool if res
+    end
+
+    def unpin_all_forum_topic_messages(chat_id : Int | String,
+                                       message_thread_id : Int)
+      res = def_request "unpinAllForumTopicMessages", chat_id, message_thread_id
+      res.as_bool if res
+    end
+
+    def edit_general_forum_topic(chat_id : Int | String,
+                                 name : String)
+      res = def_request "editGeneralForumTopic", chat_id, name
+      res.as_bool if res
+    end
+
+    def close_general_forum_topic(chat_id : Int | String)
+      res = def_request "closeGeneralForumTopic", chat_id
+      res.as_bool if res
+    end
+
+    def reopen_general_forum_topic(chat_id : Int | String)
+      res = def_request "reopenGeneralForumTopic", chat_id
+      res.as_bool if res
+    end
+
+    def hide_general_forum_topic(chat_id : Int | String)
+      res = def_request "hideGeneralForumTopic", chat_id
+      res.as_bool if res
+    end
+
+    def unhide_general_forum_topic(chat_id : Int | String)
+      res = def_request "unhideGeneralForumTopic", chat_id
+      res.as_bool if res
+    end
+
+    def unpin_all_general_forum_topic_messages(chat_id : Int | String)
+      res = def_request "unpinAllGeneralForumTopicMessages", chat_id
       res.as_bool if res
     end
 

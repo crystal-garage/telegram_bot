@@ -7,6 +7,6 @@ module TelegramBot
     property user_chat_id : Int64?
     property date : Int32?
     property bio : String?
-    property invite_link : JSON::Any?
+    property invite_link : ChatInviteLink?
   end
 end

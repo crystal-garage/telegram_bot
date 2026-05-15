@@ -17,21 +17,45 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyShortDescription",
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
+    "restrictChatMember",
+    "approveChatJoinRequest",
+    "declineChatJoinRequest",
+    "setMessageReaction",
+    "deleteMessageReaction",
+    "deleteAllMessageReactions",
+    "editForumTopic",
+    "closeForumTopic",
+    "reopenForumTopic",
+    "deleteForumTopic",
+    "unpinAllForumTopicMessages",
+    "editGeneralForumTopic",
+    "closeGeneralForumTopic",
+    "reopenGeneralForumTopic",
+    "hideGeneralForumTopic",
+    "unhideGeneralForumTopic",
+    "unpinAllGeneralForumTopicMessages",
   ]
 
   METHOD_RESPONSES = {
-    "getMyCommands"                   => %([{"command":"start","description":"Start"}]),
-    "getMyName"                       => %({"name":"Test Bot"}),
-    "getMyDescription"                => %({"description":"Long description"}),
-    "getMyShortDescription"           => %({"short_description":"Short description"}),
-    "getMyDefaultAdministratorRights" => %({"can_delete_messages":true}),
-    "getWebhookInfo"                  => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
-    "answerWebAppQuery"               => %({"inline_message_id":"inline-id"}),
-    "savePreparedInlineMessage"       => %({"id":"prepared-inline-id","expiration_date":1800000000}),
-    "savePreparedKeyboardButton"      => %({"id":"prepared-keyboard-id"}),
-    "copyMessage"                     => %({"message_id":100}),
-    "copyMessages"                    => %([{"message_id":100},{"message_id":101}]),
-    "forwardMessages"                 => %([{"message_id":100},{"message_id":101}]),
+    "getMyCommands"                    => %([{"command":"start","description":"Start"}]),
+    "getMyName"                        => %({"name":"Test Bot"}),
+    "getMyDescription"                 => %({"description":"Long description"}),
+    "getMyShortDescription"            => %({"short_description":"Short description"}),
+    "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
+    "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
+    "answerWebAppQuery"                => %({"inline_message_id":"inline-id"}),
+    "savePreparedInlineMessage"        => %({"id":"prepared-inline-id","expiration_date":1800000000}),
+    "savePreparedKeyboardButton"       => %({"id":"prepared-keyboard-id"}),
+    "copyMessage"                      => %({"message_id":100}),
+    "copyMessages"                     => %([{"message_id":100},{"message_id":101}]),
+    "forwardMessages"                  => %([{"message_id":100},{"message_id":101}]),
+    "createChatInviteLink"             => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":true,"is_primary":false,"is_revoked":false,"name":"Invite"}),
+    "editChatInviteLink"               => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":false,"name":"Edited"}),
+    "createChatSubscriptionInviteLink" => %({"invite_link":"https://t.me/+sub","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":false,"subscription_period":2592000,"subscription_price":100}),
+    "editChatSubscriptionInviteLink"   => %({"invite_link":"https://t.me/+sub","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":false,"name":"Sub"}),
+    "revokeChatInviteLink"             => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":true}),
+    "getForumTopicIconStickers"        => %([{"file_id":"sticker-id","width":512,"height":512}]),
+    "createForumTopic"                 => %({"message_thread_id":42,"name":"Topic","icon_color":7322096,"icon_custom_emoji_id":"emoji-id"}),
   }
 
   def initialize
@@ -601,6 +625,106 @@ describe TelegramBot::Bot do
     bot.get_my_default_administrator_rights(for_channels: true).can_delete_messages?.should be_true
     bot.last_method.should eq("getMyDefaultAdministratorRights")
     bot.last_force_http.should be_true
+  end
+
+  it "builds chat permissions, join request, and invite link methods" do
+    bot = RequestBuildingBot.new
+    permissions = TelegramBot::ChatPermissions.new(
+      can_send_messages: true,
+      can_send_photos: true,
+      can_react_to_messages: true
+    )
+
+    bot.restrict_chat_member("@group", 123, permissions: permissions, use_independent_chat_permissions: true)
+
+    bot.last_method.should eq("restrictChatMember")
+    bot.param("permissions").should contain("ChatPermissions")
+    bot.last_params["use_independent_chat_permissions"].should eq("true")
+
+    bot.restrict_chat_member("@group", 123, can_send_media_messages: true)
+    bot.param("permissions").should contain("can_send_photos")
+
+    invite = bot.create_chat_invite_link("@group", name: "Invite", creates_join_request: true)
+
+    invite.try(&.invite_link).should eq("https://t.me/+invite")
+    invite.try(&.creates_join_request?).should be_true
+    bot.last_method.should eq("createChatInviteLink")
+    bot.last_params["name"].should eq("Invite")
+
+    edited = bot.edit_chat_invite_link("@group", "https://t.me/+invite", name: "Edited")
+    edited.try(&.name).should eq("Edited")
+    bot.last_method.should eq("editChatInviteLink")
+
+    subscription = bot.create_chat_subscription_invite_link("@channel", 2_592_000, 100, name: "Sub")
+    subscription.try(&.subscription_price).should eq(100)
+    bot.last_method.should eq("createChatSubscriptionInviteLink")
+
+    revoked = bot.revoke_chat_invite_link("@group", "https://t.me/+invite")
+    revoked.try(&.is_revoked?).should be_true
+    bot.last_method.should eq("revokeChatInviteLink")
+
+    bot.approve_chat_join_request("@group", 123).should be_true
+    bot.last_method.should eq("approveChatJoinRequest")
+    bot.decline_chat_join_request("@group", 123).should be_true
+    bot.last_method.should eq("declineChatJoinRequest")
+
+    JSON.parse(permissions.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "can_send_messages": true,
+        "can_send_photos": true,
+        "can_react_to_messages": true
+      }
+      JSON
+  end
+
+  it "builds forum topic and reaction methods" do
+    bot = RequestBuildingBot.new
+    reaction = TelegramBot::ReactionTypeEmoji.new("👍")
+
+    bot.set_message_reaction("@group", 10, [reaction] of TelegramBot::ReactionType, is_big: true).should be_true
+    bot.last_method.should eq("setMessageReaction")
+    bot.param("reaction").should contain("ReactionTypeEmoji")
+    bot.last_params["is_big"].should eq("true")
+
+    bot.delete_message_reaction("@group", 10, reaction).should be_true
+    bot.last_method.should eq("deleteMessageReaction")
+    bot.param("reaction").should contain("ReactionTypeEmoji")
+
+    bot.delete_all_message_reactions("@group", 10).should be_true
+    bot.last_method.should eq("deleteAllMessageReactions")
+
+    stickers = bot.get_forum_topic_icon_stickers
+    stickers.first.file_id.should eq("sticker-id")
+    bot.last_method.should eq("getForumTopicIconStickers")
+    bot.last_force_http.should be_true
+
+    topic = bot.create_forum_topic("@group", "Topic", icon_color: 7_322_096, icon_custom_emoji_id: "emoji-id")
+    topic.try(&.message_thread_id).should eq(42)
+    bot.last_method.should eq("createForumTopic")
+
+    bot.edit_forum_topic("@group", 42, name: "New Topic").should be_true
+    bot.last_method.should eq("editForumTopic")
+    bot.close_forum_topic("@group", 42).should be_true
+    bot.last_method.should eq("closeForumTopic")
+    bot.reopen_forum_topic("@group", 42).should be_true
+    bot.last_method.should eq("reopenForumTopic")
+    bot.delete_forum_topic("@group", 42).should be_true
+    bot.last_method.should eq("deleteForumTopic")
+    bot.unpin_all_forum_topic_messages("@group", 42).should be_true
+    bot.last_method.should eq("unpinAllForumTopicMessages")
+
+    bot.edit_general_forum_topic("@group", "General").should be_true
+    bot.last_method.should eq("editGeneralForumTopic")
+    bot.close_general_forum_topic("@group").should be_true
+    bot.last_method.should eq("closeGeneralForumTopic")
+    bot.reopen_general_forum_topic("@group").should be_true
+    bot.last_method.should eq("reopenGeneralForumTopic")
+    bot.hide_general_forum_topic("@group").should be_true
+    bot.last_method.should eq("hideGeneralForumTopic")
+    bot.unhide_general_forum_topic("@group").should be_true
+    bot.last_method.should eq("unhideGeneralForumTopic")
+    bot.unpin_all_general_forum_topic_messages("@group").should be_true
+    bot.last_method.should eq("unpinAllGeneralForumTopicMessages")
   end
 
   it "builds multipart bodies with serialized non-file params" do

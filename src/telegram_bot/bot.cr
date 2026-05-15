@@ -1636,7 +1636,10 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def set_chat_photo(chat_id : Int | String, photo : ::File)
+    def set_chat_photo(
+      chat_id : Int | String,
+      photo : ::File,
+    )
       res = def_request(
         "setChatPhoto",
         chat_id,
@@ -1646,7 +1649,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def delete_chat_photo(chat_id : Int | String)
+    def delete_chat_photo(
+      chat_id : Int | String,
+    )
       res = def_request(
         "deleteChatPhoto",
         chat_id
@@ -2655,7 +2660,9 @@ module TelegramBot
     # Stickers
     #
 
-    def get_sticker_set(name : String)
+    def get_sticker_set(
+      name : String,
+    )
       res = def_request(
         "getStickerSet",
         name
@@ -2664,7 +2671,10 @@ module TelegramBot
       StickerSet.from_json(res.to_json) if res
     end
 
-    def upload_sticker_file(user_id : Int, png_sticker : ::File)
+    def upload_sticker_file(
+      user_id : Int,
+      png_sticker : ::File,
+    )
       res = def_request(
         "uploadStickerFile",
         user_id,
@@ -2715,7 +2725,10 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def set_sticker_position_in_set(sticker : String, position : Int)
+    def set_sticker_position_in_set(
+      sticker : String,
+      position : Int,
+    )
       res = def_request(
         "setStickerPositionInSet",
         sticker,
@@ -2791,7 +2804,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def get_my_name(language_code : String? = nil) : BotName
+    def get_my_name(
+      language_code : String? = nil,
+    ) : BotName
       res = def_force_request(
         "getMyName",
         language_code
@@ -2813,7 +2828,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def get_my_description(language_code : String? = nil) : BotDescription
+    def get_my_description(
+      language_code : String? = nil,
+    ) : BotDescription
       res = def_force_request(
         "getMyDescription",
         language_code
@@ -2835,7 +2852,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def get_my_short_description(language_code : String? = nil) : BotShortDescription
+    def get_my_short_description(
+      language_code : String? = nil,
+    ) : BotShortDescription
       res = def_force_request(
         "getMyShortDescription",
         language_code
@@ -2857,7 +2876,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def get_my_default_administrator_rights(for_channels : Bool? = nil) : ChatAdministratorRights
+    def get_my_default_administrator_rights(
+      for_channels : Bool? = nil,
+    ) : ChatAdministratorRights
       res = def_force_request(
         "getMyDefaultAdministratorRights",
         for_channels

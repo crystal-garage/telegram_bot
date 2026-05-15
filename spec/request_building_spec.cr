@@ -126,9 +126,11 @@ describe TelegramBot::Bot do
     ])
     params = bot.serialize_for_spec({"reply_markup" => reply_markup})
 
-    JSON.parse(params["reply_markup"].as(String)).should eq(JSON.parse(%({
-      "inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]
-    })))
+    JSON.parse(params["reply_markup"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]
+      }
+      JSON
   end
 
   it "serializes arrays of JSON objects" do
@@ -139,10 +141,12 @@ describe TelegramBot::Bot do
     ]
     params = bot.serialize_for_spec({"commands" => commands})
 
-    JSON.parse(params["commands"].as(String)).should eq(JSON.parse(%([
-      {"command": "start", "description": "Start the bot"},
-      {"command": "help", "description": "Show help"}
-    ])))
+    JSON.parse(params["commands"].as(String)).should eq(JSON.parse(<<-JSON))
+      [
+        {"command": "start", "description": "Start the bot"},
+        {"command": "help", "description": "Show help"}
+      ]
+      JSON
   end
 
   it "serializes inline query results through their base type" do
@@ -151,14 +155,16 @@ describe TelegramBot::Bot do
     results = [TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)] of TelegramBot::InlineQueryResult
     params = bot.serialize_for_spec({"results" => results})
 
-    JSON.parse(params["results"].as(String)).should eq(JSON.parse(%([
-      {
-        "type": "article",
-        "id": "article/1",
-        "title": "Article",
-        "input_message_content": {"message_text": "Article details"}
-      }
-    ])))
+    JSON.parse(params["results"].as(String)).should eq(JSON.parse(<<-JSON))
+      [
+        {
+          "type": "article",
+          "id": "article/1",
+          "title": "Article",
+          "input_message_content": {"message_text": "Article details"}
+        }
+      ]
+      JSON
   end
 
   it "keeps wrappers passing native arrays to the request layer" do

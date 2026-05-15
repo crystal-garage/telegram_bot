@@ -59,45 +59,45 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 3: Modern Core Message Types
 
-- [ ] Add or update shared message-related types:
-  - [ ] `MessageId`
-  - [ ] `InaccessibleMessage`
-  - [ ] `MaybeInaccessibleMessage`
-  - [ ] `ReplyParameters`
-  - [ ] `TextQuote`
-  - [ ] `ExternalReplyInfo`
-  - [ ] `LinkPreviewOptions`
-  - [ ] `MessageOriginUser`
-  - [ ] `MessageOriginHiddenUser`
-  - [ ] `MessageOriginChat`
-  - [ ] `MessageOriginChannel`
-- [ ] Expand `Message` with common modern fields:
-  - [ ] `message_thread_id`
-  - [ ] `direct_messages_topic`
-  - [ ] `sender_chat`
-  - [ ] `sender_boost_count`
-  - [ ] `sender_business_bot`
-  - [ ] `business_connection_id`
-  - [ ] `forward_origin`
-  - [ ] `is_topic_message`
-  - [ ] `is_automatic_forward`
-  - [ ] `reply_to_message`
-  - [ ] `external_reply`
-  - [ ] `quote`
-  - [ ] `reply_to_story`
-  - [ ] `reply_to_checklist_task_id`
-  - [ ] `reply_to_poll_option_id`
-  - [ ] `has_protected_content`
-  - [ ] `is_from_offline`
-  - [ ] `is_paid_post`
-  - [ ] `paid_star_count`
-  - [ ] `effect_id`
-  - [ ] `show_caption_above_media`
-  - [ ] `has_media_spoiler`
-  - [ ] `reply_markup`
-- [ ] Expand `MessageEntity` with modern fields:
-  - [ ] `custom_emoji_id`
-  - [ ] support documented modern entity types such as `custom_emoji`,
+- [x] Add or update shared message-related types:
+  - [x] `MessageId`
+  - [x] `InaccessibleMessage`
+  - [x] `MaybeInaccessibleMessage`
+  - [x] `ReplyParameters`
+  - [x] `TextQuote`
+  - [x] `ExternalReplyInfo`
+  - [x] `LinkPreviewOptions`
+  - [x] `MessageOriginUser`
+  - [x] `MessageOriginHiddenUser`
+  - [x] `MessageOriginChat`
+  - [x] `MessageOriginChannel`
+- [x] Expand `Message` with common modern fields:
+  - [x] `message_thread_id`
+  - [x] `direct_messages_topic`
+  - [x] `sender_chat`
+  - [x] `sender_boost_count`
+  - [x] `sender_business_bot`
+  - [x] `business_connection_id`
+  - [x] `forward_origin`
+  - [x] `is_topic_message`
+  - [x] `is_automatic_forward`
+  - [x] `reply_to_message`
+  - [x] `external_reply`
+  - [x] `quote`
+  - [x] `reply_to_story`
+  - [x] `reply_to_checklist_task_id`
+  - [x] `reply_to_poll_option_id`
+  - [x] `has_protected_content`
+  - [x] `is_from_offline`
+  - [x] `is_paid_post`
+  - [x] `paid_star_count`
+  - [x] `effect_id`
+  - [x] `show_caption_above_media`
+  - [x] `has_media_spoiler`
+  - [x] `reply_markup`
+- [x] Expand `MessageEntity` with modern fields:
+  - [x] `custom_emoji_id`
+  - [x] support documented modern entity types such as `custom_emoji`,
         `blockquote`, `expandable_blockquote`, and `date_time`.
 
 ## Phase 4: Common Media And Interaction Types

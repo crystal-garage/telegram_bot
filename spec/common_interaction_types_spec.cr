@@ -16,7 +16,7 @@ describe TelegramBot::Message do
               "persistent_id": "option-id",
               "text": "Option",
               "voter_count": 1,
-              "media": {"photo": [{"file_id": "file-id", "width": 1, "height": 1}]}
+              "media": {"photo": [{"file_id": "file-id", "file_unique_id": "file-unique-id", "width": 1, "height": 1}]}
             }
           ],
           "total_voter_count": 1,
@@ -25,7 +25,7 @@ describe TelegramBot::Message do
           "type": "regular",
           "allows_multiple_answers": false,
           "allows_revoting": true,
-          "media": {"photo": [{"file_id": "file-id", "width": 1, "height": 1}]}
+          "media": {"photo": [{"file_id": "file-id", "file_unique_id": "file-unique-id", "width": 1, "height": 1}]}
         },
         "forum_topic_created": {
           "name": "Topic",

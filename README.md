@@ -26,6 +26,25 @@ dependencies:
     github: crystal-garage/telegram_bot
 ```
 
+## Example
+
+A minimal echo bot with long polling:
+
+```crystal
+require "telegram_bot"
+
+class EchoBot < TelegramBot::Bot
+  def handle(message : TelegramBot::Message)
+    return unless text = message.text
+
+    send_message(message.chat.id, "You said: #{text}")
+  end
+end
+
+bot = EchoBot.new("echo_bot", ENV["TELEGRAM_BOT_TOKEN"])
+bot.polling
+```
+
 ## Current features
 
 api methods and types:

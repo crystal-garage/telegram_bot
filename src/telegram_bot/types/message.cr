@@ -3,22 +3,42 @@ module TelegramBot
     include JSON::Serializable
 
     property message_id : Int32
+    property message_thread_id : Int32?
+    property direct_messages_topic : JSON::Any?
     property from : User?
+    property sender_chat : Chat?
+    property sender_boost_count : Int32?
+    property sender_business_bot : User?
     property date : Int32
+    property business_connection_id : String?
     property chat : Chat
+    property forward_origin : MessageOrigin?
     property forward_from : User?
     property forward_from_chat : Chat?
     property forward_from_message_id : Int32?
     property forward_signature : String?
     property forward_sender_name : String?
     property forward_date : Int32?
+    property? is_topic_message : Bool?
+    property? is_automatic_forward : Bool?
     property reply_to_message : Message?
+    property external_reply : ExternalReplyInfo?
+    property quote : TextQuote?
+    property reply_to_story : Story?
+    property reply_to_checklist_task_id : Int32?
+    property reply_to_poll_option_id : String?
     property via_bot : User?
     property edit_date : Int32?
+    property? has_protected_content : Bool?
+    property? is_from_offline : Bool?
+    property? is_paid_post : Bool?
     property media_group_id : String?
     property author_signature : String?
+    property paid_star_count : Int32?
     property text : String?
     property entities : Array(MessageEntity)?
+    property link_preview_options : LinkPreviewOptions?
+    property effect_id : String?
     property animation : Animation?
     property audio : Audio?
     property document : Document?
@@ -29,6 +49,8 @@ module TelegramBot
     property voice : Voice?
     property caption : String?
     property caption_entities : Array(MessageEntity)?
+    property? show_caption_above_media : Bool?
+    property? has_media_spoiler : Bool?
     property contact : Contact?
     property location : Location?
     property venue : Venue?
@@ -46,5 +68,6 @@ module TelegramBot
     property pinned_message : Message?
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
+    property reply_markup : InlineKeyboardMarkup?
   end
 end

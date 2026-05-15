@@ -163,30 +163,30 @@ keeping backward-compatible method signatures where practical.
 
 ## Phase 6: Webhook And Bot Metadata Methods
 
-- [ ] Add `get_webhook_info` and `WebhookInfo`.
-- [ ] Extend `set_webhook` with:
-  - [ ] `ip_address`
-  - [ ] `drop_pending_updates`
-  - [ ] `secret_token`
-- [ ] Extend `delete_webhook` with `drop_pending_updates`.
-- [ ] Add command scopes:
-  - [ ] `BotCommandScopeDefault`
-  - [ ] `BotCommandScopeAllPrivateChats`
-  - [ ] `BotCommandScopeAllGroupChats`
-  - [ ] `BotCommandScopeAllChatAdministrators`
-  - [ ] `BotCommandScopeChat`
-  - [ ] `BotCommandScopeChatAdministrators`
-  - [ ] `BotCommandScopeChatMember`
-- [ ] Extend `set_my_commands` and `get_my_commands` with `scope` and
+- [x] Add `get_webhook_info` and `WebhookInfo`.
+- [x] Extend `set_webhook` with:
+  - [x] `ip_address`
+  - [x] `drop_pending_updates`
+  - [x] `secret_token`
+- [x] Extend `delete_webhook` with `drop_pending_updates`.
+- [x] Add command scopes:
+  - [x] `BotCommandScopeDefault`
+  - [x] `BotCommandScopeAllPrivateChats`
+  - [x] `BotCommandScopeAllGroupChats`
+  - [x] `BotCommandScopeAllChatAdministrators`
+  - [x] `BotCommandScopeChat`
+  - [x] `BotCommandScopeChatAdministrators`
+  - [x] `BotCommandScopeChatMember`
+- [x] Extend `set_my_commands` and `get_my_commands` with `scope` and
       `language_code`.
-- [ ] Add `delete_my_commands`.
-- [ ] Add bot profile methods and types:
-  - [ ] `set_my_name`, `get_my_name`, `BotName`
-  - [ ] `set_my_description`, `get_my_description`, `BotDescription`
-  - [ ] `set_my_short_description`, `get_my_short_description`,
+- [x] Add `delete_my_commands`.
+- [x] Add bot profile methods and types:
+  - [x] `set_my_name`, `get_my_name`, `BotName`
+  - [x] `set_my_description`, `get_my_description`, `BotDescription`
+  - [x] `set_my_short_description`, `get_my_short_description`,
         `BotShortDescription`
-  - [ ] `set_my_default_administrator_rights`
-  - [ ] `get_my_default_administrator_rights`
+  - [x] `set_my_default_administrator_rights`
+  - [x] `get_my_default_administrator_rights`
 
 ## Phase 7: Chat Administration
 
@@ -334,7 +334,7 @@ keeping backward-compatible method signatures where practical.
   - [x] inline keyboard callback bot
   - [x] poll bot
   - [x] forum topic bot
-  - [x] webhook with `secret_token` compatibility note
+  - [x] webhook with `secret_token`
 - [x] Add a support matrix listing implemented methods and types.
 - [x] Decide whether to keep deprecated Telegram API aliases or mark them with
       comments before removal in a future major release.

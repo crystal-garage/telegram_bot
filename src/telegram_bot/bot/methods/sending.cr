@@ -261,7 +261,7 @@ module TelegramBot
     def send_audio(
       chat_id : Int | String,
       audio : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       performer : String? = nil,
       title : String? = nil,
       disable_notification : Bool? = nil,
@@ -279,6 +279,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendAudio",
         business_connection_id,
@@ -395,7 +397,7 @@ module TelegramBot
     def send_video(
       chat_id : Int | String,
       video : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       width : Int32? = nil,
       height : Int32? = nil,
       caption : String? = nil,
@@ -418,6 +420,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVideo",
         business_connection_id,
@@ -455,7 +459,7 @@ module TelegramBot
     def send_animation(
       chat_id : Int | String,
       animation : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       width : Int32? = nil,
       height : Int32? = nil,
       caption : String? = nil,
@@ -475,6 +479,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendAnimation",
         business_connection_id,
@@ -509,7 +515,7 @@ module TelegramBot
     def send_voice(
       chat_id : Int | String,
       voice : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
       business_connection_id : String? = nil,
@@ -524,6 +530,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVoice",
         business_connection_id,
@@ -553,7 +561,7 @@ module TelegramBot
     def send_video_note(
       chat_id : Int | String,
       video_note : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       length : Int32? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
@@ -567,6 +575,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVideoNote",
         business_connection_id,

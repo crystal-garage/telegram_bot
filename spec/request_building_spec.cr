@@ -338,7 +338,7 @@ describe TelegramBot::Bot do
 
   it "builds sendAudio with the correct method" do
     bot = RequestBuildingBot.new
-    bot.send_audio(123, "audio-id", duration: 10, performer: "performer", title: "title")
+    bot.send_audio(123, "audio-id", duration: 10.seconds, performer: "performer", title: "title")
 
     bot.last_method.should eq("sendAudio")
     bot.last_params["audio"].should eq("audio-id")

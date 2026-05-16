@@ -196,6 +196,66 @@ module TelegramBot
       MenuButton.from_json(res.to_json)
     end
 
+    # Verifies a user on behalf of the bot's organization.
+    #
+    # See: <https://core.telegram.org/bots/api#verifyuser>
+    def verify_user(
+      user_id : Int,
+      custom_description : String? = nil,
+    )
+      res = def_force_request(
+        "verifyUser",
+        user_id,
+        custom_description
+      )
+
+      res.as_bool if res
+    end
+
+    # Verifies a chat on behalf of the bot's organization.
+    #
+    # See: <https://core.telegram.org/bots/api#verifychat>
+    def verify_chat(
+      chat_id : Int | String,
+      custom_description : String? = nil,
+    )
+      res = def_force_request(
+        "verifyChat",
+        chat_id,
+        custom_description
+      )
+
+      res.as_bool if res
+    end
+
+    # Removes verification from a user.
+    #
+    # See: <https://core.telegram.org/bots/api#removeuserverification>
+    def remove_user_verification(
+      user_id : Int,
+    )
+      res = def_force_request(
+        "removeUserVerification",
+        user_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Removes verification from a chat.
+    #
+    # See: <https://core.telegram.org/bots/api#removechatverification>
+    def remove_chat_verification(
+      chat_id : Int | String,
+    )
+      res = def_force_request(
+        "removeChatVerification",
+        chat_id
+      )
+
+      res.as_bool if res
+    end
+
     # Sets the bot's default administrator rights.
     #
     # See: <https://core.telegram.org/bots/api#setmydefaultadministratorrights>

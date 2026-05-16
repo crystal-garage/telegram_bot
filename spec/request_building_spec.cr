@@ -23,6 +23,10 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyProfilePhoto",
     "removeMyProfilePhoto",
     "setChatMenuButton",
+    "verifyUser",
+    "verifyChat",
+    "removeUserVerification",
+    "removeChatVerification",
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
     "banChatMember",
@@ -954,6 +958,28 @@ describe TelegramBot::Bot do
     current_menu_button.web_app.try(&.url).should eq("https://example.com/app")
     bot.last_method.should eq("getChatMenuButton")
     bot.last_force_http.should be_true
+
+    bot.verify_user(123, custom_description: "Verified").should be_true
+    bot.last_method.should eq("verifyUser")
+    bot.last_force_http.should be_true
+    bot.last_params["user_id"].should eq("123")
+    bot.last_params["custom_description"].should eq("Verified")
+
+    bot.verify_chat("@channel", custom_description: "Official").should be_true
+    bot.last_method.should eq("verifyChat")
+    bot.last_force_http.should be_true
+    bot.last_params["chat_id"].should eq("@channel")
+    bot.last_params["custom_description"].should eq("Official")
+
+    bot.remove_user_verification(123).should be_true
+    bot.last_method.should eq("removeUserVerification")
+    bot.last_force_http.should be_true
+    bot.last_params["user_id"].should eq("123")
+
+    bot.remove_chat_verification("@channel").should be_true
+    bot.last_method.should eq("removeChatVerification")
+    bot.last_force_http.should be_true
+    bot.last_params["chat_id"].should eq("@channel")
 
     rights = TelegramBot::ChatAdministratorRights.new(can_delete_messages: true)
     bot.set_my_default_administrator_rights(rights, for_channels: true).should be_true

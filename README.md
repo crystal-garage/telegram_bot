@@ -423,7 +423,9 @@ types, while unimplemented items are intentionally left out of the public API.
   `get_my_description`, `set_my_short_description`,
   `get_my_short_description`, `set_my_profile_photo`,
   `remove_my_profile_photo`, `set_chat_menu_button`,
-  `get_chat_menu_button`, `set_my_default_administrator_rights`,
+  `get_chat_menu_button`, `verify_user`, `verify_chat`,
+  `remove_user_verification`, `remove_chat_verification`,
+  `set_my_default_administrator_rights`,
   `get_my_default_administrator_rights`
 - Business, guest, and managed bots: `get_business_connection`,
   `read_business_message`, `delete_business_messages`,

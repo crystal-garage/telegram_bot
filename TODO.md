@@ -44,10 +44,10 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Verification
 
-- [ ] `verify_user` -> `verifyUser`
-- [ ] `verify_chat` -> `verifyChat`
-- [ ] `remove_user_verification` -> `removeUserVerification`
-- [ ] `remove_chat_verification` -> `removeChatVerification`
+- [x] `verify_user` -> `verifyUser`
+- [x] `verify_chat` -> `verifyChat`
+- [x] `remove_user_verification` -> `removeUserVerification`
+- [x] `remove_chat_verification` -> `removeChatVerification`
 
 ### Business, Gifts, And Stories
 

@@ -4,7 +4,7 @@ module TelegramBot
 
     property message_id : Int32
     property message_thread_id : Int32?
-    property direct_messages_topic : JSON::Any?
+    property direct_messages_topic : DirectMessagesTopic?
     property from : User?
     property sender_chat : Chat?
     property sender_boost_count : Int32?

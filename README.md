@@ -480,9 +480,9 @@ Override these methods in your bot subclass:
 
 - Message compatibility: `MessageId`, `InaccessibleMessage`,
   `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
-  `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `MessageOrigin`,
-  `MessageOriginUser`, `MessageOriginHiddenUser`, `MessageOriginChat`,
-  `MessageOriginChannel`
+  `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `DirectMessagesTopic`,
+  `MessageOrigin`, `MessageOriginUser`, `MessageOriginHiddenUser`,
+  `MessageOriginChat`, `MessageOriginChannel`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

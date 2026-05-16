@@ -73,7 +73,7 @@ describe TelegramBot::Message do
       JSON
 
     message.message_thread_id.should eq(7)
-    message.direct_messages_topic.try(&.["topic_id"].as_i).should eq(3)
+    message.direct_messages_topic.try(&.topic_id).should eq(3)
     message.sender_chat.try(&.title).should eq("Group")
     message.sender_boost_count.should eq(2)
     message.sender_business_bot.try(&.first_name).should eq("Business Bot")

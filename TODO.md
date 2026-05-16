@@ -124,9 +124,11 @@ Known high-risk type groups:
 - [ ] Updates and handler hook payloads.
 - [ ] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
 - [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
+  - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
 - [ ] Checklists and suggested posts.
 - [ ] Direct messages and topic objects.
 - [ ] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
+  - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
 - [ ] Business connection, business profile, business messages, and business account objects.
 - [ ] Stories.
 - [ ] Chat members, administrator rights, permissions, boosts, invite links, and join requests.

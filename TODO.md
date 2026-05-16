@@ -12,8 +12,8 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Core
 
-- [ ] `log_out` -> `logOut`
-- [ ] `close` -> `close`
+- [x] `log_out` -> `logOut`
+- [x] `close` -> `close`
 
 ### Sending, Editing, And Deleting Messages
 

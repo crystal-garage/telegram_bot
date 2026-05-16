@@ -100,6 +100,24 @@ module TelegramBot
       request("getMe", force_http: true)
     end
 
+    # Logs out from the cloud Bot API server before launching the bot locally.
+    #
+    # See: <https://core.telegram.org/bots/api#logout>
+    def log_out : Bool?
+      res = request("logOut", force_http: true)
+
+      res.as_bool if res
+    end
+
+    # Closes the bot instance before moving it from one local server to another.
+    #
+    # See: <https://core.telegram.org/bots/api#close>
+    def close : Bool?
+      res = request("close", force_http: true)
+
+      res.as_bool if res
+    end
+
     # Receives incoming updates using long polling.
     #
     # See: <https://core.telegram.org/bots/api#getupdates>

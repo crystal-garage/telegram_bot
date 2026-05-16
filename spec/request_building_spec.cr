@@ -4,6 +4,8 @@ class RequestBuildingBot < TelegramBot::Bot
   getter last_method, last_force_http, last_params, handled_update
 
   TRUE_METHODS = [
+    "logOut",
+    "close",
     "answerInlineQuery",
     "answerShippingQuery",
     "answerPreCheckoutQuery",
@@ -200,6 +202,20 @@ class RequestBuildingBot < TelegramBot::Bot
 end
 
 describe TelegramBot::Bot do
+  it "builds core lifecycle methods" do
+    bot = RequestBuildingBot.new
+
+    bot.log_out.should be_true
+    bot.last_method.should eq("logOut")
+    bot.last_force_http.should be_true
+    bot.last_params.empty?.should be_true
+
+    bot.close.should be_true
+    bot.last_method.should eq("close")
+    bot.last_force_http.should be_true
+    bot.last_params.empty?.should be_true
+  end
+
   it "builds sendPhoto with caption" do
     bot = RequestBuildingBot.new
     bot.send_photo(123, "photo-id", caption: "caption")

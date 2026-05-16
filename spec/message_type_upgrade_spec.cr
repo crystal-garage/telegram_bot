@@ -85,6 +85,10 @@ describe TelegramBot::Message do
         "chat_owner_changed": {
           "new_owner": {"id": 21, "is_bot": false, "first_name": "Owner"}
         },
+        "story": {
+          "chat": {"id": 1, "type": "private"},
+          "id": 100
+        },
         "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
@@ -125,6 +129,7 @@ describe TelegramBot::Message do
     message.direct_message_price_changed.try(&.are_direct_messages_enabled?).should be_true
     message.direct_message_price_changed.try(&.direct_message_star_count).should eq(5)
     message.paid_message_price_changed.try(&.paid_message_star_count).should eq(10)
+    message.story.try(&.id).should eq(100)
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
   end
@@ -220,6 +225,14 @@ describe TelegramBot::Message do
         },
         "external_reply": {
           "origin": {"type": "user", "date": 0, "sender_user": {"id": 3, "is_bot": false, "first_name": "Sender"}},
+          "story": {
+            "chat": {"id": 1, "type": "private"},
+            "id": 101
+          },
+          "checklist": {
+            "title": "Reply checklist",
+            "tasks": [{"id": 1, "text": "Task"}]
+          },
           "giveaway": {
             "chats": [{"id": -100, "type": "channel", "title": "Channel"}],
             "winners_selection_date": 1800000000,
@@ -242,6 +255,8 @@ describe TelegramBot::Message do
     message.giveaway_winners.try(&.winners.first.first_name).should eq("Winner")
     message.giveaway_winners.try(&.was_refunded?).should be_true
     message.giveaway_completed.try(&.is_star_giveaway?).should be_true
+    message.external_reply.try(&.story.try(&.id)).should eq(101)
+    message.external_reply.try(&.checklist.try(&.title)).should eq("Reply checklist")
     message.external_reply.try(&.giveaway.try(&.winner_count)).should eq(2)
     message.external_reply.try(&.giveaway_winners.try(&.winner_count)).should eq(1)
   end

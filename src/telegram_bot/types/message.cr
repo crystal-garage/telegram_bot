@@ -50,6 +50,7 @@ module TelegramBot
     property paid_media : PaidMediaInfo?
     property photo : Array(PhotoSize)?
     property sticker : Sticker?
+    property story : Story?
     property video : Video?
     property video_note : VideoNote?
     property voice : Voice?

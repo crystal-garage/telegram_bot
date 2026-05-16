@@ -415,7 +415,10 @@ types, while unimplemented items are intentionally left out of the public API.
   `send_paid_media`, `answer_shipping_query`, `answer_pre_checkout_query`,
   `get_my_star_balance`, `get_star_transactions`, `refund_star_payment`,
   `edit_user_star_subscription`, `get_available_gifts`, `send_gift`,
-  `gift_premium_subscription`, `get_sticker_set`, `upload_sticker_file`,
+  `gift_premium_subscription`, `get_business_account_star_balance`,
+  `transfer_business_account_stars`, `get_business_account_gifts`,
+  `get_user_gifts`, `get_chat_gifts`, `convert_gift_to_stars`,
+  `upgrade_gift`, `transfer_gift`, `get_sticker_set`, `upload_sticker_file`,
   `create_new_sticker_set`, `add_sticker_to_set`,
   `set_sticker_position_in_set`, `delete_sticker_from_set`
 - Bot commands and profile: `set_my_commands`, `get_my_commands`,

@@ -51,14 +51,14 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Business, Gifts, And Stories
 
-- [ ] `get_business_account_star_balance` -> `getBusinessAccountStarBalance`
-- [ ] `transfer_business_account_stars` -> `transferBusinessAccountStars`
-- [ ] `get_business_account_gifts` -> `getBusinessAccountGifts`
-- [ ] `get_user_gifts` -> `getUserGifts`
-- [ ] `get_chat_gifts` -> `getChatGifts`
-- [ ] `convert_gift_to_stars` -> `convertGiftToStars`
-- [ ] `upgrade_gift` -> `upgradeGift`
-- [ ] `transfer_gift` -> `transferGift`
+- [x] `get_business_account_star_balance` -> `getBusinessAccountStarBalance`
+- [x] `transfer_business_account_stars` -> `transferBusinessAccountStars`
+- [x] `get_business_account_gifts` -> `getBusinessAccountGifts`
+- [x] `get_user_gifts` -> `getUserGifts`
+- [x] `get_chat_gifts` -> `getChatGifts`
+- [x] `convert_gift_to_stars` -> `convertGiftToStars`
+- [x] `upgrade_gift` -> `upgradeGift`
+- [x] `transfer_gift` -> `transferGift`
 - [ ] `post_story` -> `postStory`
 - [ ] `repost_story` -> `repostStory`
 - [ ] `edit_story` -> `editStory`

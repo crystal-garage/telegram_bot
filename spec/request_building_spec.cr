@@ -46,6 +46,10 @@ class RequestBuildingBot < TelegramBot::Bot
     "editUserStarSubscription",
     "sendGift",
     "giftPremiumSubscription",
+    "transferBusinessAccountStars",
+    "convertGiftToStars",
+    "upgradeGift",
+    "transferGift",
     "readBusinessMessage",
     "deleteBusinessMessages",
     "setBusinessAccountName",
@@ -101,6 +105,10 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),
     "getStarTransactions"              => %({"transactions":[{"id":"tx-id","amount":10,"date":1800000000,"source":{"type":"user","transaction_type":"paid_media_payment","user":{"id":1,"is_bot":false,"first_name":"User"},"paid_media_payload":"payload","paid_media":[{"type":"preview","width":320}]}}]}),
     "getAvailableGifts"                => %({"gifts":[{"id":"gift-id","sticker":{"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},"star_count":100,"upgrade_star_count":25}]}),
+    "getBusinessAccountStarBalance"    => %({"amount":250,"nanostar_amount":0}),
+    "getBusinessAccountGifts"          => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}],"next_offset":"next"}),
+    "getUserGifts"                     => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}]}),
+    "getChatGifts"                     => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}]}),
     "answerGuestQuery"                 => %({"inline_message_id":"guest-inline-id"}),
     "getBusinessConnection"            => %({"id":"business-id","user":{"id":1,"is_bot":false,"first_name":"User"},"user_chat_id":100,"date":1800000000,"rights":{"can_reply":true},"is_enabled":true}),
     "getManagedBotToken"               => %("managed-token"),
@@ -532,6 +540,59 @@ describe TelegramBot::Bot do
     bot.last_force_http.should be_true
     bot.last_params["month_count"].should eq("3")
     bot.last_params["star_count"].should eq("1000")
+
+    business_balance = bot.get_business_account_star_balance("business-id")
+    business_balance.amount.should eq(250)
+    bot.last_method.should eq("getBusinessAccountStarBalance")
+    bot.last_force_http.should be_true
+
+    bot.transfer_business_account_stars("business-id", 100).should be_true
+    bot.last_method.should eq("transferBusinessAccountStars")
+    bot.last_force_http.should be_true
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["star_count"].should eq("100")
+
+    business_gifts = bot.get_business_account_gifts(
+      "business-id",
+      exclude_unsaved: true,
+      sort_by_price: true,
+      offset: "offset",
+      limit: 10
+    )
+    business_gifts.total_count.should eq(1)
+    business_gifts.gifts.first.owned_gift_id.should eq("owned-gift-id")
+    bot.last_method.should eq("getBusinessAccountGifts")
+    bot.last_params["exclude_unsaved"].should eq("true")
+    bot.last_params["sort_by_price"].should eq("true")
+    bot.last_params["offset"].should eq("offset")
+    bot.last_params["limit"].should eq("10")
+
+    user_gifts = bot.get_user_gifts(1, exclude_unique: true, limit: 5)
+    user_gifts.total_count.should eq(1)
+    bot.last_method.should eq("getUserGifts")
+    bot.last_params["user_id"].should eq("1")
+    bot.last_params["exclude_unique"].should eq("true")
+
+    chat_gifts = bot.get_chat_gifts("@channel", exclude_saved: true, exclude_from_blockchain: true)
+    chat_gifts.total_count.should eq(1)
+    bot.last_method.should eq("getChatGifts")
+    bot.last_params["chat_id"].should eq("@channel")
+    bot.last_params["exclude_saved"].should eq("true")
+    bot.last_params["exclude_from_blockchain"].should eq("true")
+
+    bot.convert_gift_to_stars("business-id", "owned-gift-id").should be_true
+    bot.last_method.should eq("convertGiftToStars")
+    bot.last_params["owned_gift_id"].should eq("owned-gift-id")
+
+    bot.upgrade_gift("business-id", "owned-gift-id", keep_original_details: true, star_count: 25).should be_true
+    bot.last_method.should eq("upgradeGift")
+    bot.last_params["keep_original_details"].should eq("true")
+    bot.last_params["star_count"].should eq("25")
+
+    bot.transfer_gift("business-id", "owned-gift-id", 123, star_count: 10).should be_true
+    bot.last_method.should eq("transferGift")
+    bot.last_params["new_owner_chat_id"].should eq("123")
+    bot.last_params["star_count"].should eq("10")
   end
 
   it "builds business, guest, and managed bot methods" do

@@ -419,8 +419,13 @@ types, while unimplemented items are intentionally left out of the public API.
   `transfer_business_account_stars`, `get_business_account_gifts`,
   `get_user_gifts`, `get_chat_gifts`, `convert_gift_to_stars`,
   `upgrade_gift`, `transfer_gift`, `get_sticker_set`, `upload_sticker_file`,
-  `create_new_sticker_set`, `add_sticker_to_set`,
-  `set_sticker_position_in_set`, `delete_sticker_from_set`
+  `get_custom_emoji_stickers`, `create_new_sticker_set`,
+  `add_sticker_to_set`, `replace_sticker_in_set`,
+  `set_sticker_position_in_set`, `set_sticker_emoji_list`,
+  `set_sticker_keywords`, `set_sticker_mask_position`,
+  `set_sticker_set_title`, `set_sticker_set_thumbnail`,
+  `set_custom_emoji_sticker_set_thumbnail`, `delete_sticker_from_set`,
+  `delete_sticker_set`
 - Bot commands and profile: `set_my_commands`, `get_my_commands`,
   `delete_my_commands`, `set_my_name`, `get_my_name`, `set_my_description`,
   `get_my_description`, `set_my_short_description`,

@@ -66,15 +66,15 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Stickers
 
-- [ ] `get_custom_emoji_stickers` -> `getCustomEmojiStickers`
-- [ ] `replace_sticker_in_set` -> `replaceStickerInSet`
-- [ ] `set_sticker_emoji_list` -> `setStickerEmojiList`
-- [ ] `set_sticker_keywords` -> `setStickerKeywords`
-- [ ] `set_sticker_mask_position` -> `setStickerMaskPosition`
-- [ ] `set_sticker_set_title` -> `setStickerSetTitle`
-- [ ] `set_sticker_set_thumbnail` -> `setStickerSetThumbnail`
-- [ ] `set_custom_emoji_sticker_set_thumbnail` -> `setCustomEmojiStickerSetThumbnail`
-- [ ] `delete_sticker_set` -> `deleteStickerSet`
+- [x] `get_custom_emoji_stickers` -> `getCustomEmojiStickers`
+- [x] `replace_sticker_in_set` -> `replaceStickerInSet`
+- [x] `set_sticker_emoji_list` -> `setStickerEmojiList`
+- [x] `set_sticker_keywords` -> `setStickerKeywords`
+- [x] `set_sticker_mask_position` -> `setStickerMaskPosition`
+- [x] `set_sticker_set_title` -> `setStickerSetTitle`
+- [x] `set_sticker_set_thumbnail` -> `setStickerSetThumbnail`
+- [x] `set_custom_emoji_sticker_set_thumbnail` -> `setCustomEmojiStickerSetThumbnail`
+- [x] `delete_sticker_set` -> `deleteStickerSet`
 
 ### Payments And Passport
 

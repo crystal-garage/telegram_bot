@@ -73,8 +73,16 @@ class RequestBuildingBot < TelegramBot::Bot
     "unpinAllGeneralForumTopicMessages",
     "createNewStickerSet",
     "addStickerToSet",
+    "replaceStickerInSet",
     "setStickerPositionInSet",
+    "setStickerEmojiList",
+    "setStickerKeywords",
+    "setStickerMaskPosition",
+    "setStickerSetTitle",
+    "setStickerSetThumbnail",
+    "setCustomEmojiStickerSetThumbnail",
     "deleteStickerFromSet",
+    "deleteStickerSet",
   ]
 
   METHOD_RESPONSES = {
@@ -100,6 +108,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "revokeChatInviteLink"             => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":true}),
     "getForumTopicIconStickers"        => %([{"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false}]),
     "getStickerSet"                    => %({"name":"set_name","title":"Sticker Set","sticker_type":"regular","stickers":[{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false}]}),
+    "getCustomEmojiStickers"           => %([{"file_id":"custom-emoji-id","file_unique_id":"custom-emoji-unique","type":"custom_emoji","width":512,"height":512,"is_animated":true,"is_video":false,"custom_emoji_id":"emoji-id"}]),
     "uploadStickerFile"                => %({"file_id":"uploaded-sticker-id"}),
     "createForumTopic"                 => %({"message_thread_id":42,"name":"Topic","icon_color":7322096,"icon_custom_emoji_id":"emoji-id"}),
     "sendPaidMedia"                    => %({"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"paid_media":{"star_count":10,"paid_media":[{"type":"preview","width":320,"height":240}]}}),
@@ -1306,6 +1315,11 @@ describe TelegramBot::Bot do
     sticker_set.try(&.stickers.first.file_unique_id).should eq("sticker-id-unique")
     bot.last_method.should eq("getStickerSet")
 
+    custom_emoji_stickers = bot.get_custom_emoji_stickers(["emoji-id"])
+    custom_emoji_stickers.first.custom_emoji_id.should eq("emoji-id")
+    bot.last_method.should eq("getCustomEmojiStickers")
+    bot.last_params["custom_emoji_ids"].should eq("[\"emoji-id\"]")
+
     ::File.tempfile("sticker") do |file|
       uploaded = bot.upload_sticker_file(1, file, "static")
       uploaded.try(&.file_id).should eq("uploaded-sticker-id")
@@ -1333,11 +1347,45 @@ describe TelegramBot::Bot do
     bot.param("sticker").should contain("InputSticker")
     bot.last_params.has_key?("png_sticker").should be_false
 
+    bot.replace_sticker_in_set(1, "set_name", "old-sticker-id", input_sticker).should be_true
+    bot.last_method.should eq("replaceStickerInSet")
+    bot.last_params["old_sticker"].should eq("old-sticker-id")
+    bot.param("sticker").should contain("InputSticker")
+
     bot.set_sticker_position_in_set("sticker-id", 2).should be_true
     bot.last_method.should eq("setStickerPositionInSet")
 
+    bot.set_sticker_emoji_list("sticker-id", ["🙂"]).should be_true
+    bot.last_method.should eq("setStickerEmojiList")
+    bot.last_params["emoji_list"].should eq("[\"🙂\"]")
+
+    bot.set_sticker_keywords("sticker-id", ["crystal"]).should be_true
+    bot.last_method.should eq("setStickerKeywords")
+    bot.last_params["keywords"].should eq("[\"crystal\"]")
+
+    mask_position = TelegramBot::MaskPosition.new("forehead", 0.0, 0.0, 1.0)
+    bot.set_sticker_mask_position("sticker-id", mask_position).should be_true
+    bot.last_method.should eq("setStickerMaskPosition")
+    bot.param("mask_position").should contain("MaskPosition")
+
+    bot.set_sticker_set_title("set_name", "New Title").should be_true
+    bot.last_method.should eq("setStickerSetTitle")
+    bot.last_params["title"].should eq("New Title")
+
+    bot.set_sticker_set_thumbnail("set_name", 1, "static", "thumbnail-id").should be_true
+    bot.last_method.should eq("setStickerSetThumbnail")
+    bot.last_params["thumbnail"].should eq("thumbnail-id")
+    bot.last_params["format"].should eq("static")
+
+    bot.set_custom_emoji_sticker_set_thumbnail("set_name", "emoji-id").should be_true
+    bot.last_method.should eq("setCustomEmojiStickerSetThumbnail")
+    bot.last_params["custom_emoji_id"].should eq("emoji-id")
+
     bot.delete_sticker_from_set("sticker-id").should be_true
     bot.last_method.should eq("deleteStickerFromSet")
+
+    bot.delete_sticker_set("set_name").should be_true
+    bot.last_method.should eq("deleteStickerSet")
   end
 
   it "builds multipart bodies with serialized non-file params" do

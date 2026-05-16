@@ -23,9 +23,15 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
     "banChatMember",
+    "banChatSenderChat",
+    "unbanChatSenderChat",
     "restrictChatMember",
+    "setChatPermissions",
+    "setChatAdministratorCustomTitle",
+    "setChatMemberTag",
     "approveChatJoinRequest",
     "declineChatJoinRequest",
+    "unpinAllChatMessages",
     "setMessageReaction",
     "deleteMessageReaction",
     "deleteAllMessageReactions",
@@ -67,6 +73,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
     "getChatMemberCount"               => %(12),
+    "getUserChatBoosts"                => %({"boosts":[{"boost_id":"boost-id","add_date":1800000000,"expiration_date":1900000000,"source":{"source":"premium","user":{"id":1,"is_bot":false,"first_name":"User"}}}]}),
     "answerWebAppQuery"                => %({"inline_message_id":"inline-id"}),
     "savePreparedInlineMessage"        => %({"id":"prepared-inline-id","expiration_date":1800000000}),
     "savePreparedKeyboardButton"       => %({"id":"prepared-keyboard-id"}),
@@ -935,6 +942,7 @@ describe TelegramBot::Bot do
     permissions = TelegramBot::ChatPermissions.new(
       can_send_messages: true,
       can_send_photos: true,
+      can_edit_tag: true,
       can_react_to_messages: true
     )
 
@@ -942,11 +950,32 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("banChatMember")
     bot.last_params["revoke_messages"].should eq("true")
 
+    bot.ban_chat_sender_chat("@group", -100).should be_true
+    bot.last_method.should eq("banChatSenderChat")
+    bot.last_params["sender_chat_id"].should eq("-100")
+
+    bot.unban_chat_sender_chat("@group", -100).should be_true
+    bot.last_method.should eq("unbanChatSenderChat")
+    bot.last_params["sender_chat_id"].should eq("-100")
+
     bot.restrict_chat_member("@group", 123, permissions: permissions, use_independent_chat_permissions: true)
 
     bot.last_method.should eq("restrictChatMember")
     bot.param("permissions").should contain("ChatPermissions")
     bot.last_params["use_independent_chat_permissions"].should eq("true")
+
+    bot.set_chat_permissions("@group", permissions, use_independent_chat_permissions: true).should be_true
+    bot.last_method.should eq("setChatPermissions")
+    bot.param("permissions").should contain("ChatPermissions")
+    bot.last_params["use_independent_chat_permissions"].should eq("true")
+
+    bot.set_chat_administrator_custom_title("@group", 123, "Admin").should be_true
+    bot.last_method.should eq("setChatAdministratorCustomTitle")
+    bot.last_params["custom_title"].should eq("Admin")
+
+    bot.set_chat_member_tag("@group", 123, "Trusted").should be_true
+    bot.last_method.should eq("setChatMemberTag")
+    bot.last_params["tag"].should eq("Trusted")
 
     media_permissions = TelegramBot::ChatPermissions.new(
       can_send_audios: true,
@@ -995,10 +1024,16 @@ describe TelegramBot::Bot do
     bot.get_chat_member_count("@group").should eq(12)
     bot.last_method.should eq("getChatMemberCount")
 
+    boosts = bot.get_user_chat_boosts("@group", 123)
+    boosts.boosts.first.boost_id.should eq("boost-id")
+    bot.last_method.should eq("getUserChatBoosts")
+    bot.last_params["user_id"].should eq("123")
+
     JSON.parse(permissions.to_json).should eq(JSON.parse(<<-JSON))
       {
         "can_send_messages": true,
         "can_send_photos": true,
+        "can_edit_tag": true,
         "can_react_to_messages": true
       }
       JSON
@@ -1052,6 +1087,9 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("unhideGeneralForumTopic")
     bot.unpin_all_general_forum_topic_messages("@group").should be_true
     bot.last_method.should eq("unpinAllGeneralForumTopicMessages")
+
+    bot.unpin_all_chat_messages("@group").should be_true
+    bot.last_method.should eq("unpinAllChatMessages")
   end
 
   it "builds sticker set methods" do

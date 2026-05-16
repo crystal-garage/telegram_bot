@@ -124,6 +124,38 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Bans a channel chat in a supergroup or channel.
+    #
+    # See: <https://core.telegram.org/bots/api#banchatsenderchat>
+    def ban_chat_sender_chat(
+      chat_id : Int | String,
+      sender_chat_id : Int,
+    )
+      res = def_request(
+        "banChatSenderChat",
+        chat_id,
+        sender_chat_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Unbans a previously banned channel chat in a supergroup or channel.
+    #
+    # See: <https://core.telegram.org/bots/api#unbanchatsenderchat>
+    def unban_chat_sender_chat(
+      chat_id : Int | String,
+      sender_chat_id : Int,
+    )
+      res = def_request(
+        "unbanChatSenderChat",
+        chat_id,
+        sender_chat_id
+      )
+
+      res.as_bool if res
+    end
+
     # Restricts a user in a supergroup.
     #
     # See: <https://core.telegram.org/bots/api#restrictchatmember>
@@ -141,6 +173,24 @@ module TelegramBot
         permissions,
         use_independent_chat_permissions,
         until_date
+      )
+
+      res.as_bool if res
+    end
+
+    # Sets default chat permissions for all members.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatpermissions>
+    def set_chat_permissions(
+      chat_id : Int | String,
+      permissions : ChatPermissions,
+      use_independent_chat_permissions : Bool? = nil,
+    )
+      res = def_request(
+        "setChatPermissions",
+        chat_id,
+        permissions,
+        use_independent_chat_permissions
       )
 
       res.as_bool if res
@@ -173,6 +223,42 @@ module TelegramBot
         can_restrict_members,
         can_pin_messages,
         can_promote_members
+      )
+
+      res.as_bool if res
+    end
+
+    # Sets a custom title for an administrator in a supergroup.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatadministratorcustomtitle>
+    def set_chat_administrator_custom_title(
+      chat_id : Int | String,
+      user_id : Int,
+      custom_title : String,
+    )
+      res = def_request(
+        "setChatAdministratorCustomTitle",
+        chat_id,
+        user_id,
+        custom_title
+      )
+
+      res.as_bool if res
+    end
+
+    # Sets a tag for a regular member in a group or supergroup.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatmembertag>
+    def set_chat_member_tag(
+      chat_id : Int | String,
+      user_id : Int,
+      tag : String? = nil,
+    )
+      res = def_request(
+        "setChatMemberTag",
+        chat_id,
+        user_id,
+        tag
       )
 
       res.as_bool if res
@@ -418,6 +504,20 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Clears the list of pinned messages in a chat.
+    #
+    # See: <https://core.telegram.org/bots/api#unpinallchatmessages>
+    def unpin_all_chat_messages(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "unpinAllChatMessages",
+        chat_id
+      )
+
+      res.as_bool if res
+    end
+
     # Returns information about a chat.
     #
     # See: <https://core.telegram.org/bots/api#getchat>
@@ -477,6 +577,22 @@ module TelegramBot
       )
 
       ChatMember.from_json(res.not_nil!.to_json)
+    end
+
+    # Returns boosts added to a chat by a user.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserchatboosts>
+    def get_user_chat_boosts(
+      chat_id : Int | String,
+      user_id : Int,
+    ) : UserChatBoosts
+      res = def_request(
+        "getUserChatBoosts",
+        chat_id,
+        user_id
+      )
+
+      UserChatBoosts.from_json(res.not_nil!.to_json)
     end
 
     # Returns the number of members in a chat.

@@ -23,4 +23,10 @@ module TelegramBot
     property remove_date : Int32?
     property source : JSON::Any?
   end
+
+  class UserChatBoosts
+    include JSON::Serializable
+
+    property boosts : Array(ChatBoost)
+  end
 end

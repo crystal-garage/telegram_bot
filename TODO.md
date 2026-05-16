@@ -27,13 +27,13 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Chat Administration
 
-- [ ] `set_chat_administrator_custom_title` -> `setChatAdministratorCustomTitle`
-- [ ] `set_chat_member_tag` -> `setChatMemberTag`
-- [ ] `ban_chat_sender_chat` -> `banChatSenderChat`
-- [ ] `unban_chat_sender_chat` -> `unbanChatSenderChat`
-- [ ] `set_chat_permissions` -> `setChatPermissions`
-- [ ] `unpin_all_chat_messages` -> `unpinAllChatMessages`
-- [ ] `get_user_chat_boosts` -> `getUserChatBoosts`
+- [x] `set_chat_administrator_custom_title` -> `setChatAdministratorCustomTitle`
+- [x] `set_chat_member_tag` -> `setChatMemberTag`
+- [x] `ban_chat_sender_chat` -> `banChatSenderChat`
+- [x] `unban_chat_sender_chat` -> `unbanChatSenderChat`
+- [x] `set_chat_permissions` -> `setChatPermissions`
+- [x] `unpin_all_chat_messages` -> `unpinAllChatMessages`
+- [x] `get_user_chat_boosts` -> `getUserChatBoosts`
 
 ### Bot Profile And Menu
 

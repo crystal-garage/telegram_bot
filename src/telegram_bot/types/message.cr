@@ -93,6 +93,8 @@ module TelegramBot
     property checklist_tasks_done : ChecklistTasksDone?
     property checklist_tasks_added : ChecklistTasksAdded?
     property managed_bot_created : ManagedBotCreated?
+    property direct_message_price_changed : DirectMessagePriceChanged?
+    property paid_message_price_changed : PaidMessagePriceChanged?
     property suggested_post_approved : SuggestedPostApproved?
     property suggested_post_approval_failed : SuggestedPostApprovalFailed?
     property suggested_post_declined : SuggestedPostDeclined?

@@ -72,6 +72,13 @@ describe TelegramBot::Message do
         "checklist_tasks_added": {
           "tasks": [{"id": 3, "text": "Document"}]
         },
+        "direct_message_price_changed": {
+          "are_direct_messages_enabled": true,
+          "direct_message_star_count": 5
+        },
+        "paid_message_price_changed": {
+          "paid_message_star_count": 10
+        },
         "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
@@ -107,6 +114,9 @@ describe TelegramBot::Message do
     message.checklist.try(&.others_can_add_tasks?).should be_true
     message.checklist_tasks_done.try(&.marked_as_done_task_ids).should eq([1])
     message.checklist_tasks_added.try(&.tasks.first.text).should eq("Document")
+    message.direct_message_price_changed.try(&.are_direct_messages_enabled?).should be_true
+    message.direct_message_price_changed.try(&.direct_message_star_count).should eq(5)
+    message.paid_message_price_changed.try(&.paid_message_star_count).should eq(10)
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
   end

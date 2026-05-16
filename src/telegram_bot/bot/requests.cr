@@ -1,5 +1,6 @@
 module TelegramBot
   class Bot
+    # :nodoc:
     protected def request(
       method : String,
       force_http : Bool = false,
@@ -32,6 +33,7 @@ module TelegramBot
       handle_http_response(response)
     end
 
+    # :nodoc:
     protected def serialize_params(params : Hash) : Hash(String, String | ::File)
       params.reduce(Hash(String, String | ::File).new) do |serialized, (key, value)|
         serialized[key] = serialize_param(value) unless value.nil?
@@ -40,30 +42,37 @@ module TelegramBot
       end
     end
 
+    # :nodoc:
     protected def serialize_param(value : ::File) : ::File
       value
     end
 
+    # :nodoc:
     protected def serialize_param(value : String) : String
       value
     end
 
+    # :nodoc:
     protected def serialize_param(value : Bool) : String
       value.to_s
     end
 
+    # :nodoc:
     protected def serialize_param(value : Number) : String
       value.to_s
     end
 
+    # :nodoc:
     protected def serialize_param(value : Array) : String
       value.to_json
     end
 
+    # :nodoc:
     protected def serialize_param(value) : String
       value.to_json
     end
 
+    # :nodoc:
     protected def handle_http_response(response)
       if response.status_code == 200
         json = JSON.parse(response.body)
@@ -118,6 +127,7 @@ module TelegramBot
       r
     end
 
+    # :nodoc:
     macro def_request(name, *args)
       params = {
         {% for arg in args %}
@@ -128,6 +138,7 @@ module TelegramBot
       request({{ name }}, force_http: false, params: params)
     end
 
+    # :nodoc:
     macro def_force_request(name, *args)
       params = {
         {% for arg in args %}

@@ -47,25 +47,9 @@ module TelegramBot
 
     property type : String = "live_photo"
     property media : String
-    property thumbnail : String?
-    property cover : String?
-    property start_timestamp : Int32?
-    property width : Int32?
-    property height : Int32?
-    property duration : Int32?
-    property? supports_streaming : Bool?
+    property photo : String
 
-    def initialize(
-      @media : String,
-      *,
-      @thumbnail : String? = nil,
-      @cover : String? = nil,
-      @start_timestamp : Int32? = nil,
-      @width : Int32? = nil,
-      @height : Int32? = nil,
-      @duration : Int32? = nil,
-      @supports_streaming = nil,
-    )
+    def initialize(@media : String, @photo : String)
     end
   end
 end

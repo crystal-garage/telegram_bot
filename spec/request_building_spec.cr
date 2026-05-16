@@ -506,6 +506,7 @@ describe TelegramBot::Bot do
     media = [
       TelegramBot::InputPaidMediaPhoto.new("photo-id"),
       TelegramBot::InputPaidMediaVideo.new("video-id", thumbnail: "thumb-id", supports_streaming: true),
+      TelegramBot::InputPaidMediaLivePhoto.new("live-photo-video-id", "live-photo-id"),
     ] of TelegramBot::InputPaidMedia
 
     message = bot.send_paid_media(
@@ -534,6 +535,11 @@ describe TelegramBot::Bot do
           "media": "video-id",
           "thumbnail": "thumb-id",
           "supports_streaming": true
+        },
+        {
+          "type": "live_photo",
+          "media": "live-photo-video-id",
+          "photo": "live-photo-id"
         }
       ]
       JSON

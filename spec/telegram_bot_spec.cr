@@ -10,6 +10,11 @@ class TestBot < TelegramBot::Bot
       send_message msg.chat.id, "test"
     end
   end
+
+  protected def request(method : String, force_http : Bool = false, params = nil)
+    Fiber.yield
+    JSON.parse("[]")
+  end
 end
 
 class OverrideHandlerBot < TelegramBot::Bot
@@ -31,18 +36,19 @@ describe TelegramBot do
   end
 
   it "logs messages" do
-    IO.pipe do |reader, writer|
-      test = TestBot.new
-      TestBot::Log.level = :debug
-      TestBot::Log.backend = ::Log::IOBackend.new(writer)
+    io = IO::Memory.new
+    test = TestBot.new
+    TestBot::Log.level = :debug
+    TestBot::Log.backend = ::Log::IOBackend.new(io)
 
-      spawn { test.polling }
-      Fiber.yield
-      test.stop
+    spawn { test.polling }
+    Fiber.yield
+    test.stop
+    Fiber.yield
 
-      reader.gets.should match(/TestBot is ready to lead/)
-      reader.gets.should match(/TestBot is going to take a rest/)
-    end
+    logs = io.to_s
+    logs.should match(/TestBot is ready to lead/)
+    logs.should match(/TestBot is going to take a rest/)
   end
 
   it "dispatches messages to registered block handlers" do

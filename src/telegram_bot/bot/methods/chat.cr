@@ -6,10 +6,14 @@ module TelegramBot
     def send_chat_action(
       chat_id : Int | String,
       action : String,
+      business_connection_id : String? = nil,
+      message_thread_id : Int32? = nil,
     )
       res = def_request(
         "sendChatAction",
+        business_connection_id,
         chat_id,
+        message_thread_id,
         action
       )
 

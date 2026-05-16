@@ -1,25 +1,29 @@
 module TelegramBot
-  class InputMediaPhoto < InputMedia
+  class InputMediaAudio < InputMedia
     include JSON::Serializable
 
     property type : String
     property media : String
+    property thumbnail : String?
     property caption : String?
     property parse_mode : String?
     property caption_entities : Array(MessageEntity)?
-    property? show_caption_above_media : Bool?
-    property? has_spoiler : Bool?
+    property duration : Int32?
+    property performer : String?
+    property title : String?
 
     def initialize(
       @media : String,
       *,
+      @thumbnail : String? = nil,
       @caption : String? = nil,
       @parse_mode : String? = nil,
       @caption_entities : Array(MessageEntity)? = nil,
-      @show_caption_above_media : Bool? = nil,
-      @has_spoiler : Bool? = nil,
+      @duration : Int32? = nil,
+      @performer : String? = nil,
+      @title : String? = nil,
     )
-      @type = "photo"
+      @type = "audio"
     end
   end
 end

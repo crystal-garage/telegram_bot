@@ -483,6 +483,9 @@ Override these methods in your bot subclass:
   `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `MessageOrigin`,
   `MessageOriginUser`, `MessageOriginHiddenUser`, `MessageOriginChat`,
   `MessageOriginChannel`
+- Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
+  `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
+  `InputMediaVideo`
 - Polls, reactions, and forum service messages: `Dice`, `Poll`,
   `PollOption`, `InputPollOption`, `PollMedia`, `PollAnswer`,
   `PollOptionAdded`, `PollOptionDeleted`, `ReactionTypeEmoji`,

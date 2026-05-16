@@ -40,6 +40,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "approveChatJoinRequest",
     "declineChatJoinRequest",
     "unpinAllChatMessages",
+    "sendChatAction",
     "setMessageReaction",
     "deleteMessageReaction",
     "deleteAllMessageReactions",
@@ -422,7 +423,13 @@ describe TelegramBot::Bot do
 
   it "builds editMessageMedia" do
     bot = RequestBuildingBot.new
-    media = TelegramBot::InputMediaPhoto.from_json(%({"type":"photo","media":"photo-id","caption":"caption"}))
+    media = TelegramBot::InputMediaPhoto.new(
+      "photo-id",
+      caption: "caption",
+      caption_entities: [TelegramBot::MessageEntity.new("bold", 0, 7)],
+      show_caption_above_media: true,
+      has_spoiler: true
+    )
 
     message = bot.edit_message_media(
       media,
@@ -437,6 +444,18 @@ describe TelegramBot::Bot do
     bot.last_params["chat_id"].should eq("123")
     bot.last_params["message_id"].should eq("7")
     bot.param("media").should contain("InputMediaPhoto")
+
+    params = bot.serialize_for_spec({"media" => media})
+    JSON.parse(params["media"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "photo",
+        "media": "photo-id",
+        "caption": "caption",
+        "caption_entities": [{"type": "bold", "offset": 0, "length": 7}],
+        "show_caption_above_media": true,
+        "has_spoiler": true
+      }
+      JSON
   end
 
   it "builds sendPoll and sendDice" do
@@ -960,6 +979,101 @@ describe TelegramBot::Bot do
       JSON
   end
 
+  it "serializes all input media variants" do
+    bot = RequestBuildingBot.new
+    media = [
+      TelegramBot::InputMediaAnimation.new(
+        "animation-id",
+        thumbnail: "thumb-id",
+        caption: "animation",
+        show_caption_above_media: true,
+        width: 320,
+        height: 240,
+        duration: 10,
+        has_spoiler: true
+      ),
+      TelegramBot::InputMediaAudio.new(
+        "audio-id",
+        thumbnail: "thumb-id",
+        caption: "audio",
+        duration: 10,
+        performer: "performer",
+        title: "title"
+      ),
+      TelegramBot::InputMediaDocument.new(
+        "document-id",
+        thumbnail: "thumb-id",
+        caption: "document",
+        disable_content_type_detection: true
+      ),
+      TelegramBot::InputMediaLivePhoto.new("live-photo-id"),
+      TelegramBot::InputMediaVideo.new(
+        "video-id",
+        thumbnail: "thumb-id",
+        cover: "cover-id",
+        start_timestamp: 5,
+        caption: "video",
+        show_caption_above_media: true,
+        width: 320,
+        height: 240,
+        duration: 10,
+        supports_streaming: true,
+        has_spoiler: true
+      ),
+    ] of TelegramBot::InputMedia
+
+    params = bot.serialize_for_spec({"media" => media})
+    JSON.parse(params["media"].as(String)).should eq(JSON.parse(<<-JSON))
+      [
+        {
+          "type": "animation",
+          "media": "animation-id",
+          "thumbnail": "thumb-id",
+          "caption": "animation",
+          "show_caption_above_media": true,
+          "width": 320,
+          "height": 240,
+          "duration": 10,
+          "has_spoiler": true
+        },
+        {
+          "type": "audio",
+          "media": "audio-id",
+          "thumbnail": "thumb-id",
+          "caption": "audio",
+          "duration": 10,
+          "performer": "performer",
+          "title": "title"
+        },
+        {
+          "type": "document",
+          "media": "document-id",
+          "thumbnail": "thumb-id",
+          "caption": "document",
+          "disable_content_type_detection": true
+        },
+        {
+          "type": "live_photo",
+          "media": "live-photo-id"
+        },
+        {
+          "type": "video",
+          "media": "video-id",
+          "thumbnail": "thumb-id",
+          "cover": "cover-id",
+          "start_timestamp": 5,
+          "caption": "video",
+          "show_caption_above_media": true,
+          "width": 320,
+          "height": 240,
+          "duration": 10,
+          "supports_streaming": true,
+          "has_spoiler": true
+        }
+      ]
+      JSON
+  end
+
   it "keeps wrappers passing native arrays to the request layer" do
     bot = RequestBuildingBot.new
     content = TelegramBot::InputTextMessageContent.new("Article details")
@@ -1252,6 +1366,12 @@ describe TelegramBot::Bot do
       can_edit_tag: true,
       can_react_to_messages: true
     )
+
+    bot.send_chat_action("@group", "typing", business_connection_id: "business-id", message_thread_id: 10).should be_true
+    bot.last_method.should eq("sendChatAction")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["message_thread_id"].should eq("10")
+    bot.last_params["action"].should eq("typing")
 
     until_date = 7.days.from_now
     bot.ban_chat_member("@group", 123, until_date: until_date, revoke_messages: true).should be_true

@@ -366,6 +366,67 @@ describe TelegramBot::Gift do
     message.gift_upgrade_sent.try(&.gift.id).should eq("gift-id")
     transaction.gift.try(&.star_count).should eq(100)
   end
+
+  it "parses owned gift variants" do
+    regular = TelegramBot::OwnedGiftRegular.from_json(<<-JSON)
+      {
+        "type": "regular",
+        "gift": {
+          "id": "gift-id",
+          "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+          "star_count": 100
+        },
+        "owned_gift_id": "owned-gift-id",
+        "send_date": 1800000000,
+        "can_be_upgraded": true,
+        "unique_gift_number": 7
+      }
+      JSON
+    unique = TelegramBot::OwnedGiftUnique.from_json(<<-JSON)
+      {
+        "type": "unique",
+        "gift": {
+          "gift_id": "unique-gift-id",
+          "base_name": "Gift",
+          "name": "Gift #1",
+          "number": 1,
+          "model": {
+            "name": "Model",
+            "sticker": {"file_id": "model-sticker-id", "file_unique_id": "model-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+            "rarity_per_mille": 100
+          },
+          "symbol": {
+            "name": "Symbol",
+            "sticker": {"file_id": "symbol-sticker-id", "file_unique_id": "symbol-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+            "rarity_per_mille": 100
+          },
+          "backdrop": {
+            "name": "Backdrop",
+            "colors": {
+              "center_color": 1,
+              "edge_color": 2,
+              "symbol_color": 3,
+              "text_color": 4
+            },
+            "rarity_per_mille": 100
+          }
+        },
+        "owned_gift_id": "owned-unique-gift-id",
+        "send_date": 1800000000,
+        "can_be_transferred": true,
+        "transfer_star_count": 25
+      }
+      JSON
+
+    regular.type.should eq("regular")
+    regular.gift.id.should eq("gift-id")
+    regular.can_be_upgraded?.should be_true
+    regular.unique_gift_number.should eq(7)
+    unique.type.should eq("unique")
+    unique.gift.name.should eq("Gift #1")
+    unique.can_be_transferred?.should be_true
+    unique.transfer_star_count.should eq(25)
+  end
 end
 
 describe TelegramBot::BusinessConnection do

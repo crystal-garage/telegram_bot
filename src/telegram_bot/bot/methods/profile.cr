@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Returns the bot's command list.
     #
     # See: <https://core.telegram.org/bots/api#getmycommands>

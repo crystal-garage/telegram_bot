@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Sends text messages.
     #
     # See: <https://core.telegram.org/bots/api#sendmessage>

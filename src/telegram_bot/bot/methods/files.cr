@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Returns file metadata and a download path.
     #
     # See: <https://core.telegram.org/bots/api#getfile>

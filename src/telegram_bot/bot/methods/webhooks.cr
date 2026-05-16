@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Sets a webhook for receiving incoming updates.
     #
     # See: <https://core.telegram.org/bots/api#setwebhook>

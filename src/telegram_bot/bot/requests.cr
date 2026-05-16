@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     protected def request(
       method : String,
       force_http : Bool = false,

@@ -485,7 +485,10 @@ Override these methods in your bot subclass:
   `MessageOriginChat`, `MessageOriginChannel`, `SuggestedPostInfo`,
   `SuggestedPostApproved`, `SuggestedPostApprovalFailed`,
   `SuggestedPostDeclined`, `SuggestedPostPaid`, `SuggestedPostRefunded`,
-  `PaidMessagePriceChanged`, `DirectMessagePriceChanged`
+  `PaidMessagePriceChanged`, `DirectMessagePriceChanged`, `ChatOwnerLeft`,
+  `ChatOwnerChanged`, `MessageAutoDeleteTimerChanged`, `SharedUser`,
+  `UsersShared`, `ChatShared`, `WriteAccessAllowed`,
+  `ProximityAlertTriggered`, `ChatBoostAdded`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

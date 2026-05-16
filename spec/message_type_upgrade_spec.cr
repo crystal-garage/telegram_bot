@@ -79,6 +79,12 @@ describe TelegramBot::Message do
         "paid_message_price_changed": {
           "paid_message_star_count": 10
         },
+        "chat_owner_left": {
+          "new_owner": {"id": 20, "is_bot": false, "first_name": "Next Owner"}
+        },
+        "chat_owner_changed": {
+          "new_owner": {"id": 21, "is_bot": false, "first_name": "Owner"}
+        },
         "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
@@ -100,6 +106,8 @@ describe TelegramBot::Message do
     message.reply_to_story.try(&.id).should eq(99)
     message.reply_to_checklist_task_id.should eq(5)
     message.reply_to_poll_option_id.should eq("option-id")
+    message.chat_owner_left.try(&.new_owner.try(&.first_name)).should eq("Next Owner")
+    message.chat_owner_changed.try(&.new_owner.first_name).should eq("Owner")
     message.has_protected_content?.should be_true
     message.is_from_offline?.should be_true
     message.is_paid_post?.should be_true
@@ -119,6 +127,62 @@ describe TelegramBot::Message do
     message.paid_message_price_changed.try(&.paid_message_star_count).should eq(10)
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
+  end
+
+  it "parses common chat service message payloads" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 44,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "message_auto_delete_timer_changed": {
+          "message_auto_delete_time": 86400
+        },
+        "users_shared": {
+          "request_id": 1,
+          "users": [
+            {
+              "user_id": 10,
+              "first_name": "Shared",
+              "username": "shared_user",
+              "photo": [
+                {"file_id": "photo-id", "file_unique_id": "photo-unique-id", "width": 32, "height": 32}
+              ]
+            }
+          ]
+        },
+        "chat_shared": {
+          "request_id": 2,
+          "chat_id": -100,
+          "title": "Shared Chat",
+          "username": "shared_chat"
+        },
+        "connected_website": "example.com",
+        "write_access_allowed": {
+          "from_request": true,
+          "web_app_name": "App",
+          "from_attachment_menu": true
+        },
+        "proximity_alert_triggered": {
+          "traveler": {"id": 11, "is_bot": false, "first_name": "Traveler"},
+          "watcher": {"id": 12, "is_bot": false, "first_name": "Watcher"},
+          "distance": 50
+        },
+        "boost_added": {
+          "boost_count": 2
+        }
+      }
+      JSON
+
+    message.message_auto_delete_timer_changed.try(&.message_auto_delete_time).should eq(86400)
+    message.users_shared.try(&.users.first.username).should eq("shared_user")
+    message.users_shared.try(&.users.first.photo.try(&.first.file_id)).should eq("photo-id")
+    message.chat_shared.try(&.chat_id).should eq(-100)
+    message.connected_website.should eq("example.com")
+    message.write_access_allowed.try(&.from_request?).should be_true
+    message.write_access_allowed.try(&.web_app_name).should eq("App")
+    message.proximity_alert_triggered.try(&.distance).should eq(50)
+    message.boost_added.try(&.boost_count).should eq(2)
   end
 
   it "parses suggested post service messages" do

@@ -67,12 +67,21 @@ module TelegramBot
     property venue : Venue?
     property new_chat_members : Array(User)?
     property left_chat_member : User?
+    property chat_owner_left : ChatOwnerLeft?
+    property chat_owner_changed : ChatOwnerChanged?
     property new_chat_title : String?
     property new_chat_photo : Array(PhotoSize)?
     property? delete_chat_photo : Bool?
     property? group_chat_created : Bool?
     property? supergroup_chat_created : Bool?
     property? channel_chat_created : Bool?
+    property message_auto_delete_timer_changed : MessageAutoDeleteTimerChanged?
+    property users_shared : UsersShared?
+    property chat_shared : ChatShared?
+    property connected_website : String?
+    property write_access_allowed : WriteAccessAllowed?
+    property proximity_alert_triggered : ProximityAlertTriggered?
+    property boost_added : ChatBoostAdded?
     property forum_topic_created : ForumTopicCreated?
     property forum_topic_edited : ForumTopicEdited?
     property forum_topic_closed : ForumTopicClosed?

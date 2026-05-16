@@ -1182,12 +1182,14 @@ describe TelegramBot::Bot do
       }
       JSON
 
-    invite = bot.create_chat_invite_link("@group", name: "Invite", creates_join_request: true)
+    expire_date = 7.days.from_now
+    invite = bot.create_chat_invite_link("@group", name: "Invite", expire_date: expire_date, creates_join_request: true)
 
     invite.try(&.invite_link).should eq("https://t.me/+invite")
     invite.try(&.creates_join_request?).should be_true
     bot.last_method.should eq("createChatInviteLink")
     bot.last_params["name"].should eq("Invite")
+    bot.last_params["expire_date"].should eq((expire_date.to_unix).to_s)
 
     edited = bot.edit_chat_invite_link("@group", "https://t.me/+invite", name: "Edited")
     edited.try(&.name).should eq("Edited")

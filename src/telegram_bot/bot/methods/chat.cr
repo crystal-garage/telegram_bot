@@ -94,7 +94,7 @@ module TelegramBot
     def ban_chat_member(
       chat_id : Int | String,
       user_id : Int,
-      until_date : Int? | Time = nil,
+      until_date : Int | Time? = nil,
       revoke_messages : Bool? = nil,
     )
       until_date = until_date.to_unix if until_date.is_a?(Time)
@@ -165,9 +165,11 @@ module TelegramBot
       chat_id : Int | String,
       user_id : Int,
       permissions : ChatPermissions,
-      until_date : Int? = nil,
+      until_date : Int | Time? = nil,
       use_independent_chat_permissions : Bool? = nil,
     )
+      until_date = until_date.to_unix if until_date.is_a?(Time)
+
       res = def_request(
         "restrictChatMember",
         chat_id,
@@ -286,10 +288,12 @@ module TelegramBot
     def create_chat_invite_link(
       chat_id : Int | String,
       name : String? = nil,
-      expire_date : Int? = nil,
+      expire_date : Int | Time? = nil,
       member_limit : Int32? = nil,
       creates_join_request : Bool? = nil,
     ) : ChatInviteLink?
+      expire_date = expire_date.to_unix if expire_date.is_a?(Time)
+
       res = def_request(
         "createChatInviteLink",
         chat_id,
@@ -309,10 +313,12 @@ module TelegramBot
       chat_id : Int | String,
       invite_link : String,
       name : String? = nil,
-      expire_date : Int? = nil,
+      expire_date : Int | Time? = nil,
       member_limit : Int32? = nil,
       creates_join_request : Bool? = nil,
     ) : ChatInviteLink?
+      expire_date = expire_date.to_unix if expire_date.is_a?(Time)
+
       res = def_request(
         "editChatInviteLink",
         chat_id,

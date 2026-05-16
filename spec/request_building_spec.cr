@@ -338,6 +338,25 @@ describe TelegramBot::Bot do
     bot.last_params["comment"].should eq("Needs changes")
   end
 
+  it "builds editMessageMedia" do
+    bot = RequestBuildingBot.new
+    media = TelegramBot::InputMediaPhoto.from_json(%({"type":"photo","media":"photo-id","caption":"caption"}))
+
+    message = bot.edit_message_media(
+      media,
+      chat_id: 123,
+      message_id: 7,
+      business_connection_id: "business-id"
+    )
+
+    message.should be_a(TelegramBot::Message)
+    bot.last_method.should eq("editMessageMedia")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("7")
+    bot.param("media").should contain("InputMediaPhoto")
+  end
+
   it "builds sendPoll and sendDice" do
     bot = RequestBuildingBot.new
     options = [

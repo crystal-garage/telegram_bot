@@ -82,6 +82,36 @@ module TelegramBot
       end
     end
 
+    # Edits animation, audio, document, live photo, photo, or video messages.
+    #
+    # See: <https://core.telegram.org/bots/api#editmessagemedia>
+    def edit_message_media(
+      media : InputMedia,
+      chat_id : Int | String? = nil,
+      message_id : Int32? = nil,
+      inline_message_id : String? = nil,
+      business_connection_id : String? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message | Bool?
+      res = def_request(
+        "editMessageMedia",
+        business_connection_id,
+        chat_id,
+        message_id,
+        inline_message_id,
+        media,
+        reply_markup
+      )
+
+      if res
+        if res.as_bool?
+          true
+        else
+          Message.from_json(res.to_json)
+        end
+      end
+    end
+
     # Edits only the reply markup of messages.
     #
     # See: <https://core.telegram.org/bots/api#editmessagereplymarkup>

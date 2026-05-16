@@ -13,6 +13,8 @@ class RequestBuildingBot < TelegramBot::Bot
     "unpinChatMessage",
     "sendMessageDraft",
     "deleteMessages",
+    "approveSuggestedPost",
+    "declineSuggestedPost",
     "setMyCommands",
     "deleteMyCommands",
     "setMyName",
@@ -316,6 +318,24 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("deleteMessages")
     bot.last_params["chat_id"].should eq("123")
     bot.last_params["message_ids"].should eq("[7, 8]")
+  end
+
+  it "builds suggested post moderation methods" do
+    bot = RequestBuildingBot.new
+
+    bot.approve_suggested_post(123, 7, send_date: 1_800_000_000).should be_true
+
+    bot.last_method.should eq("approveSuggestedPost")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("7")
+    bot.last_params["send_date"].should eq("1800000000")
+
+    bot.decline_suggested_post(123, 8, comment: "Needs changes").should be_true
+
+    bot.last_method.should eq("declineSuggestedPost")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("8")
+    bot.last_params["comment"].should eq("Needs changes")
   end
 
   it "builds sendPoll and sendDice" do

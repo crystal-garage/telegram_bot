@@ -22,8 +22,8 @@ Add wrappers for every official Bot API method that is still missing.
 - [ ] `edit_message_checklist` -> `editMessageChecklist`
 - [x] `stop_poll` -> `stopPoll`
 - [x] `delete_messages` -> `deleteMessages`
-- [ ] `approve_suggested_post` -> `approveSuggestedPost`
-- [ ] `decline_suggested_post` -> `declineSuggestedPost`
+- [x] `approve_suggested_post` -> `approveSuggestedPost`
+- [x] `decline_suggested_post` -> `declineSuggestedPost`
 
 ### Chat Administration
 

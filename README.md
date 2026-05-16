@@ -382,7 +382,7 @@ types, while unimplemented items are intentionally left out of the public API.
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
   `edit_message_reply_markup`, `stop_poll`, `delete_message`,
-  `delete_messages`
+  `delete_messages`, `approve_suggested_post`, `decline_suggested_post`
 - Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,

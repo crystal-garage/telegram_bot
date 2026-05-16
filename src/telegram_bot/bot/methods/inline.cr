@@ -146,6 +146,42 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Approves a suggested post in a direct messages chat.
+    #
+    # See: <https://core.telegram.org/bots/api#approvesuggestedpost>
+    def approve_suggested_post(
+      chat_id : Int,
+      message_id : Int32,
+      send_date : Int32? = nil,
+    ) : Bool?
+      res = def_request(
+        "approveSuggestedPost",
+        chat_id,
+        message_id,
+        send_date
+      )
+
+      res.as_bool if res
+    end
+
+    # Declines a suggested post in a direct messages chat.
+    #
+    # See: <https://core.telegram.org/bots/api#declinesuggestedpost>
+    def decline_suggested_post(
+      chat_id : Int,
+      message_id : Int32,
+      comment : String? = nil,
+    ) : Bool?
+      res = def_request(
+        "declineSuggestedPost",
+        chat_id,
+        message_id,
+        comment
+      )
+
+      res.as_bool if res
+    end
+
     # Sends answers to an inline query.
     #
     # See: <https://core.telegram.org/bots/api#answerinlinequery>

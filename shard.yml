@@ -1,5 +1,10 @@
 name: telegram_bot
-version: 0.9.0
+version: 1.0.0-rc1
+
+description: |
+  Telegram Bot API client library for Crystal.
+  Provides a convenient interface to interact with the Telegram Bot API,
+  allowing you to create and manage Telegram bots with ease.
 
 authors:
   - Krisztián Ádám <adamkrisz@gmail.com>

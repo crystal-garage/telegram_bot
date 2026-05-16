@@ -5,7 +5,7 @@
 [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://crystal-garage.github.io/telegram_bot/)
 [![License](https://img.shields.io/github/license/crystal-garage/telegram_bot.svg)](https://github.com/crystal-garage/telegram_bot/blob/develop/LICENSE)
 
-[Telegram Bot API](https://core.telegram.org/bots/api) wrapper for Crystal.
+[Telegram Bot API](https://core.telegram.org/bots/api) client library for Crystal.
 
 The shard has partial compatibility with Telegram Bot API 10.0. It supports the
 older Bot API surface plus selected updates, message fields, sending methods,

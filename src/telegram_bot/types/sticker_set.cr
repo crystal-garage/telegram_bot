@@ -4,7 +4,8 @@ module TelegramBot
 
     property name : String
     property title : String
-    property? contains_masks : Bool
+    property sticker_type : String
     property stickers : Array(Sticker)
+    property thumbnail : PhotoSize?
   end
 end

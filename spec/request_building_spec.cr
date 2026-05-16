@@ -265,6 +265,50 @@ describe TelegramBot::Bot do
     bot.param("suggested_post_parameters").should contain("SuggestedPostParameters")
   end
 
+  it "builds sendChecklist and editMessageChecklist" do
+    bot = RequestBuildingBot.new
+    checklist = TelegramBot::InputChecklist.new(
+      "Launch",
+      [
+        TelegramBot::InputChecklistTask.new(1, "Ship"),
+        TelegramBot::InputChecklistTask.new(2, "Announce"),
+      ],
+      others_can_add_tasks: true,
+      others_can_mark_tasks_as_done: true
+    )
+
+    sent = bot.send_checklist("business-id", 123, checklist, protect_content: true)
+
+    sent.try(&.message_id).should eq(1)
+    bot.last_method.should eq("sendChecklist")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["chat_id"].should eq("123")
+    bot.param("checklist").should contain("InputChecklist")
+    bot.last_params["protect_content"].should eq("true")
+
+    edited = bot.edit_message_checklist("business-id", 123, 7, checklist)
+
+    edited.try(&.message_id).should eq(1)
+    bot.last_method.should eq("editMessageChecklist")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("7")
+    bot.param("checklist").should contain("InputChecklist")
+
+    params = bot.serialize_for_spec({"checklist" => checklist})
+    JSON.parse(params["checklist"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "title": "Launch",
+        "tasks": [
+          {"id": 1, "text": "Ship"},
+          {"id": 2, "text": "Announce"}
+        ],
+        "others_can_add_tasks": true,
+        "others_can_mark_tasks_as_done": true
+      }
+      JSON
+  end
+
   it "builds sendAudio with the correct method" do
     bot = RequestBuildingBot.new
     bot.send_audio(123, "audio-id", duration: 10, performer: "performer", title: "title")

@@ -47,6 +47,26 @@ describe TelegramBot::Message do
         "effect_id": "effect-id",
         "show_caption_above_media": true,
         "has_media_spoiler": true,
+        "checklist": {
+          "title": "Launch",
+          "tasks": [
+            {
+              "id": 1,
+              "text": "Ship",
+              "completed_by_user": {"id": 4, "is_bot": false, "first_name": "Worker"},
+              "completion_date": 1800000000
+            }
+          ],
+          "others_can_add_tasks": true,
+          "others_can_mark_tasks_as_done": true
+        },
+        "checklist_tasks_done": {
+          "marked_as_done_task_ids": [1],
+          "marked_as_not_done_task_ids": [2]
+        },
+        "checklist_tasks_added": {
+          "tasks": [{"id": 3, "text": "Document"}]
+        },
         "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
@@ -76,8 +96,45 @@ describe TelegramBot::Message do
     message.effect_id.should eq("effect-id")
     message.show_caption_above_media?.should be_true
     message.has_media_spoiler?.should be_true
+    message.checklist.try(&.title).should eq("Launch")
+    message.checklist.try(&.tasks.first.completed_by_user.try(&.first_name)).should eq("Worker")
+    message.checklist.try(&.others_can_add_tasks?).should be_true
+    message.checklist_tasks_done.try(&.marked_as_done_task_ids).should eq([1])
+    message.checklist_tasks_added.try(&.tasks.first.text).should eq("Document")
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
+  end
+end
+
+describe TelegramBot::InputChecklist do
+  it "serializes checklist request objects" do
+    checklist = TelegramBot::InputChecklist.new(
+      "Launch",
+      [
+        TelegramBot::InputChecklistTask.new(
+          1,
+          "Ship",
+          text_entities: [TelegramBot::MessageEntity.new("bold", 0, 4)]
+        ),
+      ],
+      parse_mode: "MarkdownV2",
+      others_can_add_tasks: true
+    )
+
+    JSON.parse(checklist.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "title": "Launch",
+        "parse_mode": "MarkdownV2",
+        "tasks": [
+          {
+            "id": 1,
+            "text": "Ship",
+            "text_entities": [{"type": "bold", "offset": 0, "length": 4}]
+          }
+        ],
+        "others_can_add_tasks": true
+      }
+      JSON
   end
 end
 

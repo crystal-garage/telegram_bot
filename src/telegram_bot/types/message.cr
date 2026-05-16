@@ -56,6 +56,7 @@ module TelegramBot
     property caption_entities : Array(MessageEntity)?
     property? show_caption_above_media : Bool?
     property? has_media_spoiler : Bool?
+    property checklist : Checklist?
     property contact : Contact?
     property dice : Dice?
     property game : Game?
@@ -88,6 +89,8 @@ module TelegramBot
     property gift : GiftInfo?
     property unique_gift : UniqueGiftInfo?
     property gift_upgrade_sent : GiftInfo?
+    property checklist_tasks_done : ChecklistTasksDone?
+    property checklist_tasks_added : ChecklistTasksAdded?
     property managed_bot_created : ManagedBotCreated?
     property reply_markup : InlineKeyboardMarkup?
   end

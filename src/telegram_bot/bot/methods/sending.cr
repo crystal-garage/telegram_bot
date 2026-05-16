@@ -47,6 +47,34 @@ module TelegramBot
       send_message(message.chat.id, text, reply_parameters: ReplyParameters.new(message.message_id))
     end
 
+    # Sends checklists on behalf of a connected business account.
+    #
+    # See: <https://core.telegram.org/bots/api#sendchecklist>
+    def send_checklist(
+      business_connection_id : String,
+      chat_id : Int | String,
+      checklist : InputChecklist,
+      disable_notification : Bool? = nil,
+      protect_content : Bool? = nil,
+      message_effect_id : String? = nil,
+      reply_parameters : ReplyParameters? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message?
+      res = def_request(
+        "sendChecklist",
+        business_connection_id,
+        chat_id,
+        checklist,
+        disable_notification,
+        protect_content,
+        message_effect_id,
+        reply_parameters,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Forwards a message.
     #
     # See: <https://core.telegram.org/bots/api#forwardmessage>

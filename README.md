@@ -378,12 +378,12 @@ types, while unimplemented items are intentionally left out of the public API.
   `send_audio`, `send_document`, `send_sticker`, `send_video`,
   `send_animation`, `send_voice`, `send_video_note`, `send_media_group`,
   `send_location`, `send_venue`, `send_contact`, `send_poll`, `send_dice`,
-  `send_message_draft`, `send_chat_action`
+  `send_checklist`, `send_message_draft`, `send_chat_action`
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
-  `edit_message_media`, `edit_message_reply_markup`, `stop_poll`,
-  `delete_message`, `delete_messages`, `approve_suggested_post`,
-  `decline_suggested_post`
+  `edit_message_media`, `edit_message_checklist`,
+  `edit_message_reply_markup`, `stop_poll`, `delete_message`,
+  `delete_messages`, `approve_suggested_post`, `decline_suggested_post`
 - Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,

@@ -17,9 +17,9 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Sending, Editing, And Deleting Messages
 
-- [ ] `send_checklist` -> `sendChecklist`
+- [x] `send_checklist` -> `sendChecklist`
 - [x] `edit_message_media` -> `editMessageMedia`
-- [ ] `edit_message_checklist` -> `editMessageChecklist`
+- [x] `edit_message_checklist` -> `editMessageChecklist`
 - [x] `stop_poll` -> `stopPoll`
 - [x] `delete_messages` -> `deleteMessages`
 - [x] `approve_suggested_post` -> `approveSuggestedPost`

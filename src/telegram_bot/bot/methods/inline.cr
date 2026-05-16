@@ -112,6 +112,28 @@ module TelegramBot
       end
     end
 
+    # Edits checklists on behalf of a connected business account.
+    #
+    # See: <https://core.telegram.org/bots/api#editmessagechecklist>
+    def edit_message_checklist(
+      business_connection_id : String,
+      chat_id : Int | String,
+      message_id : Int32,
+      checklist : InputChecklist,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message?
+      res = def_request(
+        "editMessageChecklist",
+        business_connection_id,
+        chat_id,
+        message_id,
+        checklist,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Edits only the reply markup of messages.
     #
     # See: <https://core.telegram.org/bots/api#editmessagereplymarkup>

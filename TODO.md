@@ -59,10 +59,10 @@ Add wrappers for every official Bot API method that is still missing.
 - [x] `convert_gift_to_stars` -> `convertGiftToStars`
 - [x] `upgrade_gift` -> `upgradeGift`
 - [x] `transfer_gift` -> `transferGift`
-- [ ] `post_story` -> `postStory`
-- [ ] `repost_story` -> `repostStory`
-- [ ] `edit_story` -> `editStory`
-- [ ] `delete_story` -> `deleteStory`
+- [x] `post_story` -> `postStory`
+- [x] `repost_story` -> `repostStory`
+- [x] `edit_story` -> `editStory`
+- [x] `delete_story` -> `deleteStory`
 
 ### Stickers
 

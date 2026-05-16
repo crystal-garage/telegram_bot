@@ -436,6 +436,7 @@ types, while unimplemented items are intentionally left out of the public API.
   `set_business_account_bio`, `set_business_account_profile_photo`,
   `remove_business_account_profile_photo`,
   `set_business_account_gift_settings`, `answer_guest_query`,
+  `post_story`, `repost_story`, `edit_story`, `delete_story`,
   `get_managed_bot_token`, `replace_managed_bot_token`,
   `get_managed_bot_access_settings`, `set_managed_bot_access_settings`
 
@@ -492,10 +493,14 @@ Override these methods in your bot subclass:
   `InputPaidMediaLivePhoto`, `RefundedPayment`, `StarAmount`,
   `RevenueWithdrawalState`, `AffiliateInfo`, `TransactionPartner`,
   `StarTransaction`, `StarTransactions`
-- Gifts: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
+- Gifts and stories: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
   `UniqueGiftInfo`, `UniqueGiftModel`, `UniqueGiftSymbol`,
   `UniqueGiftBackdrop`, `UniqueGiftBackdropColors`, `UniqueGiftColors`,
-  `OwnedGift`, `OwnedGifts`
+  `OwnedGift`, `OwnedGifts`, `InputStoryContent`,
+  `InputStoryContentPhoto`, `InputStoryContentVideo`, `StoryArea`,
+  `StoryAreaPosition`, `StoryAreaType`, `StoryAreaTypeLocation`,
+  `StoryAreaTypeSuggestedReaction`, `StoryAreaTypeLink`,
+  `StoryAreaTypeWeather`, `StoryAreaTypeUniqueGift`, `LocationAddress`
 - Stickers: `Sticker`, `StickerSet`, `InputSticker`, `MaskPosition`
 - Keyboards and Web Apps: `InlineKeyboardButton`, `InlineKeyboardMarkup`,
   `KeyboardButton`, `ReplyKeyboardMarkup`, `LoginUrl`, `WebAppInfo`,

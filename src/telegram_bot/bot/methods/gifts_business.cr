@@ -246,6 +246,102 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Posts a story on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#poststory>
+    def post_story(
+      business_connection_id : String,
+      content : InputStoryContent,
+      active_period : Int,
+      caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      areas : Array(StoryArea)? = nil,
+      post_to_chat_page : Bool? = nil,
+      protect_content : Bool? = nil,
+    ) : Story
+      res = def_force_request(
+        "postStory",
+        business_connection_id,
+        content,
+        active_period,
+        caption,
+        parse_mode,
+        caption_entities,
+        areas,
+        post_to_chat_page,
+        protect_content
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Reposts a story on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#repoststory>
+    def repost_story(
+      business_connection_id : String,
+      from_chat_id : Int,
+      from_story_id : Int,
+      active_period : Int,
+      post_to_chat_page : Bool? = nil,
+      protect_content : Bool? = nil,
+    ) : Story
+      res = def_force_request(
+        "repostStory",
+        business_connection_id,
+        from_chat_id,
+        from_story_id,
+        active_period,
+        post_to_chat_page,
+        protect_content
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Edits a story posted on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#editstory>
+    def edit_story(
+      business_connection_id : String,
+      story_id : Int,
+      content : InputStoryContent,
+      caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      areas : Array(StoryArea)? = nil,
+    ) : Story
+      res = def_force_request(
+        "editStory",
+        business_connection_id,
+        story_id,
+        content,
+        caption,
+        parse_mode,
+        caption_entities,
+        areas
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Deletes a story posted on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#deletestory>
+    def delete_story(
+      business_connection_id : String,
+      story_id : Int,
+    )
+      res = def_force_request(
+        "deleteStory",
+        business_connection_id,
+        story_id
+      )
+
+      res.as_bool if res
+    end
+
     # Sends an answer to a guest query.
     #
     # See: <https://core.telegram.org/bots/api#answerguestquery>

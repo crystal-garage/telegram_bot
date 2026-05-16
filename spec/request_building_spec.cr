@@ -50,6 +50,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "convertGiftToStars",
     "upgradeGift",
     "transferGift",
+    "deleteStory",
     "readBusinessMessage",
     "deleteBusinessMessages",
     "setBusinessAccountName",
@@ -109,6 +110,9 @@ class RequestBuildingBot < TelegramBot::Bot
     "getBusinessAccountGifts"          => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}],"next_offset":"next"}),
     "getUserGifts"                     => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}]}),
     "getChatGifts"                     => %({"total_count":1,"gifts":[{"type":"regular","gift":{"id":"gift-id","sticker":{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false},"star_count":100},"owned_gift_id":"owned-gift-id","send_date":1800000000}]}),
+    "postStory"                        => %({"chat":{"id":1,"type":"private"},"id":10}),
+    "repostStory"                      => %({"chat":{"id":1,"type":"private"},"id":11}),
+    "editStory"                        => %({"chat":{"id":1,"type":"private"},"id":12}),
     "answerGuestQuery"                 => %({"inline_message_id":"guest-inline-id"}),
     "getBusinessConnection"            => %({"id":"business-id","user":{"id":1,"is_bot":false,"first_name":"User"},"user_chat_id":100,"date":1800000000,"rights":{"can_reply":true},"is_enabled":true}),
     "getManagedBotToken"               => %("managed-token"),
@@ -593,6 +597,69 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("transferGift")
     bot.last_params["new_owner_chat_id"].should eq("123")
     bot.last_params["star_count"].should eq("10")
+
+    story_content = TelegramBot::InputStoryContentPhoto.new("photo-id")
+    story_area = TelegramBot::StoryArea.new(
+      TelegramBot::StoryAreaPosition.new(50.0, 50.0, 25.0, 25.0, 0.0, 10.0),
+      TelegramBot::StoryAreaTypeLink.new("https://example.com")
+    )
+
+    posted_story = bot.post_story(
+      "business-id",
+      story_content,
+      86_400,
+      caption: "story",
+      areas: [story_area],
+      post_to_chat_page: true,
+      protect_content: true
+    )
+    posted_story.id.should eq(10)
+    bot.last_method.should eq("postStory")
+    bot.last_params["active_period"].should eq("86400")
+    bot.param("content").should contain("InputStoryContentPhoto")
+    bot.param("areas").should contain("StoryArea")
+    bot.last_params["post_to_chat_page"].should eq("true")
+    bot.last_params["protect_content"].should eq("true")
+
+    reposted_story = bot.repost_story("business-id", 1, 10, 43_200, post_to_chat_page: true)
+    reposted_story.id.should eq(11)
+    bot.last_method.should eq("repostStory")
+    bot.last_params["from_chat_id"].should eq("1")
+    bot.last_params["from_story_id"].should eq("10")
+
+    edited_story = bot.edit_story("business-id", 10, story_content, caption: "updated", areas: [story_area])
+    edited_story.id.should eq(12)
+    bot.last_method.should eq("editStory")
+    bot.last_params["story_id"].should eq("10")
+    bot.last_params["caption"].should eq("updated")
+
+    bot.delete_story("business-id", 10).should be_true
+    bot.last_method.should eq("deleteStory")
+    bot.last_params["story_id"].should eq("10")
+
+    params = bot.serialize_for_spec({"content" => story_content, "areas" => [story_area]})
+    JSON.parse(params["content"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "photo",
+        "photo": "photo-id"
+      }
+      JSON
+    JSON.parse(params["areas"].as(String)).should eq(JSON.parse(<<-JSON))
+      [{
+        "position": {
+          "x_percentage": 50.0,
+          "y_percentage": 50.0,
+          "width_percentage": 25.0,
+          "height_percentage": 25.0,
+          "rotation_angle": 0.0,
+          "corner_radius_percentage": 10.0
+        },
+        "type": {
+          "type": "link",
+          "url": "https://example.com"
+        }
+      }]
+      JSON
   end
 
   it "builds business, guest, and managed bot methods" do

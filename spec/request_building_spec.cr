@@ -804,11 +804,39 @@ describe TelegramBot::Bot do
       provider_token: "provider-token",
       start_parameter: "start",
       currency: "USD",
-      prices: prices
+      prices: prices,
+      business_connection_id: "business-id",
+      message_thread_id: 10,
+      direct_messages_topic_id: 20_i64,
+      subscription_period: 2_592_000,
+      max_tip_amount: 100,
+      suggested_tip_amounts: [10, 20],
+      provider_data: "{}",
+      need_email: true,
+      send_email_to_provider: true,
+      protect_content: true,
+      allow_paid_broadcast: true,
+      message_effect_id: "effect-id",
+      suggested_post_parameters: TelegramBot::SuggestedPostParameters.new,
+      reply_parameters: TelegramBot::ReplyParameters.new(42)
     )
 
     bot.last_method.should eq("sendInvoice")
     bot.last_params["title"].should eq("invoice title")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["message_thread_id"].should eq("10")
+    bot.last_params["direct_messages_topic_id"].should eq("20")
+    bot.last_params["subscription_period"].should eq("2592000")
+    bot.last_params["max_tip_amount"].should eq("100")
+    bot.last_params["suggested_tip_amounts"].should eq("[10, 20]")
+    bot.last_params["provider_data"].should eq("{}")
+    bot.last_params["need_email"].should eq("true")
+    bot.last_params["send_email_to_provider"].should eq("true")
+    bot.last_params["protect_content"].should eq("true")
+    bot.last_params["allow_paid_broadcast"].should eq("true")
+    bot.last_params["message_effect_id"].should eq("effect-id")
+    bot.param("suggested_post_parameters").should contain("SuggestedPostParameters")
+    bot.param("reply_parameters").should contain("ReplyParameters")
     bot.last_params.has_key?("tilte").should be_false
   end
 

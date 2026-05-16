@@ -607,7 +607,7 @@ describe TelegramBot::Bot do
     posted_story = bot.post_story(
       "business-id",
       story_content,
-      86_400,
+      24.hours,
       caption: "story",
       areas: [story_area],
       post_to_chat_page: true,
@@ -621,7 +621,7 @@ describe TelegramBot::Bot do
     bot.last_params["post_to_chat_page"].should eq("true")
     bot.last_params["protect_content"].should eq("true")
 
-    reposted_story = bot.repost_story("business-id", 1, 10, 43_200, post_to_chat_page: true)
+    reposted_story = bot.repost_story("business-id", 1, 10, 12.hours, post_to_chat_page: true)
     reposted_story.id.should eq(11)
     bot.last_method.should eq("repostStory")
     bot.last_params["from_chat_id"].should eq("1")

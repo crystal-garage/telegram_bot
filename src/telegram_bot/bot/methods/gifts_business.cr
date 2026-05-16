@@ -252,7 +252,7 @@ module TelegramBot
     def post_story(
       business_connection_id : String,
       content : InputStoryContent,
-      active_period : Int,
+      active_period : Int | Time::Span,
       caption : String? = nil,
       parse_mode : String? = nil,
       caption_entities : Array(MessageEntity)? = nil,
@@ -260,6 +260,8 @@ module TelegramBot
       post_to_chat_page : Bool? = nil,
       protect_content : Bool? = nil,
     ) : Story
+      active_period = active_period.total_seconds.to_i if active_period.is_a?(Time::Span)
+
       res = def_force_request(
         "postStory",
         business_connection_id,
@@ -283,10 +285,12 @@ module TelegramBot
       business_connection_id : String,
       from_chat_id : Int,
       from_story_id : Int,
-      active_period : Int,
+      active_period : Int | Time::Span,
       post_to_chat_page : Bool? = nil,
       protect_content : Bool? = nil,
     ) : Story
+      active_period = active_period.total_seconds.to_i if active_period.is_a?(Time::Span)
+
       res = def_force_request(
         "repostStory",
         business_connection_id,

@@ -94,9 +94,11 @@ module TelegramBot
     def ban_chat_member(
       chat_id : Int | String,
       user_id : Int,
-      until_date : Int? = nil,
+      until_date : Int? | Time = nil,
       revoke_messages : Bool? = nil,
     )
+      until_date = until_date.to_unix if until_date.is_a?(Time)
+
       res = def_request(
         "banChatMember",
         chat_id,

@@ -1129,9 +1129,11 @@ describe TelegramBot::Bot do
       can_react_to_messages: true
     )
 
-    bot.ban_chat_member("@group", 123, revoke_messages: true).should be_true
+    until_date = 7.days.from_now
+    bot.ban_chat_member("@group", 123, until_date: until_date, revoke_messages: true).should be_true
     bot.last_method.should eq("banChatMember")
     bot.last_params["revoke_messages"].should eq("true")
+    bot.last_params["until_date"].should eq((until_date.to_unix).to_s)
 
     bot.ban_chat_sender_chat("@group", -100).should be_true
     bot.last_method.should eq("banChatSenderChat")

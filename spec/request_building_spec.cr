@@ -15,6 +15,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "deleteMessages",
     "approveSuggestedPost",
     "declineSuggestedPost",
+    "setPassportDataErrors",
     "setMyCommands",
     "deleteMyCommands",
     "setMyName",
@@ -128,6 +129,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "replaceManagedBotToken"           => %("new-managed-token"),
     "getManagedBotAccessSettings"      => %({"is_access_restricted":true,"added_users":[{"id":1,"is_bot":false,"first_name":"User"}]}),
     "stopPoll"                         => %({"id":"poll-id","question":"Question?","options":[{"text":"A","voter_count":1},{"text":"B","voter_count":0}],"total_voter_count":1,"is_closed":true,"is_anonymous":true,"type":"regular","allows_multiple_answers":false,"allows_revoting":true,"members_only":false}),
+    "createInvoiceLink"                => %("https://t.me/invoice/link"),
   }
 
   def initialize
@@ -765,6 +767,35 @@ describe TelegramBot::Bot do
 
   it "builds sendInvoice with title" do
     bot = RequestBuildingBot.new
+    prices = [TelegramBot::LabeledPrice.from_json(%({"label":"label","amount":100}))]
+
+    link = bot.create_invoice_link(
+      "invoice title",
+      "description",
+      "payload",
+      "XTR",
+      prices,
+      business_connection_id: "business-id",
+      provider_token: "",
+      subscription_period: 2_592_000,
+      max_tip_amount: 100,
+      suggested_tip_amounts: [10, 20],
+      need_email: true,
+      send_email_to_provider: true
+    )
+
+    link.should eq("https://t.me/invoice/link")
+    bot.last_method.should eq("createInvoiceLink")
+    bot.last_force_http.should be_true
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["title"].should eq("invoice title")
+    bot.last_params["provider_token"].should eq("")
+    bot.param("prices").should contain("LabeledPrice")
+    bot.last_params["subscription_period"].should eq("2592000")
+    bot.last_params["suggested_tip_amounts"].should eq("[10, 20]")
+    bot.last_params["need_email"].should eq("true")
+    bot.last_params["send_email_to_provider"].should eq("true")
+
     bot.send_invoice(
       chat_id: 123,
       title: "invoice title",
@@ -773,12 +804,55 @@ describe TelegramBot::Bot do
       provider_token: "provider-token",
       start_parameter: "start",
       currency: "USD",
-      prices: [] of TelegramBot::LabeledPrice
+      prices: prices
     )
 
     bot.last_method.should eq("sendInvoice")
     bot.last_params["title"].should eq("invoice title")
     bot.last_params.has_key?("tilte").should be_false
+  end
+
+  it "builds setPassportDataErrors" do
+    bot = RequestBuildingBot.new
+    errors = [
+      TelegramBot::PassportElementError.data_field(
+        "personal_details",
+        "birth_date",
+        "data-hash",
+        "Birth date is invalid"
+      ),
+      TelegramBot::PassportElementError.front_side(
+        "passport",
+        "file-hash",
+        "Front side is blurry"
+      ),
+    ]
+
+    bot.set_passport_data_errors(123, errors).should be_true
+
+    bot.last_method.should eq("setPassportDataErrors")
+    bot.last_force_http.should be_true
+    bot.last_params["user_id"].should eq("123")
+    bot.param("errors").should contain("PassportElementError")
+
+    params = bot.serialize_for_spec({"errors" => errors})
+    JSON.parse(params["errors"].as(String)).should eq(JSON.parse(<<-JSON))
+      [
+        {
+          "source": "data",
+          "type": "personal_details",
+          "message": "Birth date is invalid",
+          "field_name": "birth_date",
+          "data_hash": "data-hash"
+        },
+        {
+          "source": "front_side",
+          "type": "passport",
+          "message": "Front side is blurry",
+          "file_hash": "file-hash"
+        }
+      ]
+      JSON
   end
 
   it "builds sendContact with disable_notification" do

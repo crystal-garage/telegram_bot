@@ -78,8 +78,8 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Payments And Passport
 
-- [ ] `create_invoice_link` -> `createInvoiceLink`
-- [ ] `set_passport_data_errors` -> `setPassportDataErrors`
+- [x] `create_invoice_link` -> `createInvoiceLink`
+- [x] `set_passport_data_errors` -> `setPassportDataErrors`
 
 ## 2. Method Parameter Alignment
 

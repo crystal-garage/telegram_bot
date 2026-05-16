@@ -412,7 +412,8 @@ types, while unimplemented items are intentionally left out of the public API.
   `unpin_all_general_forum_topic_messages`, `set_message_reaction`,
   `delete_message_reaction`, `delete_all_message_reactions`
 - Payments, Stars, gifts, paid media, and stickers: `send_invoice`,
-  `send_paid_media`, `answer_shipping_query`, `answer_pre_checkout_query`,
+  `create_invoice_link`, `send_paid_media`, `answer_shipping_query`,
+  `answer_pre_checkout_query`, `set_passport_data_errors`,
   `get_my_star_balance`, `get_star_transactions`, `refund_star_payment`,
   `edit_user_star_subscription`, `get_available_gifts`, `send_gift`,
   `gift_premium_subscription`, `get_business_account_star_balance`,
@@ -497,7 +498,7 @@ Override these methods in your bot subclass:
   `PaidMediaLivePhoto`, `InputPaidMediaPhoto`, `InputPaidMediaVideo`,
   `InputPaidMediaLivePhoto`, `RefundedPayment`, `StarAmount`,
   `RevenueWithdrawalState`, `AffiliateInfo`, `TransactionPartner`,
-  `StarTransaction`, `StarTransactions`
+  `StarTransaction`, `StarTransactions`, `PassportElementError`
 - Gifts and stories: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
   `UniqueGiftInfo`, `UniqueGiftModel`, `UniqueGiftSymbol`,
   `UniqueGiftBackdrop`, `UniqueGiftBackdropColors`, `UniqueGiftColors`,

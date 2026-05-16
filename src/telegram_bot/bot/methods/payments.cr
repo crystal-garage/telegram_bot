@@ -50,6 +50,62 @@ module TelegramBot
       Message.from_json(res.to_json) if res
     end
 
+    # Creates a link for an invoice.
+    #
+    # See: <https://core.telegram.org/bots/api#createinvoicelink>
+    def create_invoice_link(
+      title : String,
+      description : String,
+      payload : String,
+      currency : String,
+      prices : Array(LabeledPrice),
+      business_connection_id : String? = nil,
+      provider_token : String? = nil,
+      subscription_period : Int32? = nil,
+      max_tip_amount : Int32? = nil,
+      suggested_tip_amounts : Array(Int32)? = nil,
+      provider_data : String? = nil,
+      photo_url : String? = nil,
+      photo_size : Int32? = nil,
+      photo_width : Int32? = nil,
+      photo_height : Int32? = nil,
+      need_name : Bool? = nil,
+      need_phone_number : Bool? = nil,
+      need_email : Bool? = nil,
+      need_shipping_address : Bool? = nil,
+      send_phone_number_to_provider : Bool? = nil,
+      send_email_to_provider : Bool? = nil,
+      is_flexible : Bool? = nil,
+    ) : String
+      res = def_force_request(
+        "createInvoiceLink",
+        business_connection_id,
+        title,
+        description,
+        payload,
+        provider_token,
+        currency,
+        prices,
+        subscription_period,
+        max_tip_amount,
+        suggested_tip_amounts,
+        provider_data,
+        photo_url,
+        photo_size,
+        photo_width,
+        photo_height,
+        need_name,
+        need_phone_number,
+        need_email,
+        need_shipping_address,
+        send_phone_number_to_provider,
+        send_email_to_provider,
+        is_flexible
+      )
+
+      res.as_s
+    end
+
     # Sends an answer to a shipping query.
     #
     # See: <https://core.telegram.org/bots/api#answershippingquery>
@@ -145,6 +201,22 @@ module TelegramBot
         user_id,
         telegram_payment_charge_id,
         is_canceled
+      )
+
+      res.as_bool if res
+    end
+
+    # Reports validation errors in submitted Telegram Passport data.
+    #
+    # See: <https://core.telegram.org/bots/api#setpassportdataerrors>
+    def set_passport_data_errors(
+      user_id : Int,
+      errors : Array(PassportElementError),
+    )
+      res = def_force_request(
+        "setPassportDataErrors",
+        user_id,
+        errors
       )
 
       res.as_bool if res

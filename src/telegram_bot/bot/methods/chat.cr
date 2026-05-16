@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Sends a chat action indicator.
     #
     # See: <https://core.telegram.org/bots/api#sendchataction>

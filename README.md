@@ -33,15 +33,14 @@ A minimal echo bot with long polling:
 ```crystal
 require "telegram_bot"
 
-class EchoBot < TelegramBot::Bot
-  def handle(message : TelegramBot::Message)
-    return unless text = message.text
+bot = TelegramBot::Bot.new("echo_bot", ENV["TELEGRAM_BOT_TOKEN"])
 
-    send_message(message.chat.id, "You said: #{text}")
-  end
+bot.on_message do |message|
+  next unless text = message.text
+
+  bot.send_message(message.chat.id, "You said: #{text}")
 end
 
-bot = EchoBot.new("echo_bot", ENV["TELEGRAM_BOT_TOKEN"])
 bot.polling
 ```
 
@@ -71,10 +70,11 @@ additional features:
 
 - [x] allow & block lists
 - [x] command handler
+- [x] block-based update handlers
 
 ## Usage
 
-Create your bot by inheriting from `TelegramBot::Bot`.
+For structured bots, create your bot by inheriting from `TelegramBot::Bot`.
 
 ### Commands
 

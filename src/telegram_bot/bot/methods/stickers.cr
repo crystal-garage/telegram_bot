@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Returns a sticker set.
     #
     # See: <https://core.telegram.org/bots/api#getstickerset>

@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Returns gifts that can be sent by the bot.
     #
     # See: <https://core.telegram.org/bots/api#getavailablegifts>

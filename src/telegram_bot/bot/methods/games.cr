@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Sends a game.
     #
     # See: <https://core.telegram.org/bots/api#sendgame>

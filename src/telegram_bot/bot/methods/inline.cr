@@ -1,5 +1,5 @@
 module TelegramBot
-  abstract class Bot
+  class Bot
     # Sends an answer to a callback query.
     #
     # See: <https://core.telegram.org/bots/api#answercallbackquery>

@@ -37,10 +37,10 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Bot Profile And Menu
 
-- [ ] `set_my_profile_photo` -> `setMyProfilePhoto`
-- [ ] `remove_my_profile_photo` -> `removeMyProfilePhoto`
-- [ ] `set_chat_menu_button` -> `setChatMenuButton`
-- [ ] `get_chat_menu_button` -> `getChatMenuButton`
+- [x] `set_my_profile_photo` -> `setMyProfilePhoto`
+- [x] `remove_my_profile_photo` -> `removeMyProfilePhoto`
+- [x] `set_chat_menu_button` -> `setChatMenuButton`
+- [x] `get_chat_menu_button` -> `getChatMenuButton`
 
 ### Verification
 

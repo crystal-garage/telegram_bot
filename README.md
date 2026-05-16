@@ -421,7 +421,9 @@ types, while unimplemented items are intentionally left out of the public API.
 - Bot commands and profile: `set_my_commands`, `get_my_commands`,
   `delete_my_commands`, `set_my_name`, `get_my_name`, `set_my_description`,
   `get_my_description`, `set_my_short_description`,
-  `get_my_short_description`, `set_my_default_administrator_rights`,
+  `get_my_short_description`, `set_my_profile_photo`,
+  `remove_my_profile_photo`, `set_chat_menu_button`,
+  `get_chat_menu_button`, `set_my_default_administrator_rights`,
   `get_my_default_administrator_rights`
 - Business, guest, and managed bots: `get_business_connection`,
   `read_business_message`, `delete_business_messages`,

@@ -20,6 +20,9 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyName",
     "setMyDescription",
     "setMyShortDescription",
+    "setMyProfilePhoto",
+    "removeMyProfilePhoto",
+    "setChatMenuButton",
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
     "banChatMember",
@@ -70,6 +73,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyName"                        => %({"name":"Test Bot"}),
     "getMyDescription"                 => %({"description":"Long description"}),
     "getMyShortDescription"            => %({"short_description":"Short description"}),
+    "getChatMenuButton"                => %({"type":"web_app","text":"Open","web_app":{"url":"https://example.com/app"}}),
     "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
     "getChatMemberCount"               => %(12),
@@ -925,6 +929,31 @@ describe TelegramBot::Bot do
     bot.set_my_short_description("Short description").should be_true
     bot.last_method.should eq("setMyShortDescription")
     bot.get_my_short_description.short_description.should eq("Short description")
+
+    photo = TelegramBot::InputProfilePhoto.new("static", photo: "attach://photo")
+    bot.set_my_profile_photo(photo).should be_true
+    bot.last_method.should eq("setMyProfilePhoto")
+    bot.last_force_http.should be_true
+    bot.param("photo").should contain("InputProfilePhoto")
+
+    bot.remove_my_profile_photo.should be_true
+    bot.last_method.should eq("removeMyProfilePhoto")
+    bot.last_force_http.should be_true
+    bot.last_params.empty?.should be_true
+
+    menu_button = TelegramBot::MenuButtonWebApp.new("Open", TelegramBot::WebAppInfo.new("https://example.com/app"))
+    bot.set_chat_menu_button(123, menu_button).should be_true
+    bot.last_method.should eq("setChatMenuButton")
+    bot.last_force_http.should be_true
+    bot.last_params["chat_id"].should eq("123")
+    bot.param("menu_button").should contain("MenuButtonWebApp")
+
+    current_menu_button = bot.get_chat_menu_button(123)
+    current_menu_button.type.should eq("web_app")
+    current_menu_button.text.should eq("Open")
+    current_menu_button.web_app.try(&.url).should eq("https://example.com/app")
+    bot.last_method.should eq("getChatMenuButton")
+    bot.last_force_http.should be_true
 
     rights = TelegramBot::ChatAdministratorRights.new(can_delete_messages: true)
     bot.set_my_default_administrator_rights(rights, for_channels: true).should be_true

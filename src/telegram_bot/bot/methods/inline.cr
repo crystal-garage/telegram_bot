@@ -204,8 +204,10 @@ module TelegramBot
     def approve_suggested_post(
       chat_id : Int,
       message_id : Int32,
-      send_date : Int32? = nil,
+      send_date : Int32 | Time? = nil,
     ) : Bool?
+      send_date = send_date.to_unix if send_date.is_a?(Time)
+
       res = def_request(
         "approveSuggestedPost",
         chat_id,

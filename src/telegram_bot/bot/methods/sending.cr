@@ -687,7 +687,7 @@ module TelegramBot
       chat_id : Int | String,
       latitude : Float,
       longitude : Float,
-      live_period : Int32? = nil,
+      live_period : Int32 | Time::Span? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
       business_connection_id : String? = nil,
@@ -702,6 +702,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      live_period = live_period.total_seconds.to_i if live_period.is_a?(Time::Span)
+
       res = def_request(
         "sendLocation",
         business_connection_id,
@@ -899,8 +901,8 @@ module TelegramBot
       explanation_parse_mode : String? = nil,
       explanation_entities : Array(MessageEntity)? = nil,
       explanation_media : InputPollMedia? = nil,
-      open_period : Int32? = nil,
-      close_date : Int32? = nil,
+      open_period : Int32 | Time::Span? = nil,
+      close_date : Int32 | Time? = nil,
       is_closed : Bool? = nil,
       description : String? = nil,
       description_parse_mode : String? = nil,
@@ -913,6 +915,9 @@ module TelegramBot
       reply_parameters : ReplyParameters? = nil,
       reply_markup : ReplyMarkup = nil,
     ) : Message?
+      open_period = open_period.total_seconds.to_i if open_period.is_a?(Time::Span)
+      close_date = close_date.to_unix if close_date.is_a?(Time)
+
       res = def_request(
         "sendPoll",
         business_connection_id,

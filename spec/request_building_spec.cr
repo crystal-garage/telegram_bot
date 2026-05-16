@@ -435,12 +435,25 @@ describe TelegramBot::Bot do
       TelegramBot::InputPollOption.new("B"),
     ]
 
-    bot.send_poll(123, "Question?", options, allows_multiple_answers: true, country_codes: ["US"])
+    close_date = 7.days.from_now
+    open_period = 1.hour
+
+    bot.send_poll(
+      123,
+      "Question?",
+      options,
+      allows_multiple_answers: true,
+      open_period: open_period,
+      close_date: close_date,
+      country_codes: ["US"]
+    )
 
     bot.last_method.should eq("sendPoll")
     bot.last_params["question"].should eq("Question?")
     bot.param("options").should contain("InputPollOption")
     bot.last_params["allows_multiple_answers"].should eq("true")
+    bot.last_params["open_period"].should eq((open_period.total_seconds.to_i).to_s)
+    bot.last_params["close_date"].should eq((close_date.to_unix).to_s)
     bot.last_params["country_codes"].should eq("[\"US\"]")
 
     stopped_poll = bot.stop_poll(123, 1, business_connection_id: "business-id")

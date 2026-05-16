@@ -280,7 +280,7 @@ describe TelegramBot::Gift do
         "gifts": [
           {
             "id": "gift-id",
-            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
             "star_count": 100,
             "upgrade_star_count": 25,
             "background": {
@@ -300,7 +300,7 @@ describe TelegramBot::Gift do
         "gift": {
           "gift": {
             "id": "gift-id",
-            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
             "star_count": 100
           },
           "owned_gift_id": "owned-gift-id",
@@ -316,12 +316,12 @@ describe TelegramBot::Gift do
             "number": 1,
             "model": {
               "name": "Model",
-              "sticker": {"file_id": "model-sticker-id", "width": 512, "height": 512},
+              "sticker": {"file_id": "model-sticker-id", "file_unique_id": "model-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
               "rarity_per_mille": 100
             },
             "symbol": {
               "name": "Symbol",
-              "sticker": {"file_id": "symbol-sticker-id", "width": 512, "height": 512},
+              "sticker": {"file_id": "symbol-sticker-id", "file_unique_id": "symbol-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
               "rarity_per_mille": 100
             },
             "backdrop": {
@@ -339,7 +339,7 @@ describe TelegramBot::Gift do
         "gift_upgrade_sent": {
           "gift": {
             "id": "gift-id",
-            "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+            "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
             "star_count": 100
           }
         }
@@ -352,7 +352,7 @@ describe TelegramBot::Gift do
         "user": {"id": 1, "is_bot": false, "first_name": "User"},
         "gift": {
           "id": "gift-id",
-          "sticker": {"file_id": "sticker-id", "width": 512, "height": 512},
+          "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
           "star_count": 100
         }
       }

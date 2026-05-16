@@ -411,7 +411,7 @@ types, while unimplemented items are intentionally left out of the public API.
   `edit_user_star_subscription`, `get_available_gifts`, `send_gift`,
   `gift_premium_subscription`, `get_sticker_set`, `upload_sticker_file`,
   `create_new_sticker_set`, `add_sticker_to_set`,
-  `set_sticker_position_in_set`, `delete_sticker_position_in_set`
+  `set_sticker_position_in_set`, `delete_sticker_from_set`
 - Bot commands and profile: `set_my_commands`, `get_my_commands`,
   `delete_my_commands`, `set_my_name`, `get_my_name`, `set_my_description`,
   `get_my_description`, `set_my_short_description`,
@@ -483,6 +483,7 @@ Override these methods in your bot subclass:
   `UniqueGiftInfo`, `UniqueGiftModel`, `UniqueGiftSymbol`,
   `UniqueGiftBackdrop`, `UniqueGiftBackdropColors`, `UniqueGiftColors`,
   `OwnedGift`, `OwnedGifts`
+- Stickers: `Sticker`, `StickerSet`, `InputSticker`, `MaskPosition`
 - Keyboards and Web Apps: `InlineKeyboardButton`, `InlineKeyboardMarkup`,
   `KeyboardButton`, `ReplyKeyboardMarkup`, `LoginUrl`, `WebAppInfo`,
   `WebAppData`, `SwitchInlineQueryChosenChat`, `CopyTextButton`,

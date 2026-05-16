@@ -19,12 +19,14 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#uploadstickerfile>
     def upload_sticker_file(
       user_id : Int,
-      png_sticker : ::File,
+      sticker : ::File,
+      sticker_format : String,
     )
       res = def_request(
         "uploadStickerFile",
         user_id,
-        png_sticker
+        sticker,
+        sticker_format
       )
       File.from_json(res.to_json) if res
     end
@@ -36,20 +38,18 @@ module TelegramBot
       user_id : Int,
       name : String,
       title : String,
-      png_sticker : ::File | String,
-      emojis : String,
-      contains_masks : Bool? = nil,
-      mask_position : MaskPosition? = nil,
+      stickers : Array(InputSticker),
+      sticker_type : String? = nil,
+      needs_repainting : Bool? = nil,
     )
       res = def_request(
         "createNewStickerSet",
         user_id,
         name,
         title,
-        png_sticker,
-        emojis,
-        contains_masks,
-        mask_position
+        stickers,
+        sticker_type,
+        needs_repainting
       )
 
       res.as_bool if res
@@ -61,17 +61,13 @@ module TelegramBot
     def add_sticker_to_set(
       user_id : Int,
       name : String,
-      png_sticker : ::File | String,
-      emojis : String,
-      mask_position : MaskPosition? = nil,
+      sticker : InputSticker,
     )
       res = def_request(
         "addStickerToSet",
         user_id,
         name,
-        png_sticker,
-        emojis,
-        mask_position
+        sticker
       )
 
       res.as_bool if res
@@ -96,7 +92,7 @@ module TelegramBot
     # Deletes a sticker from a sticker set.
     #
     # See: <https://core.telegram.org/bots/api#deletestickerfromset>
-    def delete_sticker_position_in_set(sticker : String)
+    def delete_sticker_from_set(sticker : String)
       res = def_request(
         "deleteStickerFromSet",
         sticker

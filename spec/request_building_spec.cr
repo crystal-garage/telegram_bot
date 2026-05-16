@@ -48,6 +48,10 @@ class RequestBuildingBot < TelegramBot::Bot
     "hideGeneralForumTopic",
     "unhideGeneralForumTopic",
     "unpinAllGeneralForumTopicMessages",
+    "createNewStickerSet",
+    "addStickerToSet",
+    "setStickerPositionInSet",
+    "deleteStickerFromSet",
   ]
 
   METHOD_RESPONSES = {
@@ -69,12 +73,14 @@ class RequestBuildingBot < TelegramBot::Bot
     "createChatSubscriptionInviteLink" => %({"invite_link":"https://t.me/+sub","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":false,"subscription_period":2592000,"subscription_price":100}),
     "editChatSubscriptionInviteLink"   => %({"invite_link":"https://t.me/+sub","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":false,"name":"Sub"}),
     "revokeChatInviteLink"             => %({"invite_link":"https://t.me/+invite","creator":{"id":1,"is_bot":true,"first_name":"Bot"},"creates_join_request":false,"is_primary":false,"is_revoked":true}),
-    "getForumTopicIconStickers"        => %([{"file_id":"sticker-id","width":512,"height":512}]),
+    "getForumTopicIconStickers"        => %([{"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false}]),
+    "getStickerSet"                    => %({"name":"set_name","title":"Sticker Set","sticker_type":"regular","stickers":[{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false}]}),
+    "uploadStickerFile"                => %({"file_id":"uploaded-sticker-id"}),
     "createForumTopic"                 => %({"message_thread_id":42,"name":"Topic","icon_color":7322096,"icon_custom_emoji_id":"emoji-id"}),
     "sendPaidMedia"                    => %({"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"paid_media":{"star_count":10,"paid_media":[{"type":"preview","width":320,"height":240}]}}),
     "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),
     "getStarTransactions"              => %({"transactions":[{"id":"tx-id","amount":10,"date":1800000000,"source":{"type":"user","transaction_type":"paid_media_payment","user":{"id":1,"is_bot":false,"first_name":"User"},"paid_media_payload":"payload","paid_media":[{"type":"preview","width":320}]}}]}),
-    "getAvailableGifts"                => %({"gifts":[{"id":"gift-id","sticker":{"file_id":"sticker-id","width":512,"height":512},"star_count":100,"upgrade_star_count":25}]}),
+    "getAvailableGifts"                => %({"gifts":[{"id":"gift-id","sticker":{"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},"star_count":100,"upgrade_star_count":25}]}),
     "answerGuestQuery"                 => %({"inline_message_id":"guest-inline-id"}),
     "getBusinessConnection"            => %({"id":"business-id","user":{"id":1,"is_bot":false,"first_name":"User"},"user_chat_id":100,"date":1800000000,"rights":{"can_reply":true},"is_enabled":true}),
     "getManagedBotToken"               => %("managed-token"),
@@ -927,6 +933,54 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("unhideGeneralForumTopic")
     bot.unpin_all_general_forum_topic_messages("@group").should be_true
     bot.last_method.should eq("unpinAllGeneralForumTopicMessages")
+  end
+
+  it "builds sticker set methods" do
+    bot = RequestBuildingBot.new
+    input_sticker = TelegramBot::InputSticker.new(
+      "attach://sticker",
+      "static",
+      ["🙂"],
+      keywords: ["crystal"]
+    )
+
+    sticker_set = bot.get_sticker_set("set_name")
+    sticker_set.try(&.sticker_type).should eq("regular")
+    sticker_set.try(&.stickers.first.file_unique_id).should eq("sticker-id-unique")
+    bot.last_method.should eq("getStickerSet")
+
+    ::File.tempfile("sticker") do |file|
+      uploaded = bot.upload_sticker_file(1, file, "static")
+      uploaded.try(&.file_id).should eq("uploaded-sticker-id")
+    end
+    bot.last_method.should eq("uploadStickerFile")
+    bot.last_params.has_key?("png_sticker").should be_false
+    bot.last_params["sticker_format"].should eq("static")
+
+    bot.create_new_sticker_set(
+      1,
+      "set_name",
+      "Sticker Set",
+      [input_sticker],
+      sticker_type: "regular",
+      needs_repainting: true
+    ).should be_true
+    bot.last_method.should eq("createNewStickerSet")
+    bot.param("stickers").should contain("InputSticker")
+    bot.last_params.has_key?("png_sticker").should be_false
+    bot.last_params.has_key?("emojis").should be_false
+    bot.last_params.has_key?("contains_masks").should be_false
+
+    bot.add_sticker_to_set(1, "set_name", input_sticker).should be_true
+    bot.last_method.should eq("addStickerToSet")
+    bot.param("sticker").should contain("InputSticker")
+    bot.last_params.has_key?("png_sticker").should be_false
+
+    bot.set_sticker_position_in_set("sticker-id", 2).should be_true
+    bot.last_method.should eq("setStickerPositionInSet")
+
+    bot.delete_sticker_from_set("sticker-id").should be_true
+    bot.last_method.should eq("deleteStickerFromSet")
   end
 
   it "builds multipart bodies with serialized non-file params" do

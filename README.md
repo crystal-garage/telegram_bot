@@ -7,10 +7,10 @@
 
 [Telegram Bot API](https://core.telegram.org/bots/api) client library for Crystal.
 
-The shard has partial compatibility with Telegram Bot API 10.0. It supports the
-older Bot API surface plus selected updates, message fields, sending methods,
-polls, reactions, keyboards, and Web App/Mini App helpers. See
-[Bot API support](#bot-api-support) for the current implementation matrix.
+The shard has partial compatibility with Telegram Bot API 10.0. It supports
+common messaging, media, chat administration, payments, games, polls, reactions,
+keyboards, Web App/Mini App helpers, business features, gifts, and paid media.
+See [Bot API support](#bot-api-support) for the current implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
 >

@@ -488,7 +488,8 @@ Override these methods in your bot subclass:
   `PaidMessagePriceChanged`, `DirectMessagePriceChanged`, `ChatOwnerLeft`,
   `ChatOwnerChanged`, `MessageAutoDeleteTimerChanged`, `SharedUser`,
   `UsersShared`, `ChatShared`, `WriteAccessAllowed`,
-  `ProximityAlertTriggered`, `ChatBoostAdded`
+  `ProximityAlertTriggered`, `ChatBoostAdded`, `GiveawayCreated`,
+  `Giveaway`, `GiveawayWinners`, `GiveawayCompleted`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

@@ -185,6 +185,67 @@ describe TelegramBot::Message do
     message.boost_added.try(&.boost_count).should eq(2)
   end
 
+  it "parses giveaway message payloads" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 45,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "giveaway_created": {
+          "prize_star_count": 100
+        },
+        "giveaway": {
+          "chats": [{"id": -100, "type": "channel", "title": "Channel"}],
+          "winners_selection_date": 1800000000,
+          "winner_count": 2,
+          "only_new_members": true,
+          "has_public_winners": true,
+          "prize_description": "Prize",
+          "country_codes": ["UA", "US"],
+          "prize_star_count": 100
+        },
+        "giveaway_winners": {
+          "chat": {"id": -100, "type": "channel", "title": "Channel"},
+          "giveaway_message_id": 10,
+          "winners_selection_date": 1800000000,
+          "winner_count": 1,
+          "winners": [{"id": 2, "is_bot": false, "first_name": "Winner"}],
+          "unclaimed_prize_count": 1,
+          "was_refunded": true
+        },
+        "giveaway_completed": {
+          "winner_count": 2,
+          "unclaimed_prize_count": 1,
+          "is_star_giveaway": true
+        },
+        "external_reply": {
+          "origin": {"type": "user", "date": 0, "sender_user": {"id": 3, "is_bot": false, "first_name": "Sender"}},
+          "giveaway": {
+            "chats": [{"id": -100, "type": "channel", "title": "Channel"}],
+            "winners_selection_date": 1800000000,
+            "winner_count": 2
+          },
+          "giveaway_winners": {
+            "chat": {"id": -100, "type": "channel", "title": "Channel"},
+            "giveaway_message_id": 10,
+            "winners_selection_date": 1800000000,
+            "winner_count": 1,
+            "winners": [{"id": 2, "is_bot": false, "first_name": "Winner"}]
+          }
+        }
+      }
+      JSON
+
+    message.giveaway_created.try(&.prize_star_count).should eq(100)
+    message.giveaway.try(&.winner_count).should eq(2)
+    message.giveaway.try(&.country_codes.try(&.first)).should eq("UA")
+    message.giveaway_winners.try(&.winners.first.first_name).should eq("Winner")
+    message.giveaway_winners.try(&.was_refunded?).should be_true
+    message.giveaway_completed.try(&.is_star_giveaway?).should be_true
+    message.external_reply.try(&.giveaway.try(&.winner_count)).should eq(2)
+    message.external_reply.try(&.giveaway_winners.try(&.winner_count)).should eq(1)
+  end
+
   it "parses suggested post service messages" do
     message = TelegramBot::Message.from_json(<<-JSON)
       {

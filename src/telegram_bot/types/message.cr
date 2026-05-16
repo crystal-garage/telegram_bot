@@ -88,6 +88,10 @@ module TelegramBot
     property forum_topic_reopened : ForumTopicReopened?
     property general_forum_topic_hidden : GeneralForumTopicHidden?
     property general_forum_topic_unhidden : GeneralForumTopicUnhidden?
+    property giveaway_created : GiveawayCreated?
+    property giveaway : Giveaway?
+    property giveaway_winners : GiveawayWinners?
+    property giveaway_completed : GiveawayCompleted?
     property poll_option_added : PollOptionAdded?
     property poll_option_deleted : PollOptionDeleted?
     property migrate_to_chat_id : Int32?

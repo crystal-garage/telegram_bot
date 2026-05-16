@@ -127,6 +127,7 @@ Known high-risk type groups:
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
   - [x] Add paid and direct message price change service payload types.
   - [x] Add common chat service payload types.
+  - [x] Add giveaway message and service payload types.
 - [ ] Checklists and suggested posts.
   - [x] Add suggested post info and service message payload types.
 - [ ] Direct messages and topic objects.

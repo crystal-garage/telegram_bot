@@ -22,8 +22,8 @@ module TelegramBot
     property contact : Contact?
     property dice : Dice?
     property game : Game?
-    property giveaway : JSON::Any?
-    property giveaway_winners : JSON::Any?
+    property giveaway : Giveaway?
+    property giveaway_winners : GiveawayWinners?
     property invoice : Invoice?
     property location : Location?
     property poll : Poll?

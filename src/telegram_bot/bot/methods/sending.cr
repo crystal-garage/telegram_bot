@@ -916,6 +916,26 @@ module TelegramBot
       Message.from_json(res.to_json) if res
     end
 
+    # Stops a poll sent by the bot.
+    #
+    # See: <https://core.telegram.org/bots/api#stoppoll>
+    def stop_poll(
+      chat_id : Int | String,
+      message_id : Int32,
+      business_connection_id : String? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Poll?
+      res = def_request(
+        "stopPoll",
+        business_connection_id,
+        chat_id,
+        message_id,
+        reply_markup
+      )
+
+      Poll.from_json(res.to_json) if res
+    end
+
     # Sends an animated dice message.
     #
     # See: <https://core.telegram.org/bots/api#senddice>

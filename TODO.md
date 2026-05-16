@@ -20,8 +20,8 @@ Add wrappers for every official Bot API method that is still missing.
 - [ ] `send_checklist` -> `sendChecklist`
 - [ ] `edit_message_media` -> `editMessageMedia`
 - [ ] `edit_message_checklist` -> `editMessageChecklist`
-- [ ] `stop_poll` -> `stopPoll`
-- [ ] `delete_messages` -> `deleteMessages`
+- [x] `stop_poll` -> `stopPoll`
+- [x] `delete_messages` -> `deleteMessages`
 - [ ] `approve_suggested_post` -> `approveSuggestedPost`
 - [ ] `decline_suggested_post` -> `declineSuggestedPost`
 

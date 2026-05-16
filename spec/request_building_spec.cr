@@ -12,6 +12,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "pinChatMessage",
     "unpinChatMessage",
     "sendMessageDraft",
+    "deleteMessages",
     "setMyCommands",
     "deleteMyCommands",
     "setMyName",
@@ -88,6 +89,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getManagedBotToken"               => %("managed-token"),
     "replaceManagedBotToken"           => %("new-managed-token"),
     "getManagedBotAccessSettings"      => %({"is_access_restricted":true,"added_users":[{"id":1,"is_bot":false,"first_name":"User"}]}),
+    "stopPoll"                         => %({"id":"poll-id","question":"Question?","options":[{"text":"A","voter_count":1},{"text":"B","voter_count":0}],"total_voter_count":1,"is_closed":true,"is_anonymous":true,"type":"regular","allows_multiple_answers":false,"allows_revoting":true,"members_only":false}),
   }
 
   def initialize
@@ -306,6 +308,16 @@ describe TelegramBot::Bot do
     forwarded_messages.map(&.message_id).should eq([100, 101])
   end
 
+  it "builds deleteMessages" do
+    bot = RequestBuildingBot.new
+
+    bot.delete_messages(123, [7, 8]).should be_true
+
+    bot.last_method.should eq("deleteMessages")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_ids"].should eq("[7, 8]")
+  end
+
   it "builds sendPoll and sendDice" do
     bot = RequestBuildingBot.new
     options = [
@@ -320,6 +332,14 @@ describe TelegramBot::Bot do
     bot.param("options").should contain("InputPollOption")
     bot.last_params["allows_multiple_answers"].should eq("true")
     bot.last_params["country_codes"].should eq("[\"US\"]")
+
+    stopped_poll = bot.stop_poll(123, 1, business_connection_id: "business-id")
+
+    stopped_poll.try(&.id).should eq("poll-id")
+    bot.last_method.should eq("stopPoll")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("1")
 
     bot.send_dice(123, "🎲", protect_content: true)
 

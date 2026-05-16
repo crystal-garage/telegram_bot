@@ -130,6 +130,22 @@ module TelegramBot
       end
     end
 
+    # Deletes multiple messages.
+    #
+    # See: <https://core.telegram.org/bots/api#deletemessages>
+    def delete_messages(
+      chat_id : Int | String,
+      message_ids : Array(Int32),
+    ) : Bool?
+      res = def_request(
+        "deleteMessages",
+        chat_id,
+        message_ids
+      )
+
+      res.as_bool if res
+    end
+
     # Sends answers to an inline query.
     #
     # See: <https://core.telegram.org/bots/api#answerinlinequery>

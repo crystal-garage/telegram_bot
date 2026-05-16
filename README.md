@@ -381,7 +381,8 @@ types, while unimplemented items are intentionally left out of the public API.
   `send_message_draft`, `send_chat_action`
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
-  `edit_message_reply_markup`, `delete_message`
+  `edit_message_reply_markup`, `stop_poll`, `delete_message`,
+  `delete_messages`
 - Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,

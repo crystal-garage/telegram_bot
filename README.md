@@ -74,6 +74,36 @@ additional features:
 
 ## Usage
 
+`TelegramBot::Bot` is the high-level client. It exposes Telegram Bot API
+methods as Crystal methods, receives updates through `polling` or `serve`, and
+can dispatch updates to block handlers or subclass overrides.
+
+### Block handlers
+
+For small bots and scripts, register handlers directly on a bot instance:
+
+```crystal
+require "telegram_bot"
+
+bot = TelegramBot::Bot.new("my_bot", ENV["TELEGRAM_BOT_TOKEN"])
+
+bot.on_message do |message|
+  next unless text = message.text
+
+  bot.reply(message, text)
+end
+
+bot.on_callback_query do |query|
+  bot.answer_callback_query(query.id, text: "Received")
+end
+
+bot.polling
+```
+
+Block handlers are optional. If a handler is not registered, the default
+`handle(...)` implementation keeps the existing "handler is not implemented"
+behavior.
+
 For structured bots, create your bot by inheriting from `TelegramBot::Bot`.
 
 ### Commands
@@ -158,7 +188,7 @@ end
 ### Forum topic updates
 
 The shard can parse forum topic service messages. Forum management methods such
-as `create_forum_topic` are not implemented yet.
+as `create_forum_topic` are available as regular Bot API methods.
 
 ```crystal
 class ForumBot < TelegramBot::Bot
@@ -206,55 +236,69 @@ my_bot = MyBot.new
 my_bot.polling
 ```
 
-### Custom handlers
+### Subclass handlers
 
 Override any of the following `handle` methods to handle Telegram updates, be it [messages](https://core.telegram.org/bots/api#message), [inline queries](https://core.telegram.org/bots/api#inlinequery), [chosen inline results](https://core.telegram.org/bots/api#choseninlineresult) or [callback queries](https://core.telegram.org/bots/api#callbackquery):
 
 ```crystal
-def handle(message : Message)
+def handle(message : TelegramBot::Message)
 
-def handle(inline_query : InlineQuery)
+def handle(inline_query : TelegramBot::InlineQuery)
 
-def handle(chosen_inline_result : ChosenInlineResult)
+def handle(chosen_inline_result : TelegramBot::ChosenInlineResult)
 
-def handle(callback_query : CallbackQuery)
+def handle(callback_query : TelegramBot::CallbackQuery)
 
-def handle_edited(message : Message)
+def handle_edited(message : TelegramBot::Message)
 
-def handle_channel_post(message : Message)
+def handle_channel_post(message : TelegramBot::Message)
 
-def handle_edited_channel_post(message : Message)
+def handle_edited_channel_post(message : TelegramBot::Message)
 ```
 
 For example, to echo all messages sent to the bot:
 
 ```crystal
+require "telegram_bot"
+
 class EchoBot < TelegramBot::Bot
-  def handle(message : Message)
+  def initialize
+    super("echo_bot", ENV["TELEGRAM_BOT_TOKEN"])
+  end
+
+  def handle(message : TelegramBot::Message)
     if text = message.text
       reply message, text
     end
   end
 end
 
-EchoBot.new.polling
+bot = EchoBot.new
+bot.polling
 ```
 
 Or to answer inline queries with a list of articles:
 
 ```crystal
+require "telegram_bot"
+
 class InlineBot < TelegramBot::Bot
+  def initialize
+    super("inline_bot", ENV["TELEGRAM_BOT_TOKEN"])
+  end
+
   def handle(inline_query : TelegramBot::InlineQuery)
     results = Array(TelegramBot::InlineQueryResult).new
 
-    content = InputTextMessageContent.new "Article details"
+    content = TelegramBot::InputTextMessageContent.new("Article details")
     results << TelegramBot::InlineQueryResultArticle.new("article/1", "My first article", content)
 
     answer_inline_query(inline_query.id, results)
   end
 end
 
-InlineBot.new.polling
+bot = InlineBot.new
+bot.polling
 ```
 
 Remember to [enable inline mode](https://core.telegram.org/bots/api#inline-mode) in BotFather to support inline queries.
@@ -294,6 +338,24 @@ When running your bot in `serve` mode, the bot will favour executing any methods
 validate the `X-Telegram-Bot-Api-Secret-Token` header yet. If you need strict
 validation, terminate webhooks behind middleware or a proxy that checks the
 header before forwarding requests to the bot.
+
+### Low-level API
+
+Most applications should use `TelegramBot::Bot` methods such as `send_message`,
+`set_webhook`, `answer_callback_query`, and `polling`.
+
+Request serialization and transport are intentionally lower-level extension
+points:
+
+- `TelegramBot::HttpClient` performs Bot API HTTP requests.
+- `TelegramBot::ResponseClient` writes method responses into webhook HTTP
+  responses when possible.
+- `TelegramBot::APIException` is raised for failed Bot API responses.
+- `Bot#request`, parameter serialization, and response handling are protected
+  internals used by the high-level methods.
+
+Prefer the high-level Bot API methods unless you are extending the shard itself
+or testing a custom transport path.
 
 ### Allow/blocklists
 

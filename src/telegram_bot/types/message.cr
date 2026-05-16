@@ -35,6 +35,7 @@ module TelegramBot
     property? has_protected_content : Bool?
     property? is_from_offline : Bool?
     property? is_paid_post : Bool?
+    property suggested_post_info : SuggestedPostInfo?
     property media_group_id : String?
     property author_signature : String?
     property paid_star_count : Int32?
@@ -92,6 +93,11 @@ module TelegramBot
     property checklist_tasks_done : ChecklistTasksDone?
     property checklist_tasks_added : ChecklistTasksAdded?
     property managed_bot_created : ManagedBotCreated?
+    property suggested_post_approved : SuggestedPostApproved?
+    property suggested_post_approval_failed : SuggestedPostApprovalFailed?
+    property suggested_post_declined : SuggestedPostDeclined?
+    property suggested_post_paid : SuggestedPostPaid?
+    property suggested_post_refunded : SuggestedPostRefunded?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

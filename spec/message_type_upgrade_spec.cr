@@ -41,6 +41,11 @@ describe TelegramBot::Message do
         "has_protected_content": true,
         "is_from_offline": true,
         "is_paid_post": true,
+        "suggested_post_info": {
+          "state": "pending",
+          "price": {"currency": "XTR", "amount": 100},
+          "send_date": 1800000000
+        },
         "paid_star_count": 15,
         "text": "hello",
         "link_preview_options": {"is_disabled": false, "show_above_text": true},
@@ -91,6 +96,7 @@ describe TelegramBot::Message do
     message.has_protected_content?.should be_true
     message.is_from_offline?.should be_true
     message.is_paid_post?.should be_true
+    message.suggested_post_info.try(&.state).should eq("pending")
     message.paid_star_count.should eq(15)
     message.link_preview_options.try(&.show_above_text?).should be_true
     message.effect_id.should eq("effect-id")
@@ -103,6 +109,46 @@ describe TelegramBot::Message do
     message.checklist_tasks_added.try(&.tasks.first.text).should eq("Document")
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
+  end
+
+  it "parses suggested post service messages" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 43,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "suggested_post_approved": {
+          "suggested_post_message": {
+            "message_id": 40,
+            "date": 0,
+            "chat": {"id": 1, "type": "private"},
+            "text": "Suggested"
+          },
+          "price": {"currency": "XTR", "amount": 100},
+          "send_date": 1800000000
+        },
+        "suggested_post_approval_failed": {
+          "price": {"currency": "XTR", "amount": 100}
+        },
+        "suggested_post_declined": {
+          "comment": "Needs edits"
+        },
+        "suggested_post_paid": {
+          "currency": "XTR",
+          "star_amount": {"amount": 100}
+        },
+        "suggested_post_refunded": {
+          "reason": "post_deleted"
+        }
+      }
+      JSON
+
+    message.suggested_post_approved.try(&.send_date).should eq(1_800_000_000)
+    message.suggested_post_approved.try(&.suggested_post_message.try(&.text)).should eq("Suggested")
+    message.suggested_post_approval_failed.try(&.price.currency).should eq("XTR")
+    message.suggested_post_declined.try(&.comment).should eq("Needs edits")
+    message.suggested_post_paid.try(&.star_amount.try(&.amount)).should eq(100)
+    message.suggested_post_refunded.try(&.reason).should eq("post_deleted")
   end
 end
 

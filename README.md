@@ -482,7 +482,9 @@ Override these methods in your bot subclass:
   `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
   `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `DirectMessagesTopic`,
   `MessageOrigin`, `MessageOriginUser`, `MessageOriginHiddenUser`,
-  `MessageOriginChat`, `MessageOriginChannel`
+  `MessageOriginChat`, `MessageOriginChannel`, `SuggestedPostInfo`,
+  `SuggestedPostApproved`, `SuggestedPostApprovalFailed`,
+  `SuggestedPostDeclined`, `SuggestedPostPaid`, `SuggestedPostRefunded`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

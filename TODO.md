@@ -126,6 +126,7 @@ Known high-risk type groups:
 - [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
 - [ ] Checklists and suggested posts.
+  - [x] Add suggested post info and service message payload types.
 - [ ] Direct messages and topic objects.
 - [ ] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.

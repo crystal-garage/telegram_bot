@@ -85,6 +85,7 @@ Add wrappers for every official Bot API method that is still missing.
 
 Audit every implemented method against the official method table.
 
+- [ ] Add support for named multipart attachments referenced from nested JSON via `attach://<file_attach_name>`, as documented in <https://core.telegram.org/bots/api#sending-files>. This is required for objects such as `InputProfilePhoto`, `InputMedia`, `InputSticker`, `InputPaidMedia`, and story content when their file fields are uploaded through multipart/form-data under a custom attachment name.
 - [ ] Add every missing documented parameter.
 - [ ] Remove every undocumented or deprecated parameter.
 - [ ] Keep official parameter names when they are exposed as request parameters.

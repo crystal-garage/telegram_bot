@@ -1112,15 +1112,20 @@ describe TelegramBot::Bot do
     bot = RequestBuildingBot.new
     content = TelegramBot::InputTextMessageContent.new("Article details")
     results = [TelegramBot::InlineQueryResultArticle.new("article/1", "Article", content)] of TelegramBot::InlineQueryResult
+    button = TelegramBot::InlineQueryResultsButton.new("Open", start_parameter: "start")
 
-    bot.answer_inline_query("inline-query-id", results)
+    bot.answer_inline_query("inline-query-id", results, cache_time: 60, is_personal: true, next_offset: "next", button: button)
 
     bot.last_method.should eq("answerInlineQuery")
+    bot.last_params["cache_time"].should eq("60")
+    bot.last_params["is_personal"].should eq("true")
+    bot.last_params["next_offset"].should eq("next")
     if results_param = bot.last_params["results"]?
       results_param.should contain("InlineQueryResultArticle")
     else
       fail "expected results param"
     end
+    bot.param("button").should contain("InlineQueryResultsButton")
   end
 
   it "serializes inline keyboard button fields" do

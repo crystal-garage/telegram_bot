@@ -231,6 +231,19 @@ describe TelegramBot::Contact do
 end
 
 describe TelegramBot::InputMessageContent do
+  it "serializes text content entities and link preview options" do
+    content = TelegramBot::InputTextMessageContent.new(
+      "Visit https://example.com",
+      entities: [TelegramBot::MessageEntity.new("url", 6, 19)],
+      link_preview_options: TelegramBot::LinkPreviewOptions.new(is_disabled: true)
+    )
+    json = JSON.parse(content.to_json)
+
+    json["message_text"].should eq("Visit https://example.com")
+    json["entities"][0]["type"].should eq("url")
+    json["link_preview_options"]["is_disabled"].should be_true
+  end
+
   it "serializes inline location, venue, and contact content" do
     location = TelegramBot::InputLocationMessageContent.new(
       50.45,
@@ -285,6 +298,29 @@ describe TelegramBot::InputMessageContent do
 end
 
 describe TelegramBot::InlineQueryResult do
+  it "serializes inline query result buttons and games" do
+    button = TelegramBot::InlineQueryResultsButton.new(
+      "Open app",
+      web_app: TelegramBot::WebAppInfo.new("https://example.com/app")
+    )
+    game = TelegramBot::InlineQueryResultGame.new(
+      "game-1",
+      "short_name",
+      reply_markup: TelegramBot::InlineKeyboardMarkup.new([
+        [TelegramBot::InlineKeyboardButton.new("Play", callback_game: TelegramBot::CallbackGame.from_json("{}"))],
+      ])
+    )
+
+    button_json = JSON.parse(button.to_json)
+    game_json = JSON.parse(game.to_json)
+
+    button_json["text"].should eq("Open app")
+    button_json["web_app"]["url"].should eq("https://example.com/app")
+    game_json["type"].should eq("game")
+    game_json["game_short_name"].should eq("short_name")
+    game_json["reply_markup"]["inline_keyboard"][0][0]["text"].should eq("Play")
+  end
+
   it "serializes location, venue, and contact result fields" do
     location = TelegramBot::InlineQueryResultLocation.new(
       "location-id",

@@ -152,6 +152,7 @@ Known high-risk type groups:
 - [ ] Stickers, sticker sets, input stickers, masks, and custom emoji.
 - [ ] Inline query results, inline keyboard buttons, and input message content.
   - [x] Align inline location, venue, and contact content/result fields.
+  - [x] Add inline query results button, inline game result, and text content entities.
 - [ ] Payments, invoices, shipping, refunds, transactions, and Passport.
   - [x] Add Passport data response types and `Message#passport_data`.
 - [ ] Games.

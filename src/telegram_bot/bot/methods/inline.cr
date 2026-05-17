@@ -245,18 +245,16 @@ module TelegramBot
       cache_time : Int32? = nil,
       is_personal : Bool? = nil,
       next_offset : String? = nil,
-      switch_pm_text : String? = nil,
-      switch_pm_parameter : String? = nil,
+      button : InlineQueryResultsButton? = nil,
     ) : Bool?
       res = def_request(
         "answerInlineQuery",
         inline_query_id,
+        results,
         cache_time,
         is_personal,
         next_offset,
-        results,
-        switch_pm_text,
-        switch_pm_parameter
+        button
       )
 
       res.as_bool if res

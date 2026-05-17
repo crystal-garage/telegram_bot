@@ -816,7 +816,11 @@ describe TelegramBot::BusinessConnection do
       JSON
 
     connection.id.should eq("business-id")
+    connection.user.first_name.should eq("User")
+    connection.user_chat_id.should eq(100)
+    connection.date.should eq(1_800_000_000)
     connection.rights.try(&.can_edit_bio?).should be_true
+    connection.is_enabled?.should be_true
     chat.business_intro.try(&.title).should eq("Intro")
     chat.is_forum?.should be_true
     chat.is_direct_messages?.should be_true

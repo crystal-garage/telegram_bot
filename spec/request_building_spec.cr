@@ -1790,7 +1790,13 @@ describe TelegramBot::Bot do
         <<-JSON,
           {
             "update_id": 1,
-            "business_connection": {"id": "business-connection-id"}
+            "business_connection": {
+              "id": "business-connection-id",
+              "user": {"id": 1, "is_bot": false, "first_name": "User"},
+              "user_chat_id": 100,
+              "date": 1800000000,
+              "is_enabled": true
+            }
           }
           JSON
         "business-connection-id",

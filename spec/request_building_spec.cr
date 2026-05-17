@@ -94,7 +94,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getMyDescription"                 => %({"description":"Long description"}),
     "getMyShortDescription"            => %({"short_description":"Short description"}),
     "getChatMenuButton"                => %({"type":"web_app","text":"Open","web_app":{"url":"https://example.com/app"}}),
-    "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
+    "getMyDefaultAdministratorRights"  => %({"is_anonymous":false,"can_manage_chat":false,"can_delete_messages":true,"can_manage_video_chats":false,"can_restrict_members":false,"can_promote_members":false,"can_change_info":false,"can_invite_users":false,"can_post_stories":false,"can_edit_stories":false,"can_delete_stories":false}),
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
     "getChatAdministrators"            => %([{"status":"administrator","user":{"id":1,"is_bot":false,"first_name":"Admin"}}]),
     "getChatMemberCount"               => %(12),
@@ -1214,7 +1214,19 @@ describe TelegramBot::Bot do
           "request_chat": {
             "request_id": 2,
             "chat_is_channel": false,
-            "bot_administrator_rights": {"can_invite_users": true},
+            "bot_administrator_rights": {
+              "is_anonymous": false,
+              "can_manage_chat": false,
+              "can_delete_messages": false,
+              "can_manage_video_chats": false,
+              "can_restrict_members": false,
+              "can_promote_members": false,
+              "can_change_info": false,
+              "can_invite_users": true,
+              "can_post_stories": false,
+              "can_edit_stories": false,
+              "can_delete_stories": false
+            },
             "request_title": true
           },
           "request_managed_bot": {

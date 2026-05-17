@@ -74,7 +74,8 @@ describe TelegramBot::InputPollOption do
   it "serializes poll option input" do
     option = TelegramBot::InputPollOption.new(
       "Option",
-      text_entities: [TelegramBot::MessageEntity.new("custom_emoji", 0, 2, custom_emoji_id: "emoji-id")]
+      text_entities: [TelegramBot::MessageEntity.new("custom_emoji", 0, 2, custom_emoji_id: "emoji-id")],
+      media: TelegramBot::InputMediaSticker.new("sticker-id")
     )
 
     JSON.parse(option.to_json).should eq(JSON.parse(<<-JSON))
@@ -87,7 +88,53 @@ describe TelegramBot::InputPollOption do
             "length": 2,
             "custom_emoji_id": "emoji-id"
           }
-        ]
+        ],
+        "media": {
+          "type": "sticker",
+          "media": "sticker-id"
+        }
+      }
+      JSON
+  end
+
+  it "serializes poll media inputs" do
+    location = TelegramBot::InputMediaLocation.new(
+      50.45,
+      30.52,
+      horizontal_accuracy: 10.5,
+      live_period: 60,
+      heading: 90,
+      proximity_alert_radius: 100
+    )
+    venue = TelegramBot::InputMediaVenue.new(
+      50.45,
+      30.52,
+      "Venue",
+      "Main Street",
+      google_place_id: "place-id",
+      google_place_type: "restaurant"
+    )
+
+    JSON.parse(location.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "location",
+        "latitude": 50.45,
+        "longitude": 30.52,
+        "horizontal_accuracy": 10.5,
+        "live_period": 60,
+        "heading": 90,
+        "proximity_alert_radius": 100
+      }
+      JSON
+    JSON.parse(venue.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "venue",
+        "latitude": 50.45,
+        "longitude": 30.52,
+        "title": "Venue",
+        "address": "Main Street",
+        "google_place_id": "place-id",
+        "google_place_type": "restaurant"
       }
       JSON
   end

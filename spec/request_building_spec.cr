@@ -34,6 +34,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "banChatSenderChat",
     "unbanChatSenderChat",
     "restrictChatMember",
+    "promoteChatMember",
     "setChatPermissions",
     "setChatAdministratorCustomTitle",
     "setChatMemberTag",
@@ -474,6 +475,8 @@ describe TelegramBot::Bot do
       "Question?",
       options,
       allows_multiple_answers: true,
+      media: TelegramBot::InputMediaLocation.new(50.45, 30.52),
+      explanation_media: TelegramBot::InputMediaPhoto.new("photo-id"),
       open_period: open_period,
       close_date: close_date,
       country_codes: ["US"]
@@ -486,6 +489,8 @@ describe TelegramBot::Bot do
     bot.last_params["open_period"].should eq((open_period.total_seconds.to_i).to_s)
     bot.last_params["close_date"].should eq((close_date.to_unix).to_s)
     bot.last_params["country_codes"].should eq("[\"US\"]")
+    bot.param("media").should contain("InputMediaLocation")
+    bot.param("explanation_media").should contain("InputMediaPhoto")
 
     stopped_poll = bot.stop_poll(123, 1, business_connection_id: "business-id")
 

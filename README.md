@@ -496,7 +496,8 @@ Override these methods in your bot subclass:
 - Chat profile objects: `Chat`, `ChatFullInfo`, `Birthdate`, `ChatLocation`,
   `UserRating`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
-  `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
+  `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaLocation`,
+  `InputMediaPhoto`, `InputMediaSticker`, `InputMediaVenue`,
   `InputMediaVideo`
 - Polls, reactions, and forum service messages: `Dice`, `Poll`,
   `PollOption`, `InputPollOption`, `PollMedia`, `PollAnswer`,

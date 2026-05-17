@@ -151,6 +151,7 @@ Known high-risk type groups:
   - [x] Add missing contact/location/venue fields and live-location edit parameters.
 - [ ] Stickers, sticker sets, input stickers, masks, and custom emoji.
 - [ ] Inline query results, inline keyboard buttons, and input message content.
+  - [x] Align inline location, venue, and contact content/result fields.
 - [ ] Payments, invoices, shipping, refunds, transactions, and Passport.
   - [x] Add Passport data response types and `Message#passport_data`.
 - [ ] Games.

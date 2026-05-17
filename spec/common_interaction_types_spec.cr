@@ -230,6 +230,97 @@ describe TelegramBot::Contact do
   end
 end
 
+describe TelegramBot::InputMessageContent do
+  it "serializes inline location, venue, and contact content" do
+    location = TelegramBot::InputLocationMessageContent.new(
+      50.45,
+      30.52,
+      horizontal_accuracy: 10.5,
+      live_period: 60,
+      heading: 90,
+      proximity_alert_radius: 100
+    )
+    venue = TelegramBot::InputVenueMessageContent.new(
+      50.45,
+      30.52,
+      "Venue",
+      "Main Street",
+      google_place_id: "place-id",
+      google_place_type: "restaurant"
+    )
+    contact = TelegramBot::InputContactMessageContent.new(
+      "+15550100",
+      "First",
+      vcard: "BEGIN:VCARD"
+    )
+
+    JSON.parse(location.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "latitude": 50.45,
+        "longitude": 30.52,
+        "horizontal_accuracy": 10.5,
+        "live_period": 60,
+        "heading": 90,
+        "proximity_alert_radius": 100
+      }
+      JSON
+    JSON.parse(venue.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "latitude": 50.45,
+        "longitude": 30.52,
+        "title": "Venue",
+        "address": "Main Street",
+        "google_place_id": "place-id",
+        "google_place_type": "restaurant"
+      }
+      JSON
+    JSON.parse(contact.to_json).should eq(JSON.parse(<<-JSON))
+      {
+        "phone_number": "+15550100",
+        "first_name": "First",
+        "vcard": "BEGIN:VCARD"
+      }
+      JSON
+  end
+end
+
+describe TelegramBot::InlineQueryResult do
+  it "serializes location, venue, and contact result fields" do
+    location = TelegramBot::InlineQueryResultLocation.new(
+      "location-id",
+      50.45,
+      30.52,
+      "Location",
+      horizontal_accuracy: 10.5,
+      live_period: 60,
+      heading: 90,
+      proximity_alert_radius: 100,
+      thumbnail_url: "https://example.com/thumb.jpg"
+    )
+    venue = TelegramBot::InlineQueryResultVenue.new(
+      "venue-id",
+      50.45,
+      30.52,
+      "Venue",
+      "Main Street",
+      google_place_id: "place-id",
+      google_place_type: "restaurant"
+    )
+    contact = TelegramBot::InlineQueryResultContact.new(
+      "contact-id",
+      "+15550100",
+      "First",
+      vcard: "BEGIN:VCARD"
+    )
+
+    JSON.parse(location.to_json)["horizontal_accuracy"].should eq(JSON.parse("10.5"))
+    JSON.parse(location.to_json)["proximity_alert_radius"].should eq(JSON.parse("100"))
+    JSON.parse(venue.to_json)["google_place_id"].should eq(JSON.parse(%("place-id")))
+    JSON.parse(venue.to_json)["google_place_type"].should eq(JSON.parse(%("restaurant")))
+    JSON.parse(contact.to_json)["vcard"].should eq(JSON.parse(%("BEGIN:VCARD")))
+  end
+end
+
 describe TelegramBot::ChatMember do
   it "parses member and invite link fields" do
     member = TelegramBot::ChatMember.from_json(<<-JSON)

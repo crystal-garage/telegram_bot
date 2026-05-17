@@ -13,20 +13,20 @@ module TelegramBot
     property thumbnail_url : String?
     property thumbnail_width : Int32?
     property thumbnail_height : Int32?
-  end
 
-  def initialize(
-    @id : String,
-    @phone_number : String,
-    @first_name : String,
-    *,
-    @last_name = nil,
-    @vcard = nil,
-    @reply_markup = nil,
-    @input_message_content = nil,
-    @thumbnail_url = nil,
-    @thumbnail_width = nil,
-    @thumbnail_height = nil,
-  )
+    def initialize(
+      @id : String,
+      @phone_number : String,
+      @first_name : String,
+      *,
+      @last_name : String? = nil,
+      @vcard : String? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
+      @thumbnail_url : String? = nil,
+      @thumbnail_width : Int32? = nil,
+      @thumbnail_height : Int32? = nil,
+    )
+    end
   end
 end

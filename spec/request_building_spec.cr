@@ -95,6 +95,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getChatMenuButton"                => %({"type":"web_app","text":"Open","web_app":{"url":"https://example.com/app"}}),
     "getMyDefaultAdministratorRights"  => %({"can_delete_messages":true}),
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
+    "getChatAdministrators"            => %([{"status":"administrator","user":{"id":1,"is_bot":false,"first_name":"Admin"}}]),
     "getChatMemberCount"               => %(12),
     "getUserChatBoosts"                => %({"boosts":[{"boost_id":"boost-id","add_date":1800000000,"expiration_date":1900000000,"source":{"source":"premium","user":{"id":1,"is_bot":false,"first_name":"User"}}}]}),
     "answerWebAppQuery"                => %({"inline_message_id":"inline-id"}),

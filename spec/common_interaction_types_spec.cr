@@ -428,6 +428,8 @@ describe TelegramBot::ChatMember do
         "can_send_messages": true,
         "can_send_photos": true,
         "can_react_to_messages": true,
+        "can_edit_tag": true,
+        "tag": "Trusted",
         "until_date": 1800000000
       }
       JSON
@@ -469,8 +471,30 @@ describe TelegramBot::ChatMember do
     member.is_member?.should be_true
     member.can_send_photos?.should be_true
     member.can_react_to_messages?.should be_true
+    member.tag.should eq("Trusted")
     link.subscription_price.should eq(100)
     update.invite_link.try(&.invite_link).should eq("https://t.me/+invite")
+
+    rights = TelegramBot::ChatAdministratorRights.from_json(<<-JSON)
+      {
+        "is_anonymous": false,
+        "can_manage_chat": true,
+        "can_delete_messages": true,
+        "can_manage_video_chats": true,
+        "can_restrict_members": true,
+        "can_promote_members": true,
+        "can_change_info": true,
+        "can_invite_users": true,
+        "can_post_stories": true,
+        "can_edit_stories": true,
+        "can_delete_stories": true,
+        "can_manage_tags": true
+      }
+      JSON
+
+    rights.can_manage_chat?.should be_true
+    rights.can_delete_stories?.should be_true
+    rights.can_manage_tags?.should be_true
   end
 end
 

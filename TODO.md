@@ -143,7 +143,7 @@ Known high-risk type groups:
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
 - [ ] Business connection, business profile, business messages, and business account objects.
 - [ ] Stories.
-- [ ] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
+- [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
 - [x] Reactions.
   - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.
 - [ ] Polls, dice, contacts, venues, locations, and live locations.

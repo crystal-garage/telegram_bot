@@ -186,6 +186,50 @@ describe TelegramBot::ForumTopic do
   end
 end
 
+describe TelegramBot::Contact do
+  it "parses contact, location, and venue fields" do
+    contact = TelegramBot::Contact.from_json(<<-JSON)
+      {
+        "phone_number": "+15550100",
+        "first_name": "First",
+        "last_name": "Last",
+        "user_id": 9007199254740991,
+        "vcard": "BEGIN:VCARD"
+      }
+      JSON
+    location = TelegramBot::Location.from_json(<<-JSON)
+      {
+        "latitude": 50.45,
+        "longitude": 30.52,
+        "horizontal_accuracy": 10.5,
+        "live_period": 60,
+        "heading": 90,
+        "proximity_alert_radius": 100
+      }
+      JSON
+    venue = TelegramBot::Venue.from_json(<<-JSON)
+      {
+        "location": {"latitude": 50.45, "longitude": 30.52},
+        "title": "Venue",
+        "address": "Main Street",
+        "foursquare_id": "foursquare-id",
+        "foursquare_type": "food/restaurant",
+        "google_place_id": "place-id",
+        "google_place_type": "restaurant"
+      }
+      JSON
+
+    contact.user_id.should eq(9_007_199_254_740_991)
+    contact.vcard.should eq("BEGIN:VCARD")
+    location.horizontal_accuracy.should eq(10.5)
+    location.live_period.should eq(60)
+    location.heading.should eq(90)
+    location.proximity_alert_radius.should eq(100)
+    venue.google_place_id.should eq("place-id")
+    venue.google_place_type.should eq("restaurant")
+  end
+end
+
 describe TelegramBot::ChatMember do
   it "parses member and invite link fields" do
     member = TelegramBot::ChatMember.from_json(<<-JSON)

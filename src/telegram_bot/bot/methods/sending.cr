@@ -734,18 +734,30 @@ module TelegramBot
     def edit_message_live_location(
       latitude : Float,
       longitude : Float,
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
+      live_period : Int32 | Time::Span? = nil,
+      horizontal_accuracy : Float? = nil,
+      heading : Int32? = nil,
+      proximity_alert_radius : Int32? = nil,
       reply_markup : ReplyMarkup? = nil,
     )
+      live_period = live_period.total_seconds.to_i if live_period.is_a?(Time::Span)
+
       res = def_request(
         "editMessageLiveLocation",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         latitude,
         longitude,
+        live_period,
+        horizontal_accuracy,
+        heading,
+        proximity_alert_radius,
         reply_markup
       )
 
@@ -762,6 +774,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#stopmessagelivelocation>
     def stop_message_live_location(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
@@ -769,6 +782,7 @@ module TelegramBot
     )
       res = def_request(
         "stopMessageLiveLocation",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,

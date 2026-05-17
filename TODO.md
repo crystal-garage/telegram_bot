@@ -148,6 +148,7 @@ Known high-risk type groups:
   - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.
 - [ ] Polls, dice, contacts, venues, locations, and live locations.
   - [x] Add Bot API 10.0 poll media input types and official poll media aliases.
+  - [x] Add missing contact/location/venue fields and live-location edit parameters.
 - [ ] Stickers, sticker sets, input stickers, masks, and custom emoji.
 - [ ] Inline query results, inline keyboard buttons, and input message content.
 - [ ] Payments, invoices, shipping, refunds, transactions, and Passport.

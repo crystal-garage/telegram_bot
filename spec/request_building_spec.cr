@@ -920,6 +920,28 @@ describe TelegramBot::Bot do
 
     bot.last_method.should eq("sendContact")
     bot.last_params["disable_notification"].should eq("true")
+
+    bot.edit_message_live_location(
+      50.45,
+      30.52,
+      business_connection_id: "business-id",
+      chat_id: 123,
+      message_id: 7,
+      live_period: 1.hour,
+      horizontal_accuracy: 10.5,
+      heading: 90,
+      proximity_alert_radius: 100
+    )
+    bot.last_method.should eq("editMessageLiveLocation")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["live_period"].should eq("3600")
+    bot.last_params["horizontal_accuracy"].should eq("10.5")
+    bot.last_params["heading"].should eq("90")
+    bot.last_params["proximity_alert_radius"].should eq("100")
+
+    bot.stop_message_live_location(business_connection_id: "business-id", chat_id: 123, message_id: 7)
+    bot.last_method.should eq("stopMessageLiveLocation")
+    bot.last_params["business_connection_id"].should eq("business-id")
   end
 
   it "builds answerShippingQuery with shipping_options" do

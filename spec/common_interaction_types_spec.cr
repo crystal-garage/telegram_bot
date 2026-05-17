@@ -501,6 +501,12 @@ describe TelegramBot::BusinessConnection do
         "id": 1,
         "is_bot": false,
         "first_name": "User",
+        "is_premium": true,
+        "added_to_attachment_menu": true,
+        "can_connect_to_business": true,
+        "has_main_web_app": true,
+        "has_topics_enabled": true,
+        "allows_users_to_create_topics": true,
         "supports_guest_queries": true,
         "can_manage_bots": true
       }
@@ -517,6 +523,12 @@ describe TelegramBot::BusinessConnection do
     message.guest_query_id.should eq("guest-query-id")
     message.managed_bot_created.try(&.token).should eq("managed-token")
     access_settings.added_users.try(&.first.first_name).should eq("User")
+    user.is_premium?.should be_true
+    user.added_to_attachment_menu?.should be_true
+    user.can_connect_to_business?.should be_true
+    user.has_main_web_app?.should be_true
+    user.has_topics_enabled?.should be_true
+    user.allows_users_to_create_topics?.should be_true
     user.supports_guest_queries?.should be_true
     user.can_manage_bots?.should be_true
   end

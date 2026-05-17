@@ -4,6 +4,7 @@ Lint/NotNil:
   Excluded:
   - src/telegram_bot/bot.cr
   - src/telegram_bot/bot/**/*.cr
+  - spec/message_type_upgrade_spec.cr
   Enabled: true
   Severity: Warning
 

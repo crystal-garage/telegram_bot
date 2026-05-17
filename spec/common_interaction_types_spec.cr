@@ -521,3 +521,82 @@ describe TelegramBot::BusinessConnection do
     user.can_manage_bots?.should be_true
   end
 end
+
+describe TelegramBot::ChatFullInfo do
+  it "parses full chat profile fields" do
+    chat = TelegramBot::ChatFullInfo.from_json(<<-JSON)
+      {
+        "id": 1,
+        "type": "private",
+        "first_name": "User",
+        "is_forum": true,
+        "is_direct_messages": true,
+        "accent_color_id": 1,
+        "max_reaction_count": 3,
+        "active_usernames": ["user", "old_user"],
+        "birthdate": {"day": 1, "month": 2, "year": 2000},
+        "personal_chat": {"id": -100, "type": "channel", "title": "Personal"},
+        "parent_chat": {"id": -101, "type": "channel", "title": "Parent"},
+        "available_reactions": [{"type": "emoji", "emoji": "👍"}],
+        "background_custom_emoji_id": "background-emoji-id",
+        "profile_accent_color_id": 2,
+        "profile_background_custom_emoji_id": "profile-background-id",
+        "emoji_status_custom_emoji_id": "status-emoji-id",
+        "emoji_status_expiration_date": 1800000000,
+        "bio": "Bio",
+        "has_private_forwards": true,
+        "has_restricted_voice_and_video_messages": true,
+        "join_to_send_messages": true,
+        "join_by_request": true,
+        "permissions": {"can_send_messages": true},
+        "accepted_gift_types": {
+          "unlimited_gifts": true,
+          "limited_gifts": true,
+          "unique_gifts": true,
+          "premium_subscription": true,
+          "gifts_from_channels": false
+        },
+        "can_send_paid_media": true,
+        "slow_mode_delay": 10,
+        "unrestrict_boost_count": 2,
+        "message_auto_delete_time": 86400,
+        "has_aggressive_anti_spam_enabled": true,
+        "has_hidden_members": true,
+        "has_protected_content": true,
+        "has_visible_history": true,
+        "custom_emoji_sticker_set_name": "emoji_set",
+        "linked_chat_id": -102,
+        "location": {
+          "location": {"longitude": 1.0, "latitude": 2.0},
+          "address": "Main Street"
+        },
+        "rating": {"level": 5},
+        "first_profile_audio": {"file_id": "audio-id", "file_unique_id": "audio-unique-id", "duration": 1},
+        "unique_gift_colors": {
+          "model_custom_emoji_id": "model-id",
+          "symbol_custom_emoji_id": "symbol-id",
+          "light_theme_main_color": 1,
+          "light_theme_other_colors": [2],
+          "dark_theme_main_color": 3,
+          "dark_theme_other_colors": [4]
+        },
+        "paid_message_star_count": 7
+      }
+      JSON
+
+    chat.accent_color_id.should eq(1)
+    chat.max_reaction_count.should eq(3)
+    chat.active_usernames.try(&.first).should eq("user")
+    chat.birthdate.try(&.year).should eq(2000)
+    chat.personal_chat.try(&.title).should eq("Personal")
+    chat.parent_chat.try(&.title).should eq("Parent")
+    chat.available_reactions.try(&.first.emoji).should eq("👍")
+    chat.has_private_forwards?.should be_true
+    chat.permissions.try(&.can_send_messages?).should be_true
+    chat.location.try(&.address).should eq("Main Street")
+    chat.rating.try(&.level).should eq(5)
+    chat.first_profile_audio.try(&.file_id).should eq("audio-id")
+    chat.unique_gift_colors.try(&.model_custom_emoji_id).should eq("model-id")
+    chat.paid_message_star_count.should eq(7)
+  end
+end

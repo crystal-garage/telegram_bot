@@ -124,6 +124,7 @@ Known high-risk type groups:
 - [ ] Updates and handler hook payloads.
 - [ ] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
   - [x] Add base `Chat#is_forum` and `Chat#is_direct_messages` flags.
+  - [x] Add `ChatFullInfo` and parse `get_chat` responses as the official return type.
 - [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
   - [x] Add paid and direct message price change service payload types.

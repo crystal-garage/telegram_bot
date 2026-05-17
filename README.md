@@ -493,6 +493,8 @@ Override these methods in your bot subclass:
   `VideoChatScheduled`, `VideoChatStarted`, `VideoChatEnded`,
   `VideoChatParticipantsInvited`, `BackgroundFill`, `BackgroundType`,
   `ChatBackground`
+- Chat profile objects: `Chat`, `ChatFullInfo`, `Birthdate`, `ChatLocation`,
+  `UserRating`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

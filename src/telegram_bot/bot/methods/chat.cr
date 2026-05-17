@@ -541,7 +541,7 @@ module TelegramBot
         chat_id
       )
 
-      Chat.from_json(res.not_nil!.to_json)
+      ChatFullInfo.from_json(res.not_nil!.to_json)
     end
 
     # Leaves a chat.

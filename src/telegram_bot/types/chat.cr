@@ -8,6 +8,8 @@ module TelegramBot
     property username : String?
     property first_name : String?
     property last_name : String?
+    property? is_forum : Bool?
+    property? is_direct_messages : Bool?
     property? all_members_are_administrators : Bool?
     property photo : ChatPhoto?
     property business_intro : BusinessIntro?

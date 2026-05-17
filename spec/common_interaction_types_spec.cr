@@ -449,6 +449,8 @@ describe TelegramBot::BusinessConnection do
       {
         "id": 1,
         "type": "private",
+        "is_forum": true,
+        "is_direct_messages": true,
         "business_intro": {
           "title": "Intro",
           "message": "Hello"
@@ -507,6 +509,8 @@ describe TelegramBot::BusinessConnection do
     connection.id.should eq("business-id")
     connection.rights.try(&.can_edit_bio?).should be_true
     chat.business_intro.try(&.title).should eq("Intro")
+    chat.is_forum?.should be_true
+    chat.is_direct_messages?.should be_true
     chat.business_location.try(&.address).should eq("Main Street")
     chat.business_opening_hours.try(&.opening_hours.first.opening_minute).should eq(60)
     chat.accepted_gift_types.try(&.unique_gifts?).should be_true

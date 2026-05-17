@@ -114,6 +114,10 @@ module TelegramBot
     property suggested_post_declined : SuggestedPostDeclined?
     property suggested_post_paid : SuggestedPostPaid?
     property suggested_post_refunded : SuggestedPostRefunded?
+    property video_chat_scheduled : VideoChatScheduled?
+    property video_chat_started : VideoChatStarted?
+    property video_chat_ended : VideoChatEnded?
+    property video_chat_participants_invited : VideoChatParticipantsInvited?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

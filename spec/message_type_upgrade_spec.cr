@@ -190,6 +190,31 @@ describe TelegramBot::Message do
     message.boost_added.try(&.boost_count).should eq(2)
   end
 
+  it "parses video chat service message payloads" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 46,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "video_chat_scheduled": {
+          "start_date": 1800000000
+        },
+        "video_chat_started": {},
+        "video_chat_ended": {
+          "duration": 3600
+        },
+        "video_chat_participants_invited": {
+          "users": [{"id": 2, "is_bot": false, "first_name": "Invited"}]
+        }
+      }
+      JSON
+
+    message.video_chat_scheduled.try(&.start_date).should eq(1_800_000_000)
+    message.video_chat_started.should be_a(TelegramBot::VideoChatStarted)
+    message.video_chat_ended.try(&.duration).should eq(3600)
+    message.video_chat_participants_invited.try(&.users.first.first_name).should eq("Invited")
+  end
+
   it "parses giveaway message payloads" do
     message = TelegramBot::Message.from_json(<<-JSON)
       {

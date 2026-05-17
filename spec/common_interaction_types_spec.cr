@@ -965,6 +965,10 @@ describe TelegramBot::ChatFullInfo do
         "first_name": "User",
         "is_forum": true,
         "is_direct_messages": true,
+        "direct_messages_topic": {
+          "topic_id": 123,
+          "user": {"id": 2, "is_bot": false, "first_name": "Topic User"}
+        },
         "accent_color_id": 1,
         "max_reaction_count": 3,
         "active_usernames": ["user", "old_user"],
@@ -1019,6 +1023,7 @@ describe TelegramBot::ChatFullInfo do
       JSON
 
     chat.accent_color_id.should eq(1)
+    chat.direct_messages_topic.try(&.user.try(&.first_name)).should eq("Topic User")
     chat.max_reaction_count.should eq(3)
     chat.active_usernames.try(&.first).should eq("user")
     chat.birthdate.try(&.year).should eq(2000)

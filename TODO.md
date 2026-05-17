@@ -138,7 +138,7 @@ Known high-risk type groups:
   - [x] Add chat background service payload types.
 - [ ] Checklists and suggested posts.
   - [x] Add suggested post info and service message payload types.
-- [ ] Direct messages and topic objects.
+- [x] Direct messages and topic objects.
 - [ ] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
 - [x] Business connection, business profile, business messages, and business account objects.

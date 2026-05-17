@@ -6,7 +6,10 @@ describe TelegramBot::Message do
       {
         "message_id": 42,
         "message_thread_id": 7,
-        "direct_messages_topic": {"topic_id": 3},
+        "direct_messages_topic": {
+          "topic_id": 3,
+          "user": {"id": 5, "is_bot": false, "first_name": "Topic Creator"}
+        },
         "from": {"id": 1, "is_bot": false, "first_name": "Sender"},
         "sender_chat": {"id": -100, "type": "supergroup", "title": "Group"},
         "sender_boost_count": 2,
@@ -96,6 +99,7 @@ describe TelegramBot::Message do
 
     message.message_thread_id.should eq(7)
     message.direct_messages_topic.try(&.topic_id).should eq(3)
+    message.direct_messages_topic.try(&.user.try(&.first_name)).should eq("Topic Creator")
     message.sender_chat.try(&.title).should eq("Group")
     message.sender_boost_count.should eq(2)
     message.sender_business_bot.try(&.first_name).should eq("Business Bot")

@@ -24,6 +24,7 @@ module TelegramBot
     property accent_color_id : Int32
     property max_reaction_count : Int32
     property active_usernames : Array(String)?
+    property direct_messages_topic : DirectMessagesTopic?
     property birthdate : Birthdate?
     property personal_chat : Chat?
     property parent_chat : Chat?

@@ -11,6 +11,9 @@ module TelegramBot
     property title : String?
     property description : String?
     property caption : String?
+    property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
+    property? show_caption_above_media : Bool?
     property reply_markup : InlineKeyboardMarkup?
     property input_message_content : InputMessageContent?
 
@@ -19,13 +22,16 @@ module TelegramBot
       @photo_url : String,
       @thumbnail_url : String,
       *,
-      @photo_width = nil,
-      @photo_height = nil,
-      @title = nil,
-      @description = nil,
-      @caption = nil,
-      @reply_markup = nil,
-      @input_message_content = nil,
+      @photo_width : Int32? = nil,
+      @photo_height : Int32? = nil,
+      @title : String? = nil,
+      @description : String? = nil,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
+      @show_caption_above_media : Bool? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
     )
     end
   end

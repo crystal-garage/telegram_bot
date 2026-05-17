@@ -231,6 +231,26 @@ describe TelegramBot::Contact do
 end
 
 describe TelegramBot::InputMessageContent do
+  it "serializes invoice content" do
+    content = TelegramBot::InputInvoiceMessageContent.new(
+      "Title",
+      "Description",
+      "payload",
+      "XTR",
+      [TelegramBot::LabeledPrice.new("Stars", 100)],
+      provider_token: "",
+      suggested_tip_amounts: [10, 20],
+      need_email: true
+    )
+    json = JSON.parse(content.to_json)
+
+    json["title"].should eq("Title")
+    json["prices"][0]["label"].should eq("Stars")
+    json["provider_token"].should eq("")
+    json["suggested_tip_amounts"][1].should eq(20)
+    json["need_email"].should be_true
+  end
+
   it "serializes text content entities and link preview options" do
     content = TelegramBot::InputTextMessageContent.new(
       "Visit https://example.com",
@@ -298,6 +318,44 @@ describe TelegramBot::InputMessageContent do
 end
 
 describe TelegramBot::InlineQueryResult do
+  it "serializes caption fields for media results" do
+    entity = TelegramBot::MessageEntity.new("bold", 0, 4)
+    photo = TelegramBot::InlineQueryResultPhoto.new(
+      "photo-1",
+      "https://example.com/photo.jpg",
+      "https://example.com/thumb.jpg",
+      caption: "Bold",
+      caption_entities: [entity],
+      show_caption_above_media: true
+    )
+    cached_video = TelegramBot::InlineQueryResultCachedVideo.new(
+      "video-1",
+      "video-file-id",
+      "Video",
+      caption: "Bold",
+      parse_mode: "MarkdownV2",
+      caption_entities: [entity],
+      show_caption_above_media: true
+    )
+    audio = TelegramBot::InlineQueryResultAudio.new(
+      "audio-1",
+      "https://example.com/audio.mp3",
+      "Audio",
+      caption: "Bold",
+      caption_entities: [entity]
+    )
+
+    photo_json = JSON.parse(photo.to_json)
+    cached_video_json = JSON.parse(cached_video.to_json)
+    audio_json = JSON.parse(audio.to_json)
+
+    photo_json["caption_entities"][0]["type"].should eq("bold")
+    photo_json["show_caption_above_media"].should be_true
+    cached_video_json["parse_mode"].should eq("MarkdownV2")
+    cached_video_json["show_caption_above_media"].should be_true
+    audio_json["caption_entities"][0]["length"].should eq(4)
+  end
+
   it "serializes inline query result buttons and games" do
     button = TelegramBot::InlineQueryResultsButton.new(
       "Open app",

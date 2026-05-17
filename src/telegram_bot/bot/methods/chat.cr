@@ -563,10 +563,12 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#getchatadministrators>
     def get_chat_administrators(
       chat_id : Int | String,
+      return_bots : Bool? = nil,
     )
       res = def_request(
         "getChatAdministrators",
-        chat_id
+        chat_id,
+        return_bots
       )
       res = res.not_nil!.as_a
       admins = Array(ChatMember).new

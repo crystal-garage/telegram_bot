@@ -87,6 +87,7 @@ Audit every implemented method against the official method table.
 
 - [ ] Add support for named multipart attachments referenced from nested JSON via `attach://<file_attach_name>`, as documented in <https://core.telegram.org/bots/api#sending-files>. This is required for objects such as `InputProfilePhoto`, `InputMedia`, `InputSticker`, `InputPaidMedia`, and story content when their file fields are uploaded through multipart/form-data under a custom attachment name.
 - [ ] Add every missing documented parameter.
+  - [x] Add `return_bots` to `get_chat_administrators`.
 - [ ] Remove every undocumented or deprecated parameter.
 - [ ] Keep official parameter names when they are exposed as request parameters.
 - [ ] Keep Crystal method names idiomatic while mapping to official method names.
@@ -143,6 +144,7 @@ Known high-risk type groups:
 - [ ] Stories.
 - [ ] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
 - [ ] Reactions.
+  - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.
 - [ ] Polls, dice, contacts, venues, locations, and live locations.
 - [ ] Stickers, sticker sets, input stickers, masks, and custom emoji.
 - [ ] Inline query results, inline keyboard buttons, and input message content.

@@ -1373,6 +1373,11 @@ describe TelegramBot::Bot do
       can_react_to_messages: true
     )
 
+    bot.get_chat_administrators(123, return_bots: true)
+    bot.last_method.should eq("getChatAdministrators")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["return_bots"].should eq("true")
+
     bot.send_chat_action("@group", "typing", business_connection_id: "business-id", message_thread_id: 10).should be_true
     bot.last_method.should eq("sendChatAction")
     bot.last_params["business_connection_id"].should eq("business-id")

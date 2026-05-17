@@ -46,13 +46,15 @@ module TelegramBot
     def delete_message_reaction(
       chat_id : Int | String,
       message_id : Int,
-      reaction : ReactionType,
+      user_id : Int? = nil,
+      actor_chat_id : Int? = nil,
     )
       res = def_request(
         "deleteMessageReaction",
         chat_id,
         message_id,
-        reaction
+        user_id,
+        actor_chat_id
       )
 
       res.as_bool if res
@@ -63,12 +65,14 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#deleteallmessagereactions>
     def delete_all_message_reactions(
       chat_id : Int | String,
-      message_id : Int,
+      user_id : Int? = nil,
+      actor_chat_id : Int? = nil,
     )
       res = def_request(
         "deleteAllMessageReactions",
         chat_id,
-        message_id
+        user_id,
+        actor_chat_id
       )
 
       res.as_bool if res

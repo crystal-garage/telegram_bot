@@ -158,9 +158,12 @@ describe TelegramBot::ReactionType do
       }
       JSON
 
-    update.old_reaction.try(&.first.emoji).should eq("👍")
-    update.new_reaction.try(&.first.custom_emoji_id).should eq("emoji-id")
-    count.type.try(&.type).should eq("paid")
+    update.chat.id.should eq(1)
+    update.message_id.should eq(1)
+    update.date.should eq(0)
+    update.old_reaction.first.emoji.should eq("👍")
+    update.new_reaction.first.custom_emoji_id.should eq("emoji-id")
+    count.type.type.should eq("paid")
     count.total_count.should eq(3)
 
     JSON.parse(TelegramBot::ReactionTypeEmoji.new("👍").to_json).should eq(JSON.parse(%({"type":"emoji","emoji":"👍"})))

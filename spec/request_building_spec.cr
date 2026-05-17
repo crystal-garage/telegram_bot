@@ -1528,12 +1528,15 @@ describe TelegramBot::Bot do
     bot.param("reaction").should contain("ReactionTypeEmoji")
     bot.last_params["is_big"].should eq("true")
 
-    bot.delete_message_reaction("@group", 10, reaction).should be_true
+    bot.delete_message_reaction("@group", 10, user_id: 123).should be_true
     bot.last_method.should eq("deleteMessageReaction")
-    bot.param("reaction").should contain("ReactionTypeEmoji")
+    bot.last_params["user_id"].should eq("123")
+    bot.last_params.has_key?("reaction").should be_false
 
-    bot.delete_all_message_reactions("@group", 10).should be_true
+    bot.delete_all_message_reactions("@group", actor_chat_id: -100).should be_true
     bot.last_method.should eq("deleteAllMessageReactions")
+    bot.last_params["actor_chat_id"].should eq("-100")
+    bot.last_params.has_key?("message_id").should be_false
 
     stickers = bot.get_forum_topic_icon_stickers
     stickers.first.file_id.should eq("sticker-id")

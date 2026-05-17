@@ -491,7 +491,8 @@ Override these methods in your bot subclass:
   `ProximityAlertTriggered`, `ChatBoostAdded`, `GiveawayCreated`,
   `Giveaway`, `GiveawayWinners`, `GiveawayCompleted`,
   `VideoChatScheduled`, `VideoChatStarted`, `VideoChatEnded`,
-  `VideoChatParticipantsInvited`
+  `VideoChatParticipantsInvited`, `BackgroundFill`, `BackgroundType`,
+  `ChatBackground`
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaPhoto`,
   `InputMediaVideo`

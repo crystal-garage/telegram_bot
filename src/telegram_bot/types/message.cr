@@ -83,6 +83,7 @@ module TelegramBot
     property write_access_allowed : WriteAccessAllowed?
     property proximity_alert_triggered : ProximityAlertTriggered?
     property boost_added : ChatBoostAdded?
+    property chat_background_set : ChatBackground?
     property forum_topic_created : ForumTopicCreated?
     property forum_topic_edited : ForumTopicEdited?
     property forum_topic_closed : ForumTopicClosed?

@@ -130,6 +130,7 @@ Known high-risk type groups:
   - [x] Add giveaway message and service payload types.
   - [x] Add `Message#story` and typed external reply story/checklist fields.
   - [x] Add video chat service payload types.
+  - [x] Add chat background service payload types.
 - [ ] Checklists and suggested posts.
   - [x] Add suggested post info and service message payload types.
 - [ ] Direct messages and topic objects.

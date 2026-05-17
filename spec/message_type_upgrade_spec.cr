@@ -175,6 +175,24 @@ describe TelegramBot::Message do
         },
         "boost_added": {
           "boost_count": 2
+        },
+        "chat_background_set": {
+          "type": {
+            "type": "pattern",
+            "document": {
+              "file_id": "pattern-id",
+              "file_name": "pattern.tgv"
+            },
+            "fill": {
+              "type": "gradient",
+              "top_color": 16777215,
+              "bottom_color": 0,
+              "rotation_angle": 45
+            },
+            "intensity": 50,
+            "is_inverted": true,
+            "is_moving": true
+          }
         }
       }
       JSON
@@ -188,6 +206,9 @@ describe TelegramBot::Message do
     message.write_access_allowed.try(&.web_app_name).should eq("App")
     message.proximity_alert_triggered.try(&.distance).should eq(50)
     message.boost_added.try(&.boost_count).should eq(2)
+    message.chat_background_set.try(&.type.type).should eq("pattern")
+    message.chat_background_set.try(&.type.fill.try(&.top_color)).should eq(16_777_215)
+    message.chat_background_set.try(&.type.document.try(&.file_id)).should eq("pattern-id")
   end
 
   it "parses video chat service message payloads" do

@@ -156,7 +156,7 @@ Known high-risk type groups:
   - [x] Add inline media caption fields and invoice input message content.
 - [ ] Payments, invoices, shipping, refunds, transactions, and Passport.
   - [x] Add Passport data response types and `Message#passport_data`.
-- [ ] Games.
+- [x] Games.
 - [ ] Web App and Mini App objects.
 
 ## 4. Documentation Alignment

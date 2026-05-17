@@ -131,6 +131,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getManagedBotToken"               => %("managed-token"),
     "replaceManagedBotToken"           => %("new-managed-token"),
     "getManagedBotAccessSettings"      => %({"is_access_restricted":true,"added_users":[{"id":1,"is_bot":false,"first_name":"User"}]}),
+    "getGameHighScores"                => %([{"position":1,"user":{"id":1,"is_bot":false,"first_name":"Player"},"score":100}]),
     "stopPoll"                         => %({"id":"poll-id","question":"Question?","options":[{"text":"A","voter_count":1},{"text":"B","voter_count":0}],"total_voter_count":1,"is_closed":true,"is_anonymous":true,"type":"regular","allows_multiple_answers":false,"allows_revoting":true,"members_only":false}),
     "createInvoiceLink"                => %("https://t.me/invoice/link"),
   }
@@ -1569,6 +1570,54 @@ describe TelegramBot::Bot do
 
     bot.unpin_all_chat_messages("@group").should be_true
     bot.last_method.should eq("unpinAllChatMessages")
+  end
+
+  it "builds game methods" do
+    bot = RequestBuildingBot.new
+    reply_markup = TelegramBot::InlineKeyboardMarkup.new([
+      [TelegramBot::InlineKeyboardButton.new("Play", callback_game: TelegramBot::CallbackGame.from_json("{}"))],
+    ])
+    reply_parameters = TelegramBot::ReplyParameters.new(10)
+
+    message = bot.send_game(
+      123,
+      "game",
+      business_connection_id: "business-id",
+      message_thread_id: 20,
+      disable_notification: true,
+      protect_content: true,
+      allow_paid_broadcast: true,
+      message_effect_id: "effect-id",
+      reply_parameters: reply_parameters,
+      reply_markup: reply_markup
+    )
+
+    message.try(&.message_id).should eq(1)
+    bot.last_method.should eq("sendGame")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["message_thread_id"].should eq("20")
+    bot.last_params["game_short_name"].should eq("game")
+    bot.last_params["protect_content"].should eq("true")
+    bot.last_params["allow_paid_broadcast"].should eq("true")
+    bot.last_params["message_effect_id"].should eq("effect-id")
+    bot.param("reply_parameters").should contain("ReplyParameters")
+    bot.param("reply_markup").should contain("InlineKeyboardMarkup")
+
+    scored = bot.set_game_score(1, 100, force: true, disable_edit_message: true, chat_id: 123, message_id: 10)
+
+    scored.should be_a(TelegramBot::Message)
+    bot.last_method.should eq("setGameScore")
+    bot.last_params["force"].should eq("true")
+    bot.last_params["disable_edit_message"].should eq("true")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["message_id"].should eq("10")
+
+    scores = bot.get_game_high_scores(1, chat_id: 123, message_id: 10)
+
+    scores.first.score.should eq(100)
+    bot.last_method.should eq("getGameHighScores")
+    bot.last_params["user_id"].should eq("1")
+    bot.last_params["chat_id"].should eq("123")
   end
 
   it "builds sticker set methods" do

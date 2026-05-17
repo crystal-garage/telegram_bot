@@ -8,12 +8,25 @@ module TelegramBot
       game_short_name : String,
       disable_notification : Bool? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
+      *,
+      business_connection_id : String? = nil,
+      message_thread_id : Int32? = nil,
+      protect_content : Bool? = nil,
+      allow_paid_broadcast : Bool? = nil,
+      message_effect_id : String? = nil,
+      reply_parameters : ReplyParameters? = nil,
     ) : Message?
       res = def_request(
         "sendGame",
+        business_connection_id,
         chat_id,
+        message_thread_id,
         game_short_name,
         disable_notification,
+        protect_content,
+        allow_paid_broadcast,
+        message_effect_id,
+        reply_parameters,
         reply_markup
       )
 
@@ -24,11 +37,11 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#setgamescore>
     def set_game_score(
-      user_id : Int32,
-      score : Int32,
+      user_id : Int,
+      score : Int,
       force : Bool? = nil,
       disable_edit_message : Bool? = nil,
-      chat_id : Int | String? = nil,
+      chat_id : Int? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
     ) : Message | Bool?
@@ -56,8 +69,8 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#getgamehighscores>
     def get_game_high_scores(
-      user_id : Int32,
-      chat_id : Int | String? = nil,
+      user_id : Int,
+      chat_id : Int? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
     ) : Array(GameHighScore)

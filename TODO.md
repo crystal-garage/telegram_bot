@@ -157,7 +157,7 @@ Known high-risk type groups:
 - [ ] Payments, invoices, shipping, refunds, transactions, and Passport.
   - [x] Add Passport data response types and `Message#passport_data`.
 - [x] Games.
-- [ ] Web App and Mini App objects.
+- [x] Web App and Mini App objects.
 
 ## 4. Documentation Alignment
 

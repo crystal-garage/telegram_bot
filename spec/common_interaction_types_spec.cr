@@ -418,6 +418,48 @@ describe TelegramBot::InlineQueryResult do
   end
 end
 
+describe TelegramBot::WebAppInfo do
+  it "parses Web App and Mini App helper objects" do
+    web_app = TelegramBot::WebAppInfo.new("https://example.com/app")
+    web_app_data = TelegramBot::WebAppData.from_json(<<-JSON)
+      {
+        "data": "payload",
+        "button_text": "Open"
+      }
+      JSON
+    sent_web_app_message = TelegramBot::SentWebAppMessage.from_json(<<-JSON)
+      {
+        "inline_message_id": "inline-id"
+      }
+      JSON
+    prepared_inline_message = TelegramBot::PreparedInlineMessage.from_json(<<-JSON)
+      {
+        "id": "prepared-inline-id",
+        "expiration_date": 1800000000
+      }
+      JSON
+    prepared_keyboard_button = TelegramBot::PreparedKeyboardButton.from_json(<<-JSON)
+      {
+        "id": "prepared-keyboard-id"
+      }
+      JSON
+    login_url = TelegramBot::LoginUrl.new(
+      "https://example.com/login",
+      forward_text: "Login",
+      bot_username: "bot",
+      request_write_access: true
+    )
+
+    JSON.parse(web_app.to_json)["url"].should eq("https://example.com/app")
+    web_app_data.data.should eq("payload")
+    web_app_data.button_text.should eq("Open")
+    sent_web_app_message.inline_message_id.should eq("inline-id")
+    prepared_inline_message.expiration_date.should eq(1_800_000_000)
+    prepared_keyboard_button.id.should eq("prepared-keyboard-id")
+    JSON.parse(login_url.to_json)["request_write_access"].should be_true
+  end
+end
+
 describe TelegramBot::ChatMember do
   it "parses member and invite link fields" do
     member = TelegramBot::ChatMember.from_json(<<-JSON)

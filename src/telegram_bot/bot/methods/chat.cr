@@ -218,6 +218,7 @@ module TelegramBot
       can_restrict_members : Bool? = nil,
       can_pin_messages : Bool? = nil,
       can_promote_members : Bool? = nil,
+      can_manage_tags : Bool? = nil,
     )
       res = def_request(
         "promoteChatMember",
@@ -230,7 +231,8 @@ module TelegramBot
         can_invite_users,
         can_restrict_members,
         can_pin_messages,
-        can_promote_members
+        can_promote_members,
+        can_manage_tags
       )
 
       res.as_bool if res

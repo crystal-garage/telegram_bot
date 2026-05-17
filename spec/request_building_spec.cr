@@ -1405,6 +1405,10 @@ describe TelegramBot::Bot do
     bot.param("permissions").should contain("ChatPermissions")
     bot.last_params["use_independent_chat_permissions"].should eq("true")
 
+    bot.promote_chat_member("@group", 123, can_manage_tags: true).should be_true
+    bot.last_method.should eq("promoteChatMember")
+    bot.last_params["can_manage_tags"].should eq("true")
+
     bot.set_chat_permissions("@group", permissions, use_independent_chat_permissions: true).should be_true
     bot.last_method.should eq("setChatPermissions")
     bot.param("permissions").should contain("ChatPermissions")

@@ -888,3 +888,54 @@ describe TelegramBot::ChatFullInfo do
     chat.paid_message_star_count.should eq(7)
   end
 end
+
+describe TelegramBot::Sticker do
+  it "parses sticker set fields and serializes input stickers" do
+    sticker_set = TelegramBot::StickerSet.from_json(<<-JSON)
+      {
+        "name": "set_name",
+        "title": "Sticker Set",
+        "sticker_type": "custom_emoji",
+        "stickers": [{
+          "file_id": "sticker-id",
+          "file_unique_id": "sticker-unique-id",
+          "type": "custom_emoji",
+          "width": 512,
+          "height": 512,
+          "is_animated": true,
+          "is_video": false,
+          "thumbnail": {"file_id": "thumb-id", "file_unique_id": "thumb-unique-id", "width": 100, "height": 100},
+          "emoji": "🙂",
+          "set_name": "set_name",
+          "premium_animation": {"file_id": "animation-id"},
+          "mask_position": {"point": "forehead", "x_shift": 0.1, "y_shift": 0.2, "scale": 1.3},
+          "custom_emoji_id": "emoji-id",
+          "needs_repainting": true,
+          "file_size": 1024
+        }],
+        "thumbnail": {"file_id": "set-thumb-id", "file_unique_id": "set-thumb-unique-id", "width": 100, "height": 100}
+      }
+      JSON
+    input_sticker = TelegramBot::InputSticker.new(
+      "attach://sticker",
+      "static",
+      ["🙂"],
+      TelegramBot::MaskPosition.new("forehead", 0.1, 0.2, 1.3),
+      ["crystal"]
+    )
+    input_json = JSON.parse(input_sticker.to_json)
+
+    sticker_set.sticker_type.should eq("custom_emoji")
+    sticker_set.thumbnail.try(&.file_id).should eq("set-thumb-id")
+    sticker = sticker_set.stickers.first
+    sticker.is_animated?.should be_true
+    sticker.thumbnail.try(&.file_id).should eq("thumb-id")
+    sticker.premium_animation.try(&.file_id).should eq("animation-id")
+    sticker.mask_position.try(&.point).should eq("forehead")
+    sticker.custom_emoji_id.should eq("emoji-id")
+    sticker.needs_repainting?.should be_true
+    sticker.file_size.should eq(1024)
+    input_json["sticker"].should eq("attach://sticker")
+    input_json["keywords"][0].should eq("crystal")
+  end
+end

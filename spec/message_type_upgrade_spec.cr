@@ -215,6 +215,56 @@ describe TelegramBot::Message do
     message.video_chat_participants_invited.try(&.users.first.first_name).should eq("Invited")
   end
 
+  it "parses passport data" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 47,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "passport_data": {
+          "data": [
+            {
+              "type": "passport",
+              "data": "encrypted-data",
+              "front_side": {
+                "file_id": "front-file-id",
+                "file_unique_id": "front-file-unique-id",
+                "file_size": 1024,
+                "file_date": 1800000000
+              },
+              "translation": [
+                {
+                  "file_id": "translation-file-id",
+                  "file_unique_id": "translation-file-unique-id",
+                  "file_size": 2048,
+                  "file_date": 1800000001
+                }
+              ],
+              "hash": "element-hash"
+            },
+            {
+              "type": "email",
+              "email": "user@example.com",
+              "hash": "email-hash"
+            }
+          ],
+          "credentials": {
+            "data": "credentials-data",
+            "hash": "credentials-hash",
+            "secret": "credentials-secret"
+          }
+        }
+      }
+      JSON
+
+    passport_data = message.passport_data.not_nil!
+    passport_data.data.first.type.should eq("passport")
+    passport_data.data.first.front_side.try(&.file_id).should eq("front-file-id")
+    passport_data.data.first.translation.try(&.first.file_unique_id).should eq("translation-file-unique-id")
+    passport_data.data.last.email.should eq("user@example.com")
+    passport_data.credentials.secret.should eq("credentials-secret")
+  end
+
   it "parses giveaway message payloads" do
     message = TelegramBot::Message.from_json(<<-JSON)
       {

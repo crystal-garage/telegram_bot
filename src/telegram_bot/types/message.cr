@@ -101,6 +101,7 @@ module TelegramBot
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
     property refunded_payment : RefundedPayment?
+    property passport_data : PassportData?
     property gift : GiftInfo?
     property unique_gift : UniqueGiftInfo?
     property gift_upgrade_sent : GiftInfo?

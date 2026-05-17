@@ -510,7 +510,8 @@ Override these methods in your bot subclass:
   `PaidMediaLivePhoto`, `InputPaidMediaPhoto`, `InputPaidMediaVideo`,
   `InputPaidMediaLivePhoto`, `RefundedPayment`, `StarAmount`,
   `RevenueWithdrawalState`, `AffiliateInfo`, `TransactionPartner`,
-  `StarTransaction`, `StarTransactions`, `PassportElementError`
+  `StarTransaction`, `StarTransactions`, `PassportData`, `PassportFile`,
+  `EncryptedPassportElement`, `EncryptedCredentials`, `PassportElementError`
 - Gifts and stories: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
   `UniqueGiftInfo`, `UniqueGiftModel`, `UniqueGiftSymbol`,
   `UniqueGiftBackdrop`, `UniqueGiftBackdropColors`, `UniqueGiftColors`,

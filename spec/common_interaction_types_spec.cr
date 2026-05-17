@@ -605,6 +605,12 @@ describe TelegramBot::PaidMediaInfo do
         ]
       }
       JSON
+    purchased = TelegramBot::PaidMediaPurchased.from_json(<<-JSON)
+      {
+        "from": {"id": 1, "is_bot": false, "first_name": "User"},
+        "paid_media_payload": "paid-media-payload"
+      }
+      JSON
 
     message.live_photo.try(&.file_id).should eq("live-video-id")
     message.paid_media.try(&.star_count).should eq(10)
@@ -615,6 +621,8 @@ describe TelegramBot::PaidMediaInfo do
     message.refunded_payment.try(&.telegram_payment_charge_id).should eq("telegram-charge-id")
     transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
     transactions.transactions.first.source.try(&.paid_media.try(&.first.type)).should eq("preview")
+    purchased.from.first_name.should eq("User")
+    purchased.paid_media_payload.should eq("paid-media-payload")
   end
 end
 

@@ -42,10 +42,30 @@ describe TelegramBot::Message do
         "general_forum_topic_hidden": {},
         "general_forum_topic_unhidden": {},
         "poll_option_added": {
+          "poll_message": {
+            "message_id": 2,
+            "date": 0,
+            "chat": {"id": 1, "type": "private"},
+            "poll": {
+              "id": "poll-id",
+              "question": "Question?",
+              "options": [{"text": "Option", "voter_count": 1}],
+              "total_voter_count": 1,
+              "is_closed": false,
+              "is_anonymous": false,
+              "type": "regular",
+              "allows_multiple_answers": false
+            }
+          },
           "option_persistent_id": "added-option-id",
           "option_text": "Added"
         },
         "poll_option_deleted": {
+          "poll_message": {
+            "message_id": 3,
+            "date": 0,
+            "chat": {"id": 1, "type": "private"}
+          },
           "option_persistent_id": "deleted-option-id",
           "option_text": "Deleted"
         }
@@ -66,7 +86,52 @@ describe TelegramBot::Message do
     message.general_forum_topic_hidden.should be_a(TelegramBot::GeneralForumTopicHidden)
     message.general_forum_topic_unhidden.should be_a(TelegramBot::GeneralForumTopicUnhidden)
     message.poll_option_added.try(&.option_persistent_id).should eq("added-option-id")
+    message.poll_option_added.try(&.poll_message.try(&.message_id)).should eq(2)
     message.poll_option_deleted.try(&.option_persistent_id).should eq("deleted-option-id")
+    message.poll_option_deleted.try(&.poll_message.try(&.message_id)).should eq(3)
+  end
+end
+
+describe TelegramBot::ChatBoost do
+  it "parses typed boost sources" do
+    boosts = TelegramBot::UserChatBoosts.from_json(<<-JSON)
+      {
+        "boosts": [
+          {
+            "boost_id": "premium-boost",
+            "add_date": 1,
+            "expiration_date": 2,
+            "source": {"source": "premium", "user": {"id": 1, "is_bot": false, "first_name": "User"}}
+          },
+          {
+            "boost_id": "giveaway-boost",
+            "add_date": 3,
+            "expiration_date": 4,
+            "source": {
+              "source": "giveaway",
+              "giveaway_message_id": 10,
+              "prize_star_count": 100,
+              "is_unclaimed": true
+            }
+          }
+        ]
+      }
+      JSON
+    removed = TelegramBot::ChatBoostRemoved.from_json(<<-JSON)
+      {
+        "chat": {"id": 1, "type": "private"},
+        "boost_id": "removed-boost",
+        "remove_date": 5,
+        "source": {"source": "gift_code", "user": {"id": 2, "is_bot": false, "first_name": "Gift"}}
+      }
+      JSON
+
+    boosts.boosts.first.source.try(&.source).should eq("premium")
+    boosts.boosts.first.source.try(&.user.try(&.first_name)).should eq("User")
+    boosts.boosts.last.source.try(&.giveaway_message_id).should eq(10)
+    boosts.boosts.last.source.try(&.is_unclaimed?).should be_true
+    removed.source.try(&.source).should eq("gift_code")
+    removed.source.try(&.user.try(&.first_name)).should eq("Gift")
   end
 end
 

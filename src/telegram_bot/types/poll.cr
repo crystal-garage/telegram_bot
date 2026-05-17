@@ -76,7 +76,7 @@ module TelegramBot
   class PollOptionAdded
     include JSON::Serializable
 
-    property poll_message : JSON::Any?
+    property poll_message : MaybeInaccessibleMessage?
     property option_persistent_id : String
     property option_text : String
     property option_text_entities : Array(MessageEntity)?
@@ -85,7 +85,7 @@ module TelegramBot
   class PollOptionDeleted
     include JSON::Serializable
 
-    property poll_message : JSON::Any?
+    property poll_message : MaybeInaccessibleMessage?
     property option_persistent_id : String
     property option_text : String
     property option_text_entities : Array(MessageEntity)?

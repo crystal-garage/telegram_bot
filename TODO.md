@@ -149,6 +149,7 @@ Known high-risk type groups:
 - [ ] Polls, dice, contacts, venues, locations, and live locations.
   - [x] Add Bot API 10.0 poll media input types and official poll media aliases.
   - [x] Add missing contact/location/venue fields and live-location edit parameters.
+  - [x] Type poll option service `poll_message` as `MaybeInaccessibleMessage`.
 - [x] Stickers, sticker sets, input stickers, masks, and custom emoji.
 - [ ] Inline query results, inline keyboard buttons, and input message content.
   - [x] Align inline location, venue, and contact content/result fields.

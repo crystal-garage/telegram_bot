@@ -13,10 +13,8 @@ module TelegramBot
         language_code
       )
       res = res.not_nil!.as_a
-      commands = Array(BotCommand).new
-      res.each { |command| commands << BotCommand.from_json(command.to_json) }
 
-      commands
+      res.each_with_object([] of BotCommand) { |c, commands| commands << BotCommand.from_json(c.to_json) }
     end
 
     # Sets the bot's command list.

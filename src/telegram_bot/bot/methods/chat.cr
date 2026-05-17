@@ -570,17 +570,15 @@ module TelegramBot
     def get_chat_administrators(
       chat_id : Int | String,
       return_bots : Bool? = nil,
-    )
+    ) : Array(ChatMember)
       res = def_request(
         "getChatAdministrators",
         chat_id,
         return_bots
       )
       res = res.not_nil!.as_a
-      admins = Array(ChatMember).new
-      res.each { |m| admins << ChatMember.from_json(m.to_json) }
 
-      admins
+      res.each_with_object([] of ChatMember) { |m, admins| admins << ChatMember.from_json(m.to_json) }
     end
 
     # Returns information about a chat member.
@@ -668,10 +666,8 @@ module TelegramBot
         force_http: true
       )
       res = res.not_nil!.as_a
-      stickers = Array(Sticker).new
-      res.each { |sticker| stickers << Sticker.from_json(sticker.to_json) }
 
-      stickers
+      res.each_with_object([] of Sticker) { |s, stickers| stickers << Sticker.from_json(s.to_json) }
     end
 
     # Creates a forum topic.

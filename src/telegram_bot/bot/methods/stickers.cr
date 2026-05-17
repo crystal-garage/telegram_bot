@@ -25,10 +25,8 @@ module TelegramBot
         custom_emoji_ids
       )
       res = res.not_nil!.as_a
-      stickers = Array(Sticker).new
-      res.each { |sticker| stickers << Sticker.from_json(sticker.to_json) }
 
-      stickers
+      res.each_with_object([] of Sticker) { |s, stickers| stickers << Sticker.from_json(s.to_json) }
     end
 
     # Uploads a sticker file for later use.

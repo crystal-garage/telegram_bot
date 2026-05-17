@@ -83,10 +83,8 @@ module TelegramBot
       )
 
       res = res.not_nil!.as_a
-      r = Array(GameHighScore).new
-      res.each { |score| r << GameHighScore.from_json(score.to_json) }
 
-      r
+      res.each_with_object([] of GameHighScore) { |s, scores| scores << GameHighScore.from_json(s.to_json) }
     end
   end
 end

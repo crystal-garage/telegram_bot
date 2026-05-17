@@ -11,7 +11,8 @@ class HTTP::Client
   def post_multipart(path, parts : MultipartBody, headers : HTTP::Headers? = nil) : HTTP::Client::Response
     headers ||= HTTP::Headers.new
     headers["Content-Type"] = parts.content_type
-    post path, headers, parts.bodyg
+
+    post(path, headers, parts.bodyg)
   end
 
   def post_multipart(path, params : Hash, headers : HTTP::Headers? = nil) : HTTP::Client::Response

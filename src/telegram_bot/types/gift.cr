@@ -120,31 +120,18 @@ module TelegramBot
     property next_transfer_date : Int32?
   end
 
-  class OwnedGift
+  abstract class OwnedGift
     include JSON::Serializable
 
+    use_json_discriminator "type", {
+      regular: OwnedGiftRegular,
+      unique:   OwnedGiftUnique,
+    }
+
     property type : String
-    property gift : Gift?
-    property unique_gift : UniqueGift?
-    property owned_gift_id : String?
-    property sender_user : User?
-    property send_date : Int32?
-    property text : String?
-    property entities : Array(MessageEntity)?
-    property? is_private : Bool?
-    property? is_saved : Bool?
-    property? can_be_upgraded : Bool?
-    property? was_refunded : Bool?
-    property convert_star_count : Int32?
-    property prepaid_upgrade_star_count : Int32?
-    property? is_upgrade_separate : Bool?
-    property unique_gift_number : Int32?
-    property? can_be_transferred : Bool?
-    property transfer_star_count : Int32?
-    property next_transfer_date : Int32?
   end
 
-  class OwnedGiftRegular
+  class OwnedGiftRegular < OwnedGift
     include JSON::Serializable
 
     property type : String
@@ -183,7 +170,7 @@ module TelegramBot
     end
   end
 
-  class OwnedGiftUnique
+  class OwnedGiftUnique < OwnedGift
     include JSON::Serializable
 
     property type : String

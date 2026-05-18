@@ -835,6 +835,52 @@ describe TelegramBot::Gift do
         "transfer_star_count": 25
       }
       JSON
+    owned_gifts = TelegramBot::OwnedGifts.from_json(<<-JSON)
+      {
+        "total_count": 2,
+        "gifts": [
+          {
+            "type": "regular",
+            "gift": {
+              "id": "gift-id",
+              "sticker": {"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+              "star_count": 100
+            },
+            "send_date": 1800000000
+          },
+          {
+            "type": "unique",
+            "gift": {
+              "gift_id": "unique-gift-id",
+              "base_name": "Gift",
+              "name": "Gift #1",
+              "number": 1,
+              "model": {
+                "name": "Model",
+                "sticker": {"file_id": "model-sticker-id", "file_unique_id": "model-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+                "rarity_per_mille": 100
+              },
+              "symbol": {
+                "name": "Symbol",
+                "sticker": {"file_id": "symbol-sticker-id", "file_unique_id": "symbol-sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false},
+                "rarity_per_mille": 100
+              },
+              "backdrop": {
+                "name": "Backdrop",
+                "colors": {
+                  "center_color": 1,
+                  "edge_color": 2,
+                  "symbol_color": 3,
+                  "text_color": 4
+                },
+                "rarity_per_mille": 100
+              }
+            },
+            "send_date": 1800000000
+          }
+        ]
+      }
+      JSON
 
     regular.type.should eq("regular")
     regular.gift.id.should eq("gift-id")
@@ -844,6 +890,9 @@ describe TelegramBot::Gift do
     unique.gift.name.should eq("Gift #1")
     unique.can_be_transferred?.should be_true
     unique.transfer_star_count.should eq(25)
+    owned_gifts.gifts[0].should be_a(TelegramBot::OwnedGiftRegular)
+    owned_gifts.gifts[1].should be_a(TelegramBot::OwnedGiftUnique)
+    owned_gifts.gifts[1].as(TelegramBot::OwnedGiftUnique).gift.name.should eq("Gift #1")
   end
 end
 

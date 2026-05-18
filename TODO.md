@@ -141,6 +141,7 @@ Known high-risk type groups:
 - [x] Direct messages and topic objects.
 - [ ] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
+  - [x] Parse owned gift collections with typed regular and unique variants.
 - [x] Business connection, business profile, business messages, and business account objects.
 - [x] Stories.
 - [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.

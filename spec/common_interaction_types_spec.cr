@@ -1,5 +1,19 @@
 require "./spec_helper"
 
+describe TelegramBot::ResponseParameters do
+  it "parses error response parameters" do
+    parameters = TelegramBot::ResponseParameters.from_json(<<-JSON)
+      {
+        "migrate_to_chat_id": -1001234567890,
+        "retry_after": 30
+      }
+      JSON
+
+    parameters.migrate_to_chat_id.should eq(-1_001_234_567_890)
+    parameters.retry_after.should eq(30)
+  end
+end
+
 describe TelegramBot::Message do
   it "parses dice, poll, and forum service fields" do
     message = TelegramBot::Message.from_json(<<-JSON)

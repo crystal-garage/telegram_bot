@@ -124,6 +124,7 @@ Audit every official object documented by Telegram.
 - [ ] Add parsing specs for required fields, optional fields, and nested objects.
 - [ ] Add union dispatch specs for polymorphic object families.
 - [ ] Ensure all new types are required from `src/telegram_bot.cr`.
+  - [x] Add `ResponseParameters` for API error metadata.
 
 Known high-risk type groups:
 

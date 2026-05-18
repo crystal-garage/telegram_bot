@@ -94,6 +94,7 @@ Audit every implemented method against the official method table.
 - [ ] Add every missing documented parameter.
   - [x] Add `return_bots` to `get_chat_administrators`.
   - [x] Add `can_manage_tags` to `promote_chat_member`.
+  - [x] Add current edit message text, caption, and reply markup parameters.
 - [ ] Remove every undocumented or deprecated parameter.
 - [ ] Keep official parameter names when they are exposed as request parameters.
 - [ ] Keep Crystal method names idiomatic while mapping to official method names.
@@ -106,6 +107,7 @@ Audit every implemented method against the official method table.
 Known high-risk parameter groups:
 
 - [ ] Message sending options: business connection, direct messages topic, message effects, suggested posts, paid broadcast, reply parameters, link preview options.
+  - [x] Align edit message shared options.
 - [ ] Media options: spoiler flags, caption placement, thumbnails, covers, start timestamps, streaming support, dimensions, duration.
   - [x] Align `InputMediaLivePhoto` fields.
 - [ ] Chat administration options: permissions, administrator rights, tags, invite links, join requests, boosts.

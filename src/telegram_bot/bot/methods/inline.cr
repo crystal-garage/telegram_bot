@@ -26,21 +26,25 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#editmessagetext>
     def edit_message_text(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
       text : String? = nil,
       parse_mode : String? = nil,
+      entities : Array(MessageEntity)? = nil,
       link_preview_options : LinkPreviewOptions? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
       res = def_request(
         "editMessageText",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         text,
         parse_mode,
+        entities,
         link_preview_options,
         reply_markup
       )
@@ -58,18 +62,26 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#editmessagecaption>
     def edit_message_caption(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
       caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      show_caption_above_media : Bool? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
       res = def_request(
         "editMessageCaption",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         caption,
+        parse_mode,
+        caption_entities,
+        show_caption_above_media,
         reply_markup
       )
 
@@ -138,6 +150,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#editmessagereplymarkup>
     def edit_message_reply_markup(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
@@ -145,6 +158,7 @@ module TelegramBot
     ) : Message | Bool?
       res = def_request(
         "editMessageReplyMarkup",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,

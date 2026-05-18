@@ -489,6 +489,58 @@ describe TelegramBot::Bot do
       JSON
   end
 
+  it "builds edit message text, caption, and reply markup with current params" do
+    bot = RequestBuildingBot.new
+    entity = TelegramBot::MessageEntity.new("bold", 0, 4)
+    markup = TelegramBot::InlineKeyboardMarkup.new([
+      [TelegramBot::InlineKeyboardButton.new("Open", url: "https://example.com")],
+    ])
+
+    bot.edit_message_text(
+      business_connection_id: "business-id",
+      chat_id: 123,
+      message_id: 7,
+      text: "Bold",
+      entities: [entity],
+      link_preview_options: TelegramBot::LinkPreviewOptions.new(is_disabled: true),
+      reply_markup: markup
+    )
+
+    bot.last_method.should eq("editMessageText")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.param("entities").should contain("MessageEntity")
+    bot.param("link_preview_options").should contain("LinkPreviewOptions")
+    bot.param("reply_markup").should contain("InlineKeyboardMarkup")
+
+    bot.edit_message_caption(
+      business_connection_id: "business-id",
+      chat_id: 123,
+      message_id: 8,
+      caption: "Bold",
+      parse_mode: "MarkdownV2",
+      caption_entities: [entity],
+      show_caption_above_media: true,
+      reply_markup: markup
+    )
+
+    bot.last_method.should eq("editMessageCaption")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["parse_mode"].should eq("MarkdownV2")
+    bot.param("caption_entities").should contain("MessageEntity")
+    bot.last_params["show_caption_above_media"].should eq("true")
+
+    bot.edit_message_reply_markup(
+      business_connection_id: "business-id",
+      chat_id: 123,
+      message_id: 9,
+      reply_markup: markup
+    )
+
+    bot.last_method.should eq("editMessageReplyMarkup")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.param("reply_markup").should contain("InlineKeyboardMarkup")
+  end
+
   it "builds sendPoll and sendDice" do
     bot = RequestBuildingBot.new
     options = [
@@ -1841,8 +1893,8 @@ describe TelegramBot::Bot do
           TelegramBot::InputMediaPhoto.new(bot.attach("photo", photo_file)),
           TelegramBot::InputMediaVideo.new("video-id", thumbnail: bot.attach("thumb", thumb_file)),
         ] of TelegramBot::InputMedia
-        profile_photo = TelegramBot::InputProfilePhotoStatic.new(bot.attach("profile_photo", photo_file))
-        sticker = TelegramBot::InputSticker.new(bot.attach("sticker", photo_file), "static", ["🙂"])
+        profile_photo = TelegramBot::InputProfilePhotoStatic.new(bot.attach("profile_photo_file", photo_file))
+        sticker = TelegramBot::InputSticker.new(bot.attach("sticker_file", photo_file), "static", ["🙂"])
         paid_media = [TelegramBot::InputPaidMediaLivePhoto.new(bot.attach("paid_video", photo_file), bot.attach("paid_photo", thumb_file))] of TelegramBot::InputPaidMedia
         story_content = TelegramBot::InputStoryContentPhoto.new(bot.attach("story_photo", photo_file))
 
@@ -1860,15 +1912,15 @@ describe TelegramBot::Bot do
             {"type": "video", "media": "video-id", "thumbnail": "attach://thumb"}
           ]
           JSON
-        JSON.parse(params["profile_photo"].as(String))["photo"].should eq("attach://profile_photo")
-        JSON.parse(params["sticker"].as(String))["sticker"].should eq("attach://sticker")
+        JSON.parse(params["profile_photo"].as(String))["photo"].should eq("attach://profile_photo_file")
+        JSON.parse(params["sticker"].as(String))["sticker"].should eq("attach://sticker_file")
         JSON.parse(params["paid_media"].as(String))[0]["photo"].should eq("attach://paid_photo")
         JSON.parse(params["story_content"].as(String))["photo"].should eq("attach://story_photo")
 
         params["photo"].should be_a(::File)
         params["thumb"].should be_a(::File)
-        params["profile_photo"].should be_a(::File)
-        params["sticker"].should be_a(::File)
+        params["profile_photo_file"].should be_a(::File)
+        params["sticker_file"].should be_a(::File)
         params["paid_video"].should be_a(::File)
         params["paid_photo"].should be_a(::File)
         params["story_photo"].should be_a(::File)

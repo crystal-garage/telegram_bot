@@ -180,10 +180,7 @@ describe TelegramBot::InputPollOption do
     location = TelegramBot::InputMediaLocation.new(
       50.45,
       30.52,
-      horizontal_accuracy: 10.5,
-      live_period: 60,
-      heading: 90,
-      proximity_alert_radius: 100
+      horizontal_accuracy: 10.5
     )
     venue = TelegramBot::InputMediaVenue.new(
       50.45,
@@ -199,10 +196,7 @@ describe TelegramBot::InputPollOption do
         "type": "location",
         "latitude": 50.45,
         "longitude": 30.52,
-        "horizontal_accuracy": 10.5,
-        "live_period": 60,
-        "heading": 90,
-        "proximity_alert_radius": 100
+        "horizontal_accuracy": 10.5
       }
       JSON
     JSON.parse(venue.to_json).should eq(JSON.parse(<<-JSON))

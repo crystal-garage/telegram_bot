@@ -639,7 +639,22 @@ describe TelegramBot::PaidMediaInfo do
                 "file_unique_id": "video-unique-id",
                 "width": 320,
                 "height": 240,
-                "duration": 3
+                "duration": 3,
+                "cover": [
+                  {"file_id": "cover-id", "file_unique_id": "cover-unique-id", "width": 320, "height": 240}
+                ],
+                "start_timestamp": 2,
+                "qualities": [
+                  {
+                    "file_id": "quality-id",
+                    "file_unique_id": "quality-unique-id",
+                    "width": 1280,
+                    "height": 720,
+                    "codec": "h264",
+                    "file_size": 2147483648
+                  }
+                ],
+                "file_name": "video.mp4"
               }
             },
             {
@@ -707,6 +722,11 @@ describe TelegramBot::PaidMediaInfo do
     message.paid_media.try(&.paid_media[1].as(TelegramBot::PaidMediaPhoto).photo.first.file_id).should eq("photo-id")
     message.paid_media.try(&.paid_media[2]).should be_a(TelegramBot::PaidMediaVideo)
     message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.file_id).should eq("video-id")
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.cover.try(&.first.file_id)).should eq("cover-id")
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.start_timestamp).should eq(2)
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.qualities.try(&.first.codec)).should eq("h264")
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.qualities.try(&.first.file_size)).should eq(2_147_483_648)
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.file_name).should eq("video.mp4")
     message.paid_media.try(&.paid_media[3]).should be_a(TelegramBot::PaidMediaLivePhoto)
     message.paid_media.try(&.paid_media[3].as(TelegramBot::PaidMediaLivePhoto).live_photo.file_id).should eq("paid-live-photo-id")
     message.successful_payment.try(&.subscription_expiration_date).should eq(1_800_000_000)

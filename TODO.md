@@ -135,6 +135,7 @@ Known high-risk type groups:
   - [x] Add `ChatFullInfo` and parse `get_chat` responses as the official return type.
 - [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
+  - [x] Add `VideoQuality` and current `Video` optional fields.
   - [x] Add paid and direct message price change service payload types.
   - [x] Add common chat service payload types.
   - [x] Add giveaway message and service payload types.

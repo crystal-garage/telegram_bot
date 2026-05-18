@@ -744,6 +744,26 @@ describe TelegramBot::Bot do
         }
       }]
       JSON
+
+    parsed_area = TelegramBot::StoryArea.from_json(<<-JSON)
+      {
+        "position": {
+          "x_percentage": 50.0,
+          "y_percentage": 50.0,
+          "width_percentage": 25.0,
+          "height_percentage": 25.0,
+          "rotation_angle": 0.0,
+          "corner_radius_percentage": 10.0
+        },
+        "type": {
+          "type": "weather",
+          "temperature": 18.5,
+          "emoji": "☀️",
+          "background_color": 4294967295
+        }
+      }
+      JSON
+    parsed_area.type.should be_a(TelegramBot::StoryAreaTypeWeather)
   end
 
   it "builds business, guest, and managed bot methods" do

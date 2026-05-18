@@ -79,108 +79,87 @@ module TelegramBot
     end
   end
 
-  class StoryAreaType
+  abstract class StoryAreaType
     include JSON::Serializable
 
+    use_json_discriminator "type", {
+      link:               StoryAreaTypeLink,
+      location:           StoryAreaTypeLocation,
+      suggested_reaction: StoryAreaTypeSuggestedReaction,
+      unique_gift:        StoryAreaTypeUniqueGift,
+      weather:            StoryAreaTypeWeather,
+    }
+
     property type : String
-    property latitude : Float64?
-    property longitude : Float64?
-    property address : LocationAddress?
-    property reaction_type : ReactionType?
-    property? is_dark : Bool?
-    property? is_flipped : Bool?
-    property url : String?
-    property temperature : Float64?
-    property emoji : String?
-    property background_color : Int32?
-    property name : String?
   end
 
   class StoryAreaTypeLocation < StoryAreaType
+    include JSON::Serializable
+
+    property type : String = "location"
+    property latitude : Float64
+    property longitude : Float64
+    property address : LocationAddress?
+
     def initialize(
       @latitude : Float64,
       @longitude : Float64,
       *,
       @address : LocationAddress? = nil,
     )
-      @type = "location"
-      @reaction_type = nil
-      @is_dark = nil
-      @is_flipped = nil
-      @url = nil
-      @temperature = nil
-      @emoji = nil
-      @background_color = nil
-      @name = nil
     end
   end
 
   class StoryAreaTypeSuggestedReaction < StoryAreaType
+    include JSON::Serializable
+
+    property type : String = "suggested_reaction"
+    property reaction_type : ReactionType
+    property? is_dark : Bool?
+    property? is_flipped : Bool?
+
     def initialize(
       @reaction_type : ReactionType,
       *,
       @is_dark : Bool? = nil,
       @is_flipped : Bool? = nil,
     )
-      @type = "suggested_reaction"
-      @latitude = nil
-      @longitude = nil
-      @address = nil
-      @url = nil
-      @temperature = nil
-      @emoji = nil
-      @background_color = nil
-      @name = nil
     end
   end
 
   class StoryAreaTypeLink < StoryAreaType
+    include JSON::Serializable
+
+    property type : String = "link"
+    property url : String
+
     def initialize(@url : String)
-      @type = "link"
-      @latitude = nil
-      @longitude = nil
-      @address = nil
-      @reaction_type = nil
-      @is_dark = nil
-      @is_flipped = nil
-      @temperature = nil
-      @emoji = nil
-      @background_color = nil
-      @name = nil
     end
   end
 
   class StoryAreaTypeWeather < StoryAreaType
+    include JSON::Serializable
+
+    property type : String = "weather"
+    property temperature : Float64
+    property emoji : String
+    property background_color : Int32
+
     def initialize(
       @temperature : Float64,
       @emoji : String,
       @background_color : Int32,
     )
-      @type = "weather"
-      @latitude = nil
-      @longitude = nil
-      @address = nil
-      @reaction_type = nil
-      @is_dark = nil
-      @is_flipped = nil
-      @url = nil
-      @name = nil
     end
   end
 
   class StoryAreaTypeUniqueGift < StoryAreaType
+    include JSON::Serializable
+
+    property type : String = "unique_gift"
+    property name : String
+
     def initialize(@name : String)
-      @type = "unique_gift"
-      @latitude = nil
-      @longitude = nil
-      @address = nil
-      @reaction_type = nil
-      @is_dark = nil
-      @is_flipped = nil
-      @url = nil
-      @temperature = nil
-      @emoji = nil
-      @background_color = nil
     end
   end
 

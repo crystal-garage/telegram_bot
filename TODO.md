@@ -158,6 +158,7 @@ Known high-risk type groups:
   - [x] Parse Star transaction partners and withdrawal states by type.
 - [x] Business connection, business profile, business messages, and business account objects.
 - [x] Stories.
+  - [x] Parse `StoryAreaType` variants by discriminator.
 - [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
 - [x] Reactions.
   - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.

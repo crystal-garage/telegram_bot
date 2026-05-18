@@ -3,7 +3,7 @@ module TelegramBot
     include JSON::Serializable
 
     property currency : String
-    property total_amount : Int32
+    property total_amount : Int64
     property invoice_payload : String
     property subscription_expiration_date : Int32?
     property? is_recurring : Bool?

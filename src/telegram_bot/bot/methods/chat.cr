@@ -82,7 +82,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#getuserprofilephotos>
     def get_user_profile_photos(
-      user_id : Int32,
+      user_id : Int,
       offset : Int32? = nil,
       limit : Int32? = nil,
     )
@@ -100,7 +100,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#getuserprofileaudios>
     def get_user_profile_audios(
-      user_id : Int32,
+      user_id : Int,
       offset : Int32? = nil,
       limit : Int32? = nil,
     )
@@ -161,7 +161,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#unbanchatmember>
     def unban_chat_member(
       chat_id : Int | String,
-      user_id : Int32,
+      user_id : Int,
     )
       res = def_request(
         "unbanChatMember",
@@ -624,7 +624,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#getchatmember>
     def get_chat_member(
       chat_id : Int | String,
-      user_id : Int32,
+      user_id : Int,
     )
       res = def_request(
         "getChatMember",

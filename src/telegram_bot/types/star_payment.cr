@@ -3,7 +3,7 @@ module TelegramBot
     include JSON::Serializable
 
     property currency : String
-    property total_amount : Int32
+    property total_amount : Int64
     property invoice_payload : String
     property telegram_payment_charge_id : String
     property provider_payment_charge_id : String?
@@ -12,7 +12,7 @@ module TelegramBot
   class StarAmount
     include JSON::Serializable
 
-    property amount : Int32
+    property amount : Int64
     property nanostar_amount : Int32?
   end
 
@@ -125,7 +125,7 @@ module TelegramBot
     property affiliate_user : User?
     property affiliate_chat : Chat?
     property commission_per_mille : Int32
-    property amount : Int32
+    property amount : Int64
     property nanostar_amount : Int32?
   end
 
@@ -133,7 +133,7 @@ module TelegramBot
     include JSON::Serializable
 
     property id : String
-    property amount : Int32
+    property amount : Int64
     property nanostar_amount : Int32?
     property date : Int32
     property source : TransactionPartner?

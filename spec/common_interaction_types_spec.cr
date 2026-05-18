@@ -140,12 +140,13 @@ describe TelegramBot::ChatBoost do
       }
       JSON
 
-    boosts.boosts.first.source.try(&.source).should eq("premium")
-    boosts.boosts.first.source.try(&.user.try(&.first_name)).should eq("User")
-    boosts.boosts.last.source.try(&.giveaway_message_id).should eq(10)
-    boosts.boosts.last.source.try(&.is_unclaimed?).should be_true
-    removed.source.try(&.source).should eq("gift_code")
-    removed.source.try(&.user.try(&.first_name)).should eq("Gift")
+    boosts.boosts.first.source.should be_a(TelegramBot::ChatBoostSourcePremium)
+    boosts.boosts.first.source.as(TelegramBot::ChatBoostSourcePremium).user.first_name.should eq("User")
+    boosts.boosts.last.source.should be_a(TelegramBot::ChatBoostSourceGiveaway)
+    boosts.boosts.last.source.as(TelegramBot::ChatBoostSourceGiveaway).giveaway_message_id.should eq(10)
+    boosts.boosts.last.source.as(TelegramBot::ChatBoostSourceGiveaway).is_unclaimed?.should be_true
+    removed.source.should be_a(TelegramBot::ChatBoostSourceGiftCode)
+    removed.source.as(TelegramBot::ChatBoostSourceGiftCode).user.first_name.should eq("Gift")
   end
 end
 
@@ -684,7 +685,7 @@ describe TelegramBot::PaidMediaInfo do
         },
         "successful_payment": {
           "currency": "XTR",
-          "total_amount": 10,
+          "total_amount": 2147483648,
           "invoice_payload": "invoice-payload",
           "subscription_expiration_date": 1800000000,
           "is_recurring": true,
@@ -694,7 +695,7 @@ describe TelegramBot::PaidMediaInfo do
         },
         "refunded_payment": {
           "currency": "XTR",
-          "total_amount": 10,
+          "total_amount": 2147483649,
           "invoice_payload": "invoice-payload",
           "telegram_payment_charge_id": "telegram-charge-id"
         }
@@ -705,7 +706,7 @@ describe TelegramBot::PaidMediaInfo do
         "transactions": [
           {
             "id": "tx-id",
-            "amount": 10,
+            "amount": 2147483650,
             "date": 1800000000,
             "source": {
               "type": "user",
@@ -739,9 +740,12 @@ describe TelegramBot::PaidMediaInfo do
     message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.file_name).should eq("video.mp4")
     message.paid_media.try(&.paid_media[3]).should be_a(TelegramBot::PaidMediaLivePhoto)
     message.paid_media.try(&.paid_media[3].as(TelegramBot::PaidMediaLivePhoto).live_photo.file_id).should eq("paid-live-photo-id")
+    message.successful_payment.try(&.total_amount).should eq(2_147_483_648)
     message.successful_payment.try(&.subscription_expiration_date).should eq(1_800_000_000)
     message.successful_payment.try(&.is_recurring?).should be_true
+    message.refunded_payment.try(&.total_amount).should eq(2_147_483_649)
     message.refunded_payment.try(&.telegram_payment_charge_id).should eq("telegram-charge-id")
+    transactions.transactions.first.amount.should eq(2_147_483_650)
     source = transactions.transactions.first.source.as(TelegramBot::TransactionPartnerUser)
     source.paid_media_payload.should eq("payload")
     source.paid_media.try(&.first).should be_a(TelegramBot::PaidMediaPreview)

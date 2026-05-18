@@ -130,7 +130,7 @@ Audit every official object documented by Telegram.
 
 Known high-risk type groups:
 
-- [ ] Updates and handler hook payloads.
+- [x] Updates and handler hook payloads.
   - [x] Align `InlineQuery#chat_type` and documented managed bot update payloads.
 - [x] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
   - [x] Add documented optional `User` flags.
@@ -138,7 +138,7 @@ Known high-risk type groups:
   - [x] Add `UserProfileAudios`.
   - [x] Add base `Chat#is_forum` and `Chat#is_direct_messages` flags.
   - [x] Add `ChatFullInfo` and parse `get_chat` responses as the official return type.
-- [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
+- [x] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
   - [x] Add `VideoQuality` and current `Video` optional fields.
   - [x] Align `Message#sender_tag`, migration chat ids, and `MaybeInaccessibleMessage` references.
@@ -154,33 +154,36 @@ Known high-risk type groups:
 - [x] Checklists and suggested posts.
   - [x] Add suggested post info and service message payload types.
 - [x] Direct messages and topic objects.
-- [ ] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
+- [x] Paid messages, paid media, Stars, gifts, unique gifts, and owned gifts.
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
   - [x] Parse owned gift collections with typed regular and unique variants.
   - [x] Parse paid media collections with typed media variants.
   - [x] Parse Star transaction partners and withdrawal states by type.
+  - [x] Use 64-bit payment and Star amount fields.
 - [x] Business connection, business profile, business messages, and business account objects.
 - [x] Stories.
   - [x] Parse `StoryAreaType` variants by discriminator.
 - [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
+  - [x] Parse chat boost sources by discriminator.
 - [x] Reactions.
   - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.
   - [x] Parse reaction types by discriminator.
-- [ ] Polls, dice, contacts, venues, locations, and live locations.
+- [x] Polls, dice, contacts, venues, locations, and live locations.
   - [x] Add Bot API 10.0 poll media input types and official poll media aliases.
   - [x] Remove undocumented live-location fields from `InputMediaLocation`.
   - [x] Add missing contact/location/venue fields and live-location edit parameters.
   - [x] Type poll option service `poll_message` as `MaybeInaccessibleMessage`.
   - [x] Keep documented required poll and poll answer fields non-nil.
 - [x] Stickers, sticker sets, input stickers, masks, and custom emoji.
-- [ ] Inline query results, inline keyboard buttons, and input message content.
+- [x] Inline query results, inline keyboard buttons, and input message content.
   - [x] Align inline location, venue, and contact content/result fields.
   - [x] Add inline query results button, inline game result, and text content entities.
   - [x] Add inline media caption fields and invoice input message content.
-- [ ] Payments, invoices, shipping, refunds, transactions, and Passport.
+- [x] Payments, invoices, shipping, refunds, transactions, and Passport.
   - [x] Add Passport data response types and `Message#passport_data`.
   - [x] Add typed Passport element error variants.
   - [x] Tighten paid media purchase required fields.
+  - [x] Use 64-bit invoice and payment amount fields.
 - [x] Games.
 - [x] Web App and Mini App objects.
 

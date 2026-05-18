@@ -125,7 +125,7 @@ module TelegramBot
 
     use_json_discriminator "type", {
       regular: OwnedGiftRegular,
-      unique:   OwnedGiftUnique,
+      unique:  OwnedGiftUnique,
     }
 
     property type : String

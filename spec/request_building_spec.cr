@@ -1439,9 +1439,10 @@ describe TelegramBot::Bot do
     bot.param("menu_button").should contain("MenuButtonWebApp")
 
     current_menu_button = bot.get_chat_menu_button(123)
-    current_menu_button.type.should eq("web_app")
-    current_menu_button.text.should eq("Open")
-    current_menu_button.web_app.try(&.url).should eq("https://example.com/app")
+    current_menu_button.should be_a(TelegramBot::MenuButtonWebApp)
+    current_web_app_button = current_menu_button.as(TelegramBot::MenuButtonWebApp)
+    current_web_app_button.text.should eq("Open")
+    current_web_app_button.web_app.url.should eq("https://example.com/app")
     bot.last_method.should eq("getChatMenuButton")
     bot.last_force_http.should be_true
 

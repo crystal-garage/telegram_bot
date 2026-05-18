@@ -41,6 +41,7 @@ Add wrappers for every official Bot API method that is still missing.
 
 - [x] `get_user_profile_audios` -> `getUserProfileAudios`
 - [x] `set_user_emoji_status` -> `setUserEmojiStatus`
+- [x] Parse menu buttons by discriminator.
 - [x] `set_my_profile_photo` -> `setMyProfilePhoto`
 - [x] `remove_my_profile_photo` -> `removeMyProfilePhoto`
 - [x] `set_chat_menu_button` -> `setChatMenuButton`

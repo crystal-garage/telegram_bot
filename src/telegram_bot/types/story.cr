@@ -143,12 +143,12 @@ module TelegramBot
     property type : String = "weather"
     property temperature : Float64
     property emoji : String
-    property background_color : Int32
+    property background_color : Int64
 
     def initialize(
       @temperature : Float64,
       @emoji : String,
-      @background_color : Int32,
+      @background_color : Int64,
     )
     end
   end

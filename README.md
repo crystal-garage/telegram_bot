@@ -7,10 +7,10 @@
 
 [Telegram Bot API](https://core.telegram.org/bots/api) client library for Crystal.
 
-The shard has partial compatibility with Telegram Bot API 10.0. It supports
-common messaging, media, chat administration, payments, games, polls, reactions,
-keyboards, Web App/Mini App helpers, business features, gifts, and paid media.
-See [Bot API support](#bot-api-support) for the current implementation matrix.
+The shard is aligned with Telegram Bot API 10.0. It supports messaging, media,
+chat administration, payments, games, polls, reactions, keyboards, Web App/Mini
+App helpers, business features, gifts, and paid media. See
+[Bot API support](#bot-api-support) for the implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
 >
@@ -368,18 +368,20 @@ However it's not part of the API you can set block or allow lists in the bot's c
 
 ## Bot API support
 
-Telegram currently documents Bot API 10.0. This shard is partially upgraded:
-implemented items are available through Crystal methods and JSON-serializable
-types, while unimplemented items are intentionally left out of the public API.
+Telegram currently documents Bot API 10.0. This shard exposes the documented
+Bot API methods as Crystal methods and represents documented objects as
+JSON-serializable types.
 
 ### Implemented methods
 
+- Core: `get_me`, `log_out`, `close`
 - Messages and media: `send_message`, `reply`, `forward_message`,
   `forward_messages`, `copy_message`, `copy_messages`, `send_photo`,
-  `send_audio`, `send_document`, `send_sticker`, `send_video`,
-  `send_animation`, `send_voice`, `send_video_note`, `send_media_group`,
-  `send_location`, `send_venue`, `send_contact`, `send_poll`, `send_dice`,
-  `send_checklist`, `send_message_draft`, `send_chat_action`
+  `send_live_photo`, `send_audio`, `send_document`, `send_sticker`,
+  `send_video`, `send_animation`, `send_voice`, `send_video_note`,
+  `send_paid_media`, `send_media_group`, `send_location`, `send_venue`,
+  `send_contact`, `send_poll`, `send_dice`, `send_checklist`,
+  `send_message_draft`, `send_chat_action`
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
   `edit_message_media`, `edit_message_checklist`,
@@ -402,8 +404,11 @@ types, while unimplemented items are intentionally left out of the public API.
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
   `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
   `unpin_all_chat_messages`, `get_chat`, `leave_chat`,
-  `get_chat_administrators`, `get_chat_member`, `get_user_chat_boosts`,
-  `get_chat_member_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
+  `get_chat_administrators`, `get_chat_member`,
+  `get_user_personal_chat_messages`, `get_user_profile_photos`,
+  `get_user_profile_audios`, `set_user_emoji_status`,
+  `get_user_chat_boosts`, `get_chat_member_count`, `set_chat_sticker_set`,
+  `delete_chat_sticker_set`
 - Forum and reactions: `get_forum_topic_icon_stickers`,
   `create_forum_topic`, `edit_forum_topic`, `close_forum_topic`,
   `reopen_forum_topic`, `delete_forum_topic`,
@@ -412,8 +417,8 @@ types, while unimplemented items are intentionally left out of the public API.
   `hide_general_forum_topic`, `unhide_general_forum_topic`,
   `unpin_all_general_forum_topic_messages`, `set_message_reaction`,
   `delete_message_reaction`, `delete_all_message_reactions`
-- Payments, Stars, gifts, paid media, and stickers: `send_invoice`,
-  `create_invoice_link`, `send_paid_media`, `answer_shipping_query`,
+- Payments, Stars, gifts, and stickers: `send_invoice`,
+  `create_invoice_link`, `answer_shipping_query`,
   `answer_pre_checkout_query`, `set_passport_data_errors`,
   `get_my_star_balance`, `get_star_transactions`, `refund_star_payment`,
   `edit_user_star_subscription`, `get_available_gifts`, `send_gift`,
@@ -548,15 +553,6 @@ Override these methods in your bot subclass:
   `BusinessOpeningHoursInterval`, `InputProfilePhoto`, `SentGuestMessage`,
   `ManagedBotCreated`, `BotAccessSettings`
 
-### Not implemented yet
-
-- Webhook secret-token validation in `serve`
-- Profile photo and chat menu button methods
-- Newer chat administration APIs outside Phase 7, such as `set_chat_member_tag`
-  and user profile audio methods
-- Business-account owned gift management methods beyond gift settings
-- Full business, guest, and managed bot method/type support
-
 ## Compatibility notes
 
 Request parameters that are arrays or `JSON::Serializable` objects are
@@ -564,9 +560,9 @@ JSON-serialized before they are sent to Telegram. This includes inline query
 results, command arrays, media arrays, reply markup, `ReplyParameters`, and
 `LinkPreviewOptions`.
 
-Some update types are parsed and dispatched before all related Bot API
-methods are implemented. For example, `chat_join_request` updates can be
-handled, but `approve_chat_join_request` is not available yet.
+The `serve` helper does not validate Telegram's webhook `secret_token`
+automatically. Applications using webhook secrets should validate the
+`X-Telegram-Bot-Api-Secret-Token` header at their HTTP boundary.
 
 ## Contributing
 

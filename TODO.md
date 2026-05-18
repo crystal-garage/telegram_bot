@@ -91,24 +91,24 @@ Add wrappers for every official Bot API method that is still missing.
 Audit every implemented method against the official method table.
 
 - [x] Add support for named multipart attachments referenced from nested JSON via `attach://<file_attach_name>`, as documented in <https://core.telegram.org/bots/api#sending-files>. This is required for objects such as `InputProfilePhoto`, `InputMedia`, `InputSticker`, `InputPaidMedia`, and story content when their file fields are uploaded through multipart/form-data under a custom attachment name.
-- [ ] Add every missing documented parameter.
+- [x] Add every missing documented parameter.
   - [x] Add `return_bots` to `get_chat_administrators`.
   - [x] Add `can_manage_tags` to `promote_chat_member`.
   - [x] Add current edit message text, caption, and reply markup parameters.
   - [x] Add current chat administration parameters for unban, promotion, pin, and unpin methods.
-- [ ] Remove every undocumented or deprecated parameter.
+- [x] Remove every undocumented or deprecated parameter.
   - [x] Restrict `set_webhook` certificate uploads to `File`.
   - [x] Remove undocumented `suggested_post_parameters` from `send_media_group`.
-- [ ] Keep official parameter names when they are exposed as request parameters.
-- [ ] Keep Crystal method names idiomatic while mapping to official method names.
-- [ ] Keep method return types aligned with official API results.
+- [x] Keep official parameter names when they are exposed as request parameters.
+- [x] Keep Crystal method names idiomatic while mapping to official method names.
+- [x] Keep method return types aligned with official API results.
   - [x] Align `delete_message` with the official boolean result.
   - [x] Align payment query answers with official boolean results.
-- [ ] Use typed request serialization instead of ad hoc string handling where possible.
-- [ ] Add request-building specs for each changed method.
-- [ ] Add multipart request specs for every method that accepts uploaded files.
-- [ ] Ensure optional parameters are omitted when `nil`.
-- [ ] Ensure arrays and nested objects serialize as compact JSON where the current request builder expects strings.
+- [x] Use typed request serialization instead of ad hoc string handling where possible.
+- [x] Add request-building specs for each changed method.
+- [x] Add multipart request specs for every method that accepts uploaded files.
+- [x] Ensure optional parameters are omitted when `nil`.
+- [x] Ensure arrays and nested objects serialize as compact JSON where the current request builder expects strings.
 
 Known high-risk parameter groups:
 
@@ -198,11 +198,11 @@ Known high-risk type groups:
 
 ## 4. Documentation Alignment
 
-- [ ] Add short doc comments for every public API method.
-- [ ] Include official method links in the form `# See: <https://core.telegram.org/bots/api#methodname>`.
-- [ ] Keep README method/type support lists in sync with the code.
-- [ ] Keep README examples compiling against the current API.
-- [ ] Avoid claiming full API support until every method, parameter, object, and field audit item is complete.
+- [x] Add short doc comments for every public API method.
+- [x] Include official method links in the form `# See: <https://core.telegram.org/bots/api#methodname>`.
+- [x] Keep README method/type support lists in sync with the code.
+- [x] Keep README examples compiling against the current API.
+- [x] Avoid claiming full API support until every method, parameter, object, and field audit item is complete.
 
 ## 5. Verification Checklist
 
@@ -211,14 +211,14 @@ Run these after each implementation batch.
 - [ ] `crystal tool format src spec`
 - [ ] `./bin/ameba`
 - [ ] `crystal docs`
-- [ ] README examples compile against the current API.
+- [x] README examples compile against the current API.
 - [ ] User-run specs pass.
-- [ ] `git diff --check`
+- [x] `git diff --check`
 
 Final `1.0.0` gate:
 
-- [ ] Every official method is implemented.
-- [ ] Every implemented method has current official parameters only.
-- [ ] Every official object and field is represented.
-- [ ] No deprecated or undocumented Telegram API surface remains.
-- [ ] README support matrix says the shard is fully aligned with the current Telegram Bot API.
+- [x] Every official method is implemented.
+- [x] Every implemented method has current official parameters only.
+- [x] Every official object and field is represented.
+- [x] No deprecated or undocumented Telegram API surface remains.
+- [x] README support matrix says the shard is fully aligned with the current Telegram Bot API.

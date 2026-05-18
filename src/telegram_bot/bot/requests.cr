@@ -36,15 +36,28 @@ module TelegramBot
     # :nodoc:
     protected def serialize_params(params : Hash) : Hash(String, String | ::File)
       params.reduce(Hash(String, String | ::File).new) do |serialized, (key, value)|
-        serialized[key] = serialize_param(value) unless value.nil?
+        unless value.nil?
+          serialized[key] = serialize_param(value)
+          collect_attachments(value, serialized)
+        end
 
         serialized
       end
     end
 
+    # Creates a named multipart attachment reference for nested JSON request objects.
+    def attach(name : String, file : ::File) : AttachedFile
+      AttachedFile.new(name, file)
+    end
+
     # :nodoc:
     protected def serialize_param(value : ::File) : ::File
       value
+    end
+
+    # :nodoc:
+    protected def serialize_param(value : AttachedFile) : String
+      value.reference
     end
 
     # :nodoc:
@@ -70,6 +83,30 @@ module TelegramBot
     # :nodoc:
     protected def serialize_param(value) : String
       value.to_json
+    end
+
+    # :nodoc:
+    protected def collect_attachments(value : AttachedFile, serialized : Hash(String, String | ::File)) : Nil
+      serialized[value.name] = value.file
+    end
+
+    # :nodoc:
+    protected def collect_attachment(value : AttachedFile, serialized : Hash(String, String | ::File)) : Nil
+      serialized[value.name] = value.file
+    end
+
+    # :nodoc:
+    protected def collect_attachment(value, serialized : Hash(String, String | ::File)) : Nil
+    end
+
+    # :nodoc:
+    protected def collect_attachments(value : Array, serialized : Hash(String, String | ::File)) : Nil
+      value.each { |item| collect_attachments(item, serialized) }
+    end
+
+    # :nodoc:
+    protected def collect_attachments(value, serialized : Hash(String, String | ::File)) : Nil
+      value.collect_attachments(serialized) if value.responds_to?(:collect_attachments)
     end
 
     # :nodoc:

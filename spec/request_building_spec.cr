@@ -1828,6 +1828,54 @@ describe TelegramBot::Bot do
     payload.should contain("binary\u0000content")
   end
 
+  it "collects nested attach files for multipart requests" do
+    bot = RequestBuildingBot.new
+    ::File.tempfile("telegram-bot-photo") do |photo_file|
+      ::File.tempfile("telegram-bot-thumb") do |thumb_file|
+        photo_file.print("photo-bytes")
+        photo_file.flush
+        thumb_file.print("thumb-bytes")
+        thumb_file.flush
+
+        media = [
+          TelegramBot::InputMediaPhoto.new(bot.attach("photo", photo_file)),
+          TelegramBot::InputMediaVideo.new("video-id", thumbnail: bot.attach("thumb", thumb_file)),
+        ] of TelegramBot::InputMedia
+        profile_photo = TelegramBot::InputProfilePhotoStatic.new(bot.attach("profile_photo", photo_file))
+        sticker = TelegramBot::InputSticker.new(bot.attach("sticker", photo_file), "static", ["🙂"])
+        paid_media = [TelegramBot::InputPaidMediaLivePhoto.new(bot.attach("paid_video", photo_file), bot.attach("paid_photo", thumb_file))] of TelegramBot::InputPaidMedia
+        story_content = TelegramBot::InputStoryContentPhoto.new(bot.attach("story_photo", photo_file))
+
+        params = bot.serialize_for_spec({
+          "media"         => media,
+          "profile_photo" => profile_photo,
+          "sticker"       => sticker,
+          "paid_media"    => paid_media,
+          "story_content" => story_content,
+        })
+
+        JSON.parse(params["media"].as(String)).should eq(JSON.parse(<<-JSON))
+          [
+            {"type": "photo", "media": "attach://photo"},
+            {"type": "video", "media": "video-id", "thumbnail": "attach://thumb"}
+          ]
+          JSON
+        JSON.parse(params["profile_photo"].as(String))["photo"].should eq("attach://profile_photo")
+        JSON.parse(params["sticker"].as(String))["sticker"].should eq("attach://sticker")
+        JSON.parse(params["paid_media"].as(String))[0]["photo"].should eq("attach://paid_photo")
+        JSON.parse(params["story_content"].as(String))["photo"].should eq("attach://story_photo")
+
+        params["photo"].should be_a(::File)
+        params["thumb"].should be_a(::File)
+        params["profile_photo"].should be_a(::File)
+        params["sticker"].should be_a(::File)
+        params["paid_video"].should be_a(::File)
+        params["paid_photo"].should be_a(::File)
+        params["story_photo"].should be_a(::File)
+      end
+    end
+  end
+
   it "dispatches shipping queries" do
     bot = RequestBuildingBot.new
     update = TelegramBot::Update.from_json(<<-JSON)

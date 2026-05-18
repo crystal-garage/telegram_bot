@@ -3,9 +3,9 @@ module TelegramBot
     include JSON::Serializable
 
     property type : String
-    property media : String
-    property thumbnail : String?
-    property cover : String?
+    property media : String | AttachedFile
+    property thumbnail : String | AttachedFile | Nil
+    property cover : String | AttachedFile | Nil
     property start_timestamp : Int32?
     property caption : String?
     property parse_mode : String?
@@ -18,10 +18,10 @@ module TelegramBot
     property? has_spoiler : Bool?
 
     def initialize(
-      @media : String,
+      @media : String | AttachedFile,
       *,
-      @thumbnail : String? = nil,
-      @cover : String? = nil,
+      @thumbnail : String | AttachedFile | Nil = nil,
+      @cover : String | AttachedFile | Nil = nil,
       @start_timestamp : Int32? = nil,
       @caption : String? = nil,
       @parse_mode : String? = nil,
@@ -34,6 +34,12 @@ module TelegramBot
       @has_spoiler : Bool? = nil,
     )
       @type = "video"
+    end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@media, attachments)
+      TelegramBot.collect_attachment(@thumbnail, attachments)
+      TelegramBot.collect_attachment(@cover, attachments)
     end
   end
 end

@@ -1907,7 +1907,8 @@ describe TelegramBot::Bot do
             "poll_answer": {
               "poll_id": "poll-answer-id",
               "user": {"id": 1, "is_bot": false, "first_name": "User"},
-              "option_ids": [0]
+              "option_ids": [0],
+              "option_persistent_ids": ["option-0"]
             }
           }
           JSON

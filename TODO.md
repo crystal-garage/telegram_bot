@@ -129,6 +129,7 @@ Audit every official object documented by Telegram.
 Known high-risk type groups:
 
 - [ ] Updates and handler hook payloads.
+  - [x] Align `InlineQuery#chat_type` and documented managed bot update payloads.
 - [x] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
   - [x] Add documented optional `User` flags.
   - [x] Add `UserProfileAudios`.

@@ -1033,7 +1033,7 @@ describe TelegramBot::BusinessConnection do
         "guest_bot_caller_chat": {"id": 3, "type": "private", "first_name": "Caller"},
         "guest_query_id": "guest-query-id",
         "managed_bot_created": {
-          "user": {"id": 4, "is_bot": true, "first_name": "Managed"},
+          "bot": {"id": 4, "is_bot": true, "first_name": "Managed"},
           "token": "managed-token"
         }
       }
@@ -1075,6 +1075,7 @@ describe TelegramBot::BusinessConnection do
     chat.business_opening_hours.try(&.opening_hours.first.opening_minute).should eq(60)
     chat.accepted_gift_types.try(&.unique_gifts?).should be_true
     message.guest_query_id.should eq("guest-query-id")
+    message.managed_bot_created.try(&.bot.first_name).should eq("Managed")
     message.managed_bot_created.try(&.token).should eq("managed-token")
     access_settings.added_users.try(&.first.first_name).should eq("User")
     user.is_premium?.should be_true

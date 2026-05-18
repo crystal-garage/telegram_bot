@@ -246,7 +246,7 @@ class RequestBuildingBot < TelegramBot::Bot
   end
 
   def handle(managed_bot : TelegramBot::ManagedBotUpdated)
-    @handled_update = managed_bot.bot.try(&.username)
+    @handled_update = managed_bot.bot.username
   end
 end
 
@@ -2043,6 +2043,7 @@ describe TelegramBot::Bot do
           {
             "update_id": 1,
             "managed_bot": {
+              "user": {"id": 1, "is_bot": false, "first_name": "User"},
               "bot": {"id": 2, "is_bot": true, "first_name": "Managed", "username": "managed_bot"}
             }
           }

@@ -941,7 +941,7 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("setPassportDataErrors")
     bot.last_force_http.should be_true
     bot.last_params["user_id"].should eq("123")
-    bot.param("errors").should contain("PassportElementError")
+    bot.param("errors").should contain("PassportElementErrorDataField")
 
     params = bot.serialize_for_spec({"errors" => errors})
     JSON.parse(params["errors"].as(String)).should eq(JSON.parse(<<-JSON))

@@ -1176,7 +1176,7 @@ describe TelegramBot::Sticker do
           "thumbnail": {"file_id": "thumb-id", "file_unique_id": "thumb-unique-id", "width": 100, "height": 100},
           "emoji": "🙂",
           "set_name": "set_name",
-          "premium_animation": {"file_id": "animation-id"},
+          "premium_animation": {"file_id": "animation-id", "file_unique_id": "animation-unique-id"},
           "mask_position": {"point": "forehead", "x_shift": 0.1, "y_shift": 0.2, "scale": 1.3},
           "custom_emoji_id": "emoji-id",
           "needs_repainting": true,

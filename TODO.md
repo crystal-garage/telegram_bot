@@ -133,6 +133,7 @@ Known high-risk type groups:
   - [x] Align `InlineQuery#chat_type` and documented managed bot update payloads.
 - [x] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
   - [x] Add documented optional `User` flags.
+  - [x] Add typed `InputProfilePhotoStatic` and `InputProfilePhotoAnimated`.
   - [x] Add `UserProfileAudios`.
   - [x] Add base `Chat#is_forum` and `Chat#is_direct_messages` flags.
   - [x] Add `ChatFullInfo` and parse `get_chat` responses as the official return type.

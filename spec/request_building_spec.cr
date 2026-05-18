@@ -783,10 +783,10 @@ describe TelegramBot::Bot do
     bot.set_business_account_bio("business-id", "bio").should be_true
     bot.last_method.should eq("setBusinessAccountBio")
 
-    photo = TelegramBot::InputProfilePhoto.new("static", photo: "photo-id")
+    photo = TelegramBot::InputProfilePhotoStatic.new("photo-id")
     bot.set_business_account_profile_photo("business-id", photo, is_public: true).should be_true
     bot.last_method.should eq("setBusinessAccountProfilePhoto")
-    bot.param("photo").should contain("InputProfilePhoto")
+    bot.param("photo").should contain("InputProfilePhotoStatic")
 
     bot.remove_business_account_profile_photo("business-id", is_public: true).should be_true
     bot.last_method.should eq("removeBusinessAccountProfilePhoto")
@@ -1390,11 +1390,21 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("setMyShortDescription")
     bot.get_my_short_description.short_description.should eq("Short description")
 
-    photo = TelegramBot::InputProfilePhoto.new("static", photo: "attach://photo")
+    photo = TelegramBot::InputProfilePhotoStatic.new("attach://photo")
     bot.set_my_profile_photo(photo).should be_true
     bot.last_method.should eq("setMyProfilePhoto")
     bot.last_force_http.should be_true
-    bot.param("photo").should contain("InputProfilePhoto")
+    bot.param("photo").should contain("InputProfilePhotoStatic")
+
+    animated_photo = TelegramBot::InputProfilePhotoAnimated.new("attach://animation", main_frame_timestamp: 1.5)
+    animated_params = bot.serialize_for_spec({"photo" => animated_photo})
+    JSON.parse(animated_params["photo"].as(String)).should eq(JSON.parse(<<-JSON))
+      {
+        "type": "animated",
+        "animation": "attach://animation",
+        "main_frame_timestamp": 1.5
+      }
+      JSON
 
     bot.remove_my_profile_photo.should be_true
     bot.last_method.should eq("removeMyProfilePhoto")

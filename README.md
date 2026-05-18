@@ -310,8 +310,9 @@ All the examples above use the [`getUpdates`](https://core.telegram.org/bots/api
 Another option is to use the [`setWebhook`](https://core.telegram.org/bots/api#setwebhook) method to tell Telegram where to POST any updates for your bot. Note that you __must__ use HTTPS in this endpoint for Telegram to work, and you can use a self-signed certificate, which you can provide as part of the `setWebhook` method:
 
 ```crystal
-# Certificate has the contents of the certificate, not the path to it
-bot.set_webhook(url, certificate)
+File.open("public.pem") do |certificate|
+  bot.set_webhook("https://example.com/telegram", certificate)
+end
 ```
 
 Webhook options can be passed as keyword arguments:

@@ -180,20 +180,14 @@ module TelegramBot
     def delete_message(
       chat_id : Int | String,
       message_id : Int32,
-    ) : Message | Bool?
+    ) : Bool?
       res = def_request(
         "deleteMessage",
         chat_id,
         message_id
       )
 
-      if res
-        if res.as_bool?
-          true
-        else
-          Message.from_json(res.to_json)
-        end
-      end
+      res.as_bool if res
     end
 
     # Deletes multiple messages.

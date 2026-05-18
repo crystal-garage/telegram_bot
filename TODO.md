@@ -96,8 +96,11 @@ Audit every implemented method against the official method table.
   - [x] Add `can_manage_tags` to `promote_chat_member`.
   - [x] Add current edit message text, caption, and reply markup parameters.
 - [ ] Remove every undocumented or deprecated parameter.
+  - [x] Restrict `set_webhook` certificate uploads to `File`.
 - [ ] Keep official parameter names when they are exposed as request parameters.
 - [ ] Keep Crystal method names idiomatic while mapping to official method names.
+- [ ] Keep method return types aligned with official API results.
+  - [x] Align `delete_message` with the official boolean result.
 - [ ] Use typed request serialization instead of ad hoc string handling where possible.
 - [ ] Add request-building specs for each changed method.
 - [ ] Add multipart request specs for every method that accepts uploaded files.

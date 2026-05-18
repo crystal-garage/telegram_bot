@@ -5,7 +5,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#setwebhook>
     def set_webhook(
       url : String,
-      certificate : ::File | String? = nil,
+      certificate : ::File? = nil,
       max_connections : Int32? = nil,
       allowed_updates : Array(String)? = @allowed_updates,
       ip_address : String? = nil,

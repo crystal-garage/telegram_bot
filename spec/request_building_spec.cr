@@ -561,7 +561,7 @@ describe TelegramBot::Bot do
     transactions = bot.get_star_transactions(offset: 1, limit: 10)
 
     transactions.transactions.first.id.should eq("tx-id")
-    transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
+    transactions.transactions.first.source.as(TelegramBot::TransactionPartnerUser).paid_media_payload.should eq("payload")
     bot.last_method.should eq("getStarTransactions")
     bot.last_force_http.should be_true
     bot.last_params["offset"].should eq("1")

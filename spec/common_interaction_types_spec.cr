@@ -712,8 +712,9 @@ describe TelegramBot::PaidMediaInfo do
     message.successful_payment.try(&.subscription_expiration_date).should eq(1_800_000_000)
     message.successful_payment.try(&.is_recurring?).should be_true
     message.refunded_payment.try(&.telegram_payment_charge_id).should eq("telegram-charge-id")
-    transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
-    transactions.transactions.first.source.try(&.paid_media.try(&.first)).should be_a(TelegramBot::PaidMediaPreview)
+    source = transactions.transactions.first.source.as(TelegramBot::TransactionPartnerUser)
+    source.paid_media_payload.should eq("payload")
+    source.paid_media.try(&.first).should be_a(TelegramBot::PaidMediaPreview)
     purchased.from.first_name.should eq("User")
     purchased.paid_media_payload.should eq("paid-media-payload")
   end
@@ -803,6 +804,22 @@ describe TelegramBot::Gift do
         }
       }
       JSON
+    fragment = TelegramBot::TransactionPartner.from_json(<<-JSON)
+      {
+        "type": "fragment",
+        "withdrawal_state": {
+          "type": "succeeded",
+          "date": 1800000000,
+          "url": "https://fragment.com/tx"
+        }
+      }
+      JSON
+    telegram_api = TelegramBot::TransactionPartner.from_json(<<-JSON)
+      {
+        "type": "telegram_api",
+        "request_count": 10
+      }
+      JSON
 
     gifts.gifts.first.id.should eq("gift-id")
     gifts.gifts.first.background.try(&.text_color).should eq(255)
@@ -810,7 +827,11 @@ describe TelegramBot::Gift do
     message.gift.try(&.can_be_upgraded?).should be_true
     message.unique_gift.try(&.gift.name).should eq("Gift #1")
     message.gift_upgrade_sent.try(&.gift.id).should eq("gift-id")
-    transaction.gift.try(&.star_count).should eq(100)
+    transaction.should be_a(TelegramBot::TransactionPartnerUser)
+    transaction.as(TelegramBot::TransactionPartnerUser).gift.try(&.star_count).should eq(100)
+    fragment.should be_a(TelegramBot::TransactionPartnerFragment)
+    fragment.as(TelegramBot::TransactionPartnerFragment).withdrawal_state.should be_a(TelegramBot::RevenueWithdrawalStateSucceeded)
+    telegram_api.as(TelegramBot::TransactionPartnerTelegramApi).request_count.should eq(10)
   end
 
   it "parses owned gift variants" do

@@ -143,6 +143,7 @@ Known high-risk type groups:
   - [x] Add `OwnedGiftRegular` and `OwnedGiftUnique` response types.
   - [x] Parse owned gift collections with typed regular and unique variants.
   - [x] Parse paid media collections with typed media variants.
+  - [x] Parse Star transaction partners and withdrawal states by type.
 - [x] Business connection, business profile, business messages, and business account objects.
 - [x] Stories.
 - [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.

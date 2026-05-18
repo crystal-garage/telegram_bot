@@ -1069,7 +1069,13 @@ describe TelegramBot::Bot do
         caption: "document",
         disable_content_type_detection: true
       ),
-      TelegramBot::InputMediaLivePhoto.new("live-photo-id"),
+      TelegramBot::InputMediaLivePhoto.new(
+        "live-photo-video-id",
+        "live-photo-id",
+        caption: "live photo",
+        show_caption_above_media: true,
+        has_spoiler: true
+      ),
       TelegramBot::InputMediaVideo.new(
         "video-id",
         thumbnail: "thumb-id",
@@ -1117,7 +1123,11 @@ describe TelegramBot::Bot do
         },
         {
           "type": "live_photo",
-          "media": "live-photo-id"
+          "media": "live-photo-video-id",
+          "photo": "live-photo-id",
+          "caption": "live photo",
+          "show_caption_above_media": true,
+          "has_spoiler": true
         },
         {
           "type": "video",

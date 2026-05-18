@@ -106,6 +106,7 @@ Known high-risk parameter groups:
 
 - [ ] Message sending options: business connection, direct messages topic, message effects, suggested posts, paid broadcast, reply parameters, link preview options.
 - [ ] Media options: spoiler flags, caption placement, thumbnails, covers, start timestamps, streaming support, dimensions, duration.
+  - [x] Align `InputMediaLivePhoto` fields.
 - [ ] Chat administration options: permissions, administrator rights, tags, invite links, join requests, boosts.
 - [x] Payments options: Stars, subscriptions, tips, suggested post payment fields, invoice-link parity.
 - [ ] Inline mode options: button fields, chosen chat filters, prepared inline messages, result thumbnails, input message content.

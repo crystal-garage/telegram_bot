@@ -17,12 +17,6 @@ module TelegramBot
     property business_connection_id : String?
     property chat : Chat
     property forward_origin : MessageOrigin?
-    property forward_from : User?
-    property forward_from_chat : Chat?
-    property forward_from_message_id : Int32?
-    property forward_signature : String?
-    property forward_sender_name : String?
-    property forward_date : Int32?
     property? is_topic_message : Bool?
     property? is_automatic_forward : Bool?
     property reply_to_message : Message?

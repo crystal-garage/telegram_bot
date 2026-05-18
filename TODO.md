@@ -122,15 +122,16 @@ Known high-risk parameter groups:
 
 Audit every official object documented by Telegram.
 
-- [ ] Ensure a Crystal type exists for every documented object.
-- [ ] Ensure every documented field exists with the official JSON name.
-- [ ] Remove fields that are not documented by the current official API.
-- [ ] Keep required fields non-nil unless Telegram documents them as optional.
-- [ ] Keep optional fields nilable.
-- [ ] Use `property?` consistently for boolean fields.
-- [ ] Add parsing specs for required fields, optional fields, and nested objects.
-- [ ] Add union dispatch specs for polymorphic object families.
-- [ ] Ensure all new types are required from `src/telegram_bot.cr`.
+- [x] Ensure a Crystal type exists for every documented object.
+- [x] Ensure every documented field exists with the official JSON name.
+- [x] Remove fields that are not documented by the current official API.
+  - [x] Remove deprecated forwarded-message aliases from `Message`.
+- [x] Keep required fields non-nil unless Telegram documents them as optional.
+- [x] Keep optional fields nilable.
+- [x] Use `property?` consistently for boolean fields.
+- [x] Add parsing specs for required fields, optional fields, and nested objects.
+- [x] Add union dispatch specs for polymorphic object families.
+- [x] Ensure all new types are required from `src/telegram_bot.cr`.
   - [x] Add `ResponseParameters` for API error metadata.
 
 Known high-risk type groups:

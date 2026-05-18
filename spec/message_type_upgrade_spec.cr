@@ -277,9 +277,10 @@ describe TelegramBot::Message do
     message.write_access_allowed.try(&.web_app_name).should eq("App")
     message.proximity_alert_triggered.try(&.distance).should eq(50)
     message.boost_added.try(&.boost_count).should eq(2)
-    message.chat_background_set.try(&.type.type).should eq("pattern")
-    message.chat_background_set.try(&.type.fill.try(&.top_color)).should eq(16_777_215)
-    message.chat_background_set.try(&.type.document.try(&.file_id)).should eq("pattern-id")
+    background = message.chat_background_set.try(&.type).as(TelegramBot::BackgroundTypePattern)
+    background.fill.should be_a(TelegramBot::BackgroundFillGradient)
+    background.fill.as(TelegramBot::BackgroundFillGradient).top_color.should eq(16_777_215)
+    background.document.file_id.should eq("pattern-id")
   end
 
   it "parses video chat service message payloads" do

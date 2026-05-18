@@ -141,7 +141,7 @@ module TelegramBot
       ok : Bool,
       shipping_options : Array(ShippingOption)? = nil,
       error_message : String? = nil,
-    ) : Bool | Message?
+    ) : Bool?
       res = def_request(
         "answerShippingQuery",
         shipping_query_id,
@@ -160,7 +160,7 @@ module TelegramBot
       pre_checkout_query_id : String,
       ok : Bool,
       error_message : String? = nil,
-    ) : Bool | Message?
+    ) : Bool?
       res = def_request(
         "answerPreCheckoutQuery",
         pre_checkout_query_id,

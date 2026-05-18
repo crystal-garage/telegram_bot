@@ -162,11 +162,13 @@ module TelegramBot
     def unban_chat_member(
       chat_id : Int | String,
       user_id : Int,
+      only_if_banned : Bool? = nil,
     )
       res = def_request(
         "unbanChatMember",
         chat_id,
-        user_id
+        user_id,
+        only_if_banned
       )
 
       res.as_bool if res
@@ -252,28 +254,44 @@ module TelegramBot
     def promote_chat_member(
       chat_id : Int | String,
       user_id : Int,
+      is_anonymous : Bool? = nil,
+      can_manage_chat : Bool? = nil,
       can_change_info : Bool? = nil,
       can_post_messages : Bool? = nil,
       can_edit_messages : Bool? = nil,
       can_delete_messages : Bool? = nil,
+      can_manage_video_chats : Bool? = nil,
       can_invite_users : Bool? = nil,
       can_restrict_members : Bool? = nil,
       can_pin_messages : Bool? = nil,
       can_promote_members : Bool? = nil,
+      can_manage_topics : Bool? = nil,
+      can_manage_direct_messages : Bool? = nil,
+      can_post_stories : Bool? = nil,
+      can_edit_stories : Bool? = nil,
+      can_delete_stories : Bool? = nil,
       can_manage_tags : Bool? = nil,
     )
       res = def_request(
         "promoteChatMember",
         chat_id,
         user_id,
+        is_anonymous,
+        can_manage_chat,
         can_change_info,
         can_post_messages,
         can_edit_messages,
         can_delete_messages,
+        can_manage_video_chats,
         can_invite_users,
         can_restrict_members,
         can_pin_messages,
         can_promote_members,
+        can_manage_topics,
+        can_manage_direct_messages,
+        can_post_stories,
+        can_edit_stories,
+        can_delete_stories,
         can_manage_tags
       )
 
@@ -517,7 +535,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#setchatdescription>
     def set_chat_description(
       chat_id : Int | String,
-      description : String,
+      description : String? = nil,
     )
       res = def_request(
         "setChatDescription",
@@ -534,10 +552,12 @@ module TelegramBot
     def pin_chat_message(
       chat_id : Int | String,
       message_id : Int,
+      business_connection_id : String? = nil,
       disable_notification : Bool? = nil,
     )
       res = def_request(
         "pinChatMessage",
+        business_connection_id,
         chat_id,
         message_id,
         disable_notification
@@ -551,10 +571,14 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#unpinchatmessage>
     def unpin_chat_message(
       chat_id : Int | String,
+      business_connection_id : String? = nil,
+      message_id : Int? = nil,
     )
       res = def_request(
         "unpinChatMessage",
-        chat_id
+        business_connection_id,
+        chat_id,
+        message_id
       )
 
       res.as_bool if res

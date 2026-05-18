@@ -707,7 +707,6 @@ module TelegramBot
       reply_parameters : ReplyParameters? = nil,
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
-      suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Array(Message)
       res = def_request(
         "sendMediaGroup",
@@ -720,7 +719,6 @@ module TelegramBot
         protect_content,
         allow_paid_broadcast,
         message_effect_id,
-        suggested_post_parameters,
         reply_parameters
       )
 

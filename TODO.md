@@ -95,12 +95,15 @@ Audit every implemented method against the official method table.
   - [x] Add `return_bots` to `get_chat_administrators`.
   - [x] Add `can_manage_tags` to `promote_chat_member`.
   - [x] Add current edit message text, caption, and reply markup parameters.
+  - [x] Add current chat administration parameters for unban, promotion, pin, and unpin methods.
 - [ ] Remove every undocumented or deprecated parameter.
   - [x] Restrict `set_webhook` certificate uploads to `File`.
+  - [x] Remove undocumented `suggested_post_parameters` from `send_media_group`.
 - [ ] Keep official parameter names when they are exposed as request parameters.
 - [ ] Keep Crystal method names idiomatic while mapping to official method names.
 - [ ] Keep method return types aligned with official API results.
   - [x] Align `delete_message` with the official boolean result.
+  - [x] Align payment query answers with official boolean results.
 - [ ] Use typed request serialization instead of ad hoc string handling where possible.
 - [ ] Add request-building specs for each changed method.
 - [ ] Add multipart request specs for every method that accepts uploaded files.
@@ -109,14 +112,14 @@ Audit every implemented method against the official method table.
 
 Known high-risk parameter groups:
 
-- [ ] Message sending options: business connection, direct messages topic, message effects, suggested posts, paid broadcast, reply parameters, link preview options.
+- [x] Message sending options: business connection, direct messages topic, message effects, suggested posts, paid broadcast, reply parameters, link preview options.
   - [x] Align edit message shared options.
-- [ ] Media options: spoiler flags, caption placement, thumbnails, covers, start timestamps, streaming support, dimensions, duration.
+- [x] Media options: spoiler flags, caption placement, thumbnails, covers, start timestamps, streaming support, dimensions, duration.
   - [x] Align `InputMediaLivePhoto` fields.
-- [ ] Chat administration options: permissions, administrator rights, tags, invite links, join requests, boosts.
+- [x] Chat administration options: permissions, administrator rights, tags, invite links, join requests, boosts.
 - [x] Payments options: Stars, subscriptions, tips, suggested post payment fields, invoice-link parity.
-- [ ] Inline mode options: button fields, chosen chat filters, prepared inline messages, result thumbnails, input message content.
-- [ ] Business, gift, story, and paid media options.
+- [x] Inline mode options: button fields, chosen chat filters, prepared inline messages, result thumbnails, input message content.
+- [x] Business, gift, story, and paid media options.
 
 ## 3. Type And Field Alignment
 

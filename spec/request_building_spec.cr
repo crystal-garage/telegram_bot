@@ -1572,6 +1572,10 @@ describe TelegramBot::Bot do
     bot.last_params["revoke_messages"].should eq("true")
     bot.last_params["until_date"].should eq((until_date.to_unix).to_s)
 
+    bot.unban_chat_member("@group", 123, only_if_banned: true).should be_true
+    bot.last_method.should eq("unbanChatMember")
+    bot.last_params["only_if_banned"].should eq("true")
+
     bot.ban_chat_sender_chat("@group", -100).should be_true
     bot.last_method.should eq("banChatSenderChat")
     bot.last_params["sender_chat_id"].should eq("-100")
@@ -1586,8 +1590,28 @@ describe TelegramBot::Bot do
     bot.param("permissions").should contain("ChatPermissions")
     bot.last_params["use_independent_chat_permissions"].should eq("true")
 
-    bot.promote_chat_member("@group", 123, can_manage_tags: true).should be_true
+    bot.promote_chat_member(
+      "@group",
+      123,
+      is_anonymous: true,
+      can_manage_chat: true,
+      can_manage_video_chats: true,
+      can_manage_topics: true,
+      can_manage_direct_messages: true,
+      can_post_stories: true,
+      can_edit_stories: true,
+      can_delete_stories: true,
+      can_manage_tags: true
+    ).should be_true
     bot.last_method.should eq("promoteChatMember")
+    bot.last_params["is_anonymous"].should eq("true")
+    bot.last_params["can_manage_chat"].should eq("true")
+    bot.last_params["can_manage_video_chats"].should eq("true")
+    bot.last_params["can_manage_topics"].should eq("true")
+    bot.last_params["can_manage_direct_messages"].should eq("true")
+    bot.last_params["can_post_stories"].should eq("true")
+    bot.last_params["can_edit_stories"].should eq("true")
+    bot.last_params["can_delete_stories"].should eq("true")
     bot.last_params["can_manage_tags"].should eq("true")
 
     bot.set_chat_permissions("@group", permissions, use_independent_chat_permissions: true).should be_true
@@ -1724,6 +1748,16 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("unhideGeneralForumTopic")
     bot.unpin_all_general_forum_topic_messages("@group").should be_true
     bot.last_method.should eq("unpinAllGeneralForumTopicMessages")
+
+    bot.pin_chat_message("@group", 10, business_connection_id: "business-id", disable_notification: true).should be_true
+    bot.last_method.should eq("pinChatMessage")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["disable_notification"].should eq("true")
+
+    bot.unpin_chat_message("@group", business_connection_id: "business-id", message_id: 10).should be_true
+    bot.last_method.should eq("unpinChatMessage")
+    bot.last_params["business_connection_id"].should eq("business-id")
+    bot.last_params["message_id"].should eq("10")
 
     bot.unpin_all_chat_messages("@group").should be_true
     bot.last_method.should eq("unpinAllChatMessages")

@@ -38,6 +38,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "setChatPermissions",
     "setChatAdministratorCustomTitle",
     "setChatMemberTag",
+    "setUserEmojiStatus",
     "approveChatJoinRequest",
     "declineChatJoinRequest",
     "unpinAllChatMessages",
@@ -98,7 +99,9 @@ class RequestBuildingBot < TelegramBot::Bot
     "getWebhookInfo"                   => %({"url":"https://example.com/hook","has_custom_certificate":false,"pending_update_count":3,"ip_address":"127.0.0.1","max_connections":40,"allowed_updates":["message"]}),
     "getChatAdministrators"            => %([{"status":"administrator","user":{"id":1,"is_bot":false,"first_name":"Admin"}}]),
     "getChatMemberCount"               => %(12),
+    "getUserProfileAudios"             => %({"total_count":1,"audios":[{"file_id":"audio-id","file_unique_id":"audio-unique-id","duration":10}]}),
     "getUserChatBoosts"                => %({"boosts":[{"boost_id":"boost-id","add_date":1800000000,"expiration_date":1900000000,"source":{"source":"premium","user":{"id":1,"is_bot":false,"first_name":"User"}}}]}),
+    "getUserPersonalChatMessages"      => %([{"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"text":"Personal"}]),
     "answerWebAppQuery"                => %({"inline_message_id":"inline-id"}),
     "savePreparedInlineMessage"        => %({"id":"prepared-inline-id","expiration_date":1800000000}),
     "savePreparedKeyboardButton"       => %({"id":"prepared-keyboard-id"}),
@@ -269,6 +272,31 @@ describe TelegramBot::Bot do
     bot.last_method.should eq("sendPhoto")
     bot.last_params["photo"].should eq("photo-id")
     bot.last_params["caption"].should eq("caption")
+  end
+
+  it "builds sendLivePhoto with current options" do
+    bot = RequestBuildingBot.new
+
+    message = bot.send_live_photo(
+      123,
+      "live-photo-id",
+      "photo-id",
+      caption: "caption",
+      parse_mode: "MarkdownV2",
+      show_caption_above_media: true,
+      has_spoiler: true,
+      allow_paid_broadcast: true
+    )
+
+    message.try(&.message_id).should eq(1)
+    bot.last_method.should eq("sendLivePhoto")
+    bot.last_params["chat_id"].should eq("123")
+    bot.last_params["live_photo"].should eq("live-photo-id")
+    bot.last_params["photo"].should eq("photo-id")
+    bot.last_params["caption"].should eq("caption")
+    bot.last_params["show_caption_above_media"].should eq("true")
+    bot.last_params["has_spoiler"].should eq("true")
+    bot.last_params["allow_paid_broadcast"].should eq("true")
   end
 
   it "builds sendMessage with shared params" do
@@ -1412,6 +1440,21 @@ describe TelegramBot::Bot do
 
   it "builds chat permissions, join request, and invite link methods" do
     bot = RequestBuildingBot.new
+
+    audios = bot.get_user_profile_audios(1, offset: 2, limit: 3)
+    audios.total_count.should eq(1)
+    audios.audios.first.file_id.should eq("audio-id")
+    bot.last_method.should eq("getUserProfileAudios")
+    bot.last_force_http.should be_true
+    bot.last_params["offset"].should eq("2")
+    bot.last_params["limit"].should eq("3")
+
+    bot.set_user_emoji_status(1, "emoji-id", 1_800_000_000).should be_true
+    bot.last_method.should eq("setUserEmojiStatus")
+    bot.last_force_http.should be_true
+    bot.last_params["emoji_status_custom_emoji_id"].should eq("emoji-id")
+    bot.last_params["emoji_status_expiration_date"].should eq("1800000000")
+
     permissions = TelegramBot::ChatPermissions.new(
       can_send_messages: true,
       can_send_photos: true,
@@ -1515,6 +1558,12 @@ describe TelegramBot::Bot do
 
     bot.get_chat_member_count("@group").should eq(12)
     bot.last_method.should eq("getChatMemberCount")
+
+    personal_messages = bot.get_user_personal_chat_messages(1, 1)
+    personal_messages.first.text.should eq("Personal")
+    bot.last_method.should eq("getUserPersonalChatMessages")
+    bot.last_force_http.should be_true
+    bot.last_params["limit"].should eq("1")
 
     boosts = bot.get_user_chat_boosts("@group", 123)
     boosts.boosts.first.boost_id.should eq("boost-id")

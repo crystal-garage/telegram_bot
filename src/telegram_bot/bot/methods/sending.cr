@@ -255,6 +255,54 @@ module TelegramBot
       Message.from_json(res.to_json) if res
     end
 
+    # Sends live photos.
+    #
+    # See: <https://core.telegram.org/bots/api#sendlivephoto>
+    def send_live_photo(
+      chat_id : Int | String,
+      live_photo : ::File | String,
+      photo : ::File | String,
+      caption : String? = nil,
+      disable_notification : Bool? = nil,
+      reply_markup : ReplyMarkup = nil,
+      business_connection_id : String? = nil,
+      message_thread_id : Int32? = nil,
+      direct_messages_topic_id : Int64? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      show_caption_above_media : Bool? = nil,
+      has_spoiler : Bool? = nil,
+      protect_content : Bool? = nil,
+      reply_parameters : ReplyParameters? = nil,
+      message_effect_id : String? = nil,
+      allow_paid_broadcast : Bool? = nil,
+      suggested_post_parameters : SuggestedPostParameters? = nil,
+    ) : Message?
+      res = def_request(
+        "sendLivePhoto",
+        business_connection_id,
+        chat_id,
+        message_thread_id,
+        direct_messages_topic_id,
+        live_photo,
+        photo,
+        caption,
+        parse_mode,
+        caption_entities,
+        show_caption_above_media,
+        has_spoiler,
+        disable_notification,
+        protect_content,
+        allow_paid_broadcast,
+        message_effect_id,
+        suggested_post_parameters,
+        reply_parameters,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Sends audio files.
     #
     # See: <https://core.telegram.org/bots/api#sendaudio>

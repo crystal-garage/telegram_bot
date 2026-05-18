@@ -96,6 +96,44 @@ module TelegramBot
       UserProfilePhotos.from_json(res.not_nil!.to_json)
     end
 
+    # Returns profile audios for a user.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserprofileaudios>
+    def get_user_profile_audios(
+      user_id : Int32,
+      offset : Int32? = nil,
+      limit : Int32? = nil,
+    )
+      res = def_force_request(
+        "getUserProfileAudios",
+        user_id,
+        offset,
+        limit
+      )
+
+      UserProfileAudios.from_json(res.not_nil!.to_json)
+    end
+
+    # Changes a user's emoji status.
+    #
+    # See: <https://core.telegram.org/bots/api#setuseremojistatus>
+    def set_user_emoji_status(
+      user_id : Int,
+      emoji_status_custom_emoji_id : String? = nil,
+      emoji_status_expiration_date : Int | Time? = nil,
+    )
+      emoji_status_expiration_date = emoji_status_expiration_date.to_unix if emoji_status_expiration_date.is_a?(Time)
+
+      res = def_force_request(
+        "setUserEmojiStatus",
+        user_id,
+        emoji_status_custom_emoji_id,
+        emoji_status_expiration_date
+      )
+
+      res.as_bool if res
+    end
+
     # Bans a user from a chat.
     #
     # See: <https://core.telegram.org/bots/api#banchatmember>
@@ -595,6 +633,23 @@ module TelegramBot
       )
 
       ChatMember.from_json(res.not_nil!.to_json)
+    end
+
+    # Returns recent messages from a user's personal chat.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserpersonalchatmessages>
+    def get_user_personal_chat_messages(
+      user_id : Int,
+      limit : Int32,
+    ) : Array(Message)
+      res = def_force_request(
+        "getUserPersonalChatMessages",
+        user_id,
+        limit
+      )
+
+      res = res.not_nil!.as_a
+      res.map { |message| Message.from_json(message.to_json) }
     end
 
     # Returns boosts added to a chat by a user.

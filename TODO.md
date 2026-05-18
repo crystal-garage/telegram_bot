@@ -17,6 +17,7 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Sending, Editing, And Deleting Messages
 
+- [x] `send_live_photo` -> `sendLivePhoto`
 - [x] `send_checklist` -> `sendChecklist`
 - [x] `edit_message_media` -> `editMessageMedia`
 - [x] `edit_message_checklist` -> `editMessageChecklist`
@@ -27,6 +28,7 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Chat Administration
 
+- [x] `get_user_personal_chat_messages` -> `getUserPersonalChatMessages`
 - [x] `set_chat_administrator_custom_title` -> `setChatAdministratorCustomTitle`
 - [x] `set_chat_member_tag` -> `setChatMemberTag`
 - [x] `ban_chat_sender_chat` -> `banChatSenderChat`
@@ -37,6 +39,8 @@ Add wrappers for every official Bot API method that is still missing.
 
 ### Bot Profile And Menu
 
+- [x] `get_user_profile_audios` -> `getUserProfileAudios`
+- [x] `set_user_emoji_status` -> `setUserEmojiStatus`
 - [x] `set_my_profile_photo` -> `setMyProfilePhoto`
 - [x] `remove_my_profile_photo` -> `removeMyProfilePhoto`
 - [x] `set_chat_menu_button` -> `setChatMenuButton`
@@ -126,6 +130,7 @@ Known high-risk type groups:
 - [ ] Updates and handler hook payloads.
 - [x] `User`, `Chat`, `ChatFullInfo`, and related profile objects.
   - [x] Add documented optional `User` flags.
+  - [x] Add `UserProfileAudios`.
   - [x] Add base `Chat#is_forum` and `Chat#is_direct_messages` flags.
   - [x] Add `ChatFullInfo` and parse `get_chat` responses as the official return type.
 - [ ] `Message`, `MaybeInaccessibleMessage`, service messages, and message-origin objects.

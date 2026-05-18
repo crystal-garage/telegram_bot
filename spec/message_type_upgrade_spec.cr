@@ -1,6 +1,60 @@
 require "./spec_helper"
 
 describe TelegramBot::Message do
+  it "parses media file metadata with large file sizes" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {
+        "message_id": 41,
+        "date": 0,
+        "chat": {"id": 1, "type": "private"},
+        "animation": {
+          "file_id": "animation-id",
+          "file_unique_id": "animation-unique-id",
+          "width": 320,
+          "height": 240,
+          "duration": 3,
+          "file_name": "animation.mp4",
+          "mime_type": "video/mp4",
+          "file_size": 2147483648
+        },
+        "audio": {
+          "file_id": "audio-id",
+          "file_unique_id": "audio-unique-id",
+          "duration": 10,
+          "file_size": 2147483649
+        },
+        "document": {
+          "file_id": "document-id",
+          "file_unique_id": "document-unique-id",
+          "file_name": "document.bin",
+          "file_size": 2147483650
+        },
+        "voice": {
+          "file_id": "voice-id",
+          "file_unique_id": "voice-unique-id",
+          "duration": 5,
+          "file_size": 2147483651
+        },
+        "video_note": {
+          "file_id": "video-note-id",
+          "file_unique_id": "video-note-unique-id",
+          "length": 240,
+          "duration": 6,
+          "file_size": 2147483652
+        }
+      }
+      JSON
+
+    message.animation.try(&.file_unique_id).should eq("animation-unique-id")
+    message.animation.try(&.file_size).should eq(2_147_483_648)
+    message.audio.try(&.file_unique_id).should eq("audio-unique-id")
+    message.audio.try(&.file_size).should eq(2_147_483_649)
+    message.document.try(&.file_unique_id).should eq("document-unique-id")
+    message.document.try(&.file_size).should eq(2_147_483_650)
+    message.voice.try(&.file_size).should eq(2_147_483_651)
+    message.video_note.try(&.file_size).should eq(2_147_483_652)
+  end
+
   it "parses core message fields" do
     message = TelegramBot::Message.from_json(<<-JSON)
       {
@@ -197,6 +251,7 @@ describe TelegramBot::Message do
             "type": "pattern",
             "document": {
               "file_id": "pattern-id",
+              "file_unique_id": "pattern-unique-id",
               "file_name": "pattern.tgv"
             },
             "fill": {

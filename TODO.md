@@ -137,6 +137,7 @@ Known high-risk type groups:
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
   - [x] Add `VideoQuality` and current `Video` optional fields.
   - [x] Align `Message#sender_tag`, migration chat ids, and `MaybeInaccessibleMessage` references.
+  - [x] Align common media file identifiers and large file sizes.
   - [x] Add paid and direct message price change service payload types.
   - [x] Add common chat service payload types.
   - [x] Add giveaway message and service payload types.

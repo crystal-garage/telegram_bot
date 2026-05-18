@@ -16,6 +16,6 @@ module TelegramBot
     property mask_position : MaskPosition?
     property custom_emoji_id : String?
     property? needs_repainting : Bool?
-    property file_size : Int32?
+    property file_size : Int64?
   end
 end

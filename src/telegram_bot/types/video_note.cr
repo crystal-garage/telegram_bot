@@ -7,6 +7,6 @@ module TelegramBot
     property length : Int32
     property duration : Int32
     property thumbnail : PhotoSize?
-    property file_size : Int32?
+    property file_size : Int64?
   end
 end

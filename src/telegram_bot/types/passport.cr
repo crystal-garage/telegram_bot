@@ -11,7 +11,7 @@ module TelegramBot
 
     property file_id : String
     property file_unique_id : String
-    property file_size : Int32
+    property file_size : Int64
     property file_date : Int32
   end
 

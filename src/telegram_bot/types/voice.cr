@@ -6,6 +6,6 @@ module TelegramBot
     property file_unique_id : String
     property duration : Int32
     property mime_type : String?
-    property file_size : Int32?
+    property file_size : Int64?
   end
 end

@@ -116,7 +116,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "getForumTopicIconStickers"        => %([{"file_id": "sticker-id", "file_unique_id": "sticker-id-unique", "type": "regular", "width": 512, "height": 512, "is_animated": false, "is_video": false}]),
     "getStickerSet"                    => %({"name":"set_name","title":"Sticker Set","sticker_type":"regular","stickers":[{"file_id":"sticker-id","file_unique_id":"sticker-id-unique","type":"regular","width":512,"height":512,"is_animated":false,"is_video":false}]}),
     "getCustomEmojiStickers"           => %([{"file_id":"custom-emoji-id","file_unique_id":"custom-emoji-unique","type":"custom_emoji","width":512,"height":512,"is_animated":true,"is_video":false,"custom_emoji_id":"emoji-id"}]),
-    "uploadStickerFile"                => %({"file_id":"uploaded-sticker-id"}),
+    "uploadStickerFile"                => %({"file_id":"uploaded-sticker-id","file_unique_id":"uploaded-sticker-unique-id"}),
     "createForumTopic"                 => %({"message_thread_id":42,"name":"Topic","icon_color":7322096,"icon_custom_emoji_id":"emoji-id"}),
     "sendPaidMedia"                    => %({"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"paid_media":{"star_count":10,"paid_media":[{"type":"preview","width":320,"height":240}]}}),
     "getMyStarBalance"                 => %({"amount":100,"nanostar_amount":500}),

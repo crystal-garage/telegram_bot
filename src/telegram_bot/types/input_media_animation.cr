@@ -4,7 +4,7 @@ module TelegramBot
 
     property type : String
     property media : String | AttachedFile
-    property thumbnail : String | AttachedFile | Nil
+    property thumbnail : String | AttachedFile?
     property caption : String?
     property parse_mode : String?
     property caption_entities : Array(MessageEntity)?
@@ -17,7 +17,7 @@ module TelegramBot
     def initialize(
       @media : String | AttachedFile,
       *,
-      @thumbnail : String | AttachedFile | Nil = nil,
+      @thumbnail : String | AttachedFile? = nil,
       @caption : String? = nil,
       @parse_mode : String? = nil,
       @caption_entities : Array(MessageEntity)? = nil,

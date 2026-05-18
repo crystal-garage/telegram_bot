@@ -10,8 +10,8 @@ module TelegramBot
     include JSON::Serializable
 
     property type : String
-    property photo : String | AttachedFile | Nil
-    property video : String | AttachedFile | Nil
+    property photo : String | AttachedFile?
+    property video : String | AttachedFile?
     property duration : Float64?
     property cover_frame_timestamp : Float64?
     property? is_animation : Bool?

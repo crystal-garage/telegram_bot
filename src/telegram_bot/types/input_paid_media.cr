@@ -24,8 +24,8 @@ module TelegramBot
 
     property type : String = "video"
     property media : String | AttachedFile
-    property thumbnail : String | AttachedFile | Nil
-    property cover : String | AttachedFile | Nil
+    property thumbnail : String | AttachedFile?
+    property cover : String | AttachedFile?
     property start_timestamp : Int32?
     property width : Int32?
     property height : Int32?
@@ -35,8 +35,8 @@ module TelegramBot
     def initialize(
       @media : String | AttachedFile,
       *,
-      @thumbnail : String | AttachedFile | Nil = nil,
-      @cover : String | AttachedFile | Nil = nil,
+      @thumbnail : String | AttachedFile? = nil,
+      @cover : String | AttachedFile? = nil,
       @start_timestamp : Int32? = nil,
       @width : Int32? = nil,
       @height : Int32? = nil,

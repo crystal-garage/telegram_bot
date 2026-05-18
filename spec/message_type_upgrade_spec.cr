@@ -145,7 +145,7 @@ describe TelegramBot::Message do
     message.story.try(&.id).should eq(100)
     message.migrate_to_chat_id.should eq(-1_001_234_567_890)
     message.migrate_from_chat_id.should eq(-1_001_234_567_889)
-    message.pinned_message.should be_a(TelegramBot::Message)
+    message.pinned_message.should be_a(TelegramBot::InaccessibleMessage)
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
   end

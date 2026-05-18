@@ -631,6 +631,29 @@ describe TelegramBot::PaidMediaInfo do
               "photo": [
                 {"file_id": "photo-id", "file_unique_id": "photo-unique-id", "width": 320, "height": 240}
               ]
+            },
+            {
+              "type": "video",
+              "video": {
+                "file_id": "video-id",
+                "file_unique_id": "video-unique-id",
+                "width": 320,
+                "height": 240,
+                "duration": 3
+              }
+            },
+            {
+              "type": "live_photo",
+              "live_photo": {
+                "file_id": "paid-live-photo-id",
+                "file_unique_id": "paid-live-photo-unique-id",
+                "width": 320,
+                "height": 240,
+                "duration": 3,
+                "photo": [
+                  {"file_id": "paid-live-photo-size-id", "file_unique_id": "paid-live-photo-size-unique-id", "width": 320, "height": 240}
+                ]
+              }
             }
           ]
         },
@@ -679,13 +702,18 @@ describe TelegramBot::PaidMediaInfo do
 
     message.live_photo.try(&.file_id).should eq("live-video-id")
     message.paid_media.try(&.star_count).should eq(10)
-    message.paid_media.try(&.paid_media.first.type).should eq("preview")
-    message.paid_media.try(&.paid_media.last.photo.try(&.first.file_id)).should eq("photo-id")
+    message.paid_media.try(&.paid_media[0]).should be_a(TelegramBot::PaidMediaPreview)
+    message.paid_media.try(&.paid_media[1]).should be_a(TelegramBot::PaidMediaPhoto)
+    message.paid_media.try(&.paid_media[1].as(TelegramBot::PaidMediaPhoto).photo.first.file_id).should eq("photo-id")
+    message.paid_media.try(&.paid_media[2]).should be_a(TelegramBot::PaidMediaVideo)
+    message.paid_media.try(&.paid_media[2].as(TelegramBot::PaidMediaVideo).video.file_id).should eq("video-id")
+    message.paid_media.try(&.paid_media[3]).should be_a(TelegramBot::PaidMediaLivePhoto)
+    message.paid_media.try(&.paid_media[3].as(TelegramBot::PaidMediaLivePhoto).live_photo.file_id).should eq("paid-live-photo-id")
     message.successful_payment.try(&.subscription_expiration_date).should eq(1_800_000_000)
     message.successful_payment.try(&.is_recurring?).should be_true
     message.refunded_payment.try(&.telegram_payment_charge_id).should eq("telegram-charge-id")
     transactions.transactions.first.source.try(&.paid_media_payload).should eq("payload")
-    transactions.transactions.first.source.try(&.paid_media.try(&.first.type)).should eq("preview")
+    transactions.transactions.first.source.try(&.paid_media.try(&.first)).should be_a(TelegramBot::PaidMediaPreview)
     purchased.from.first_name.should eq("User")
     purchased.paid_media_payload.should eq("paid-media-payload")
   end

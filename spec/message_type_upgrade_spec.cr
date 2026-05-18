@@ -14,6 +14,7 @@ describe TelegramBot::Message do
         "sender_chat": {"id": -100, "type": "supergroup", "title": "Group"},
         "sender_boost_count": 2,
         "sender_business_bot": {"id": 2, "is_bot": true, "first_name": "Business Bot"},
+        "sender_tag": "Trusted",
         "date": 0,
         "business_connection_id": "business-id",
         "chat": {"id": 1, "type": "private"},
@@ -92,6 +93,13 @@ describe TelegramBot::Message do
           "chat": {"id": 1, "type": "private"},
           "id": 100
         },
+        "migrate_to_chat_id": -1001234567890,
+        "migrate_from_chat_id": -1001234567889,
+        "pinned_message": {
+          "message_id": 43,
+          "date": 0,
+          "chat": {"id": 1, "type": "private"}
+        },
         "web_app_data": {"data": "action=done", "button_text": "Finish"},
         "reply_markup": {"inline_keyboard": [[{"text": "Open", "url": "https://example.com"}]]}
       }
@@ -103,6 +111,7 @@ describe TelegramBot::Message do
     message.sender_chat.try(&.title).should eq("Group")
     message.sender_boost_count.should eq(2)
     message.sender_business_bot.try(&.first_name).should eq("Business Bot")
+    message.sender_tag.should eq("Trusted")
     message.business_connection_id.should eq("business-id")
     message.forward_origin.try(&.type).should eq("user")
     message.is_topic_message?.should be_true
@@ -134,6 +143,9 @@ describe TelegramBot::Message do
     message.direct_message_price_changed.try(&.direct_message_star_count).should eq(5)
     message.paid_message_price_changed.try(&.paid_message_star_count).should eq(10)
     message.story.try(&.id).should eq(100)
+    message.migrate_to_chat_id.should eq(-1_001_234_567_890)
+    message.migrate_from_chat_id.should eq(-1_001_234_567_889)
+    message.pinned_message.should be_a(TelegramBot::Message)
     message.web_app_data.try(&.button_text).should eq("Finish")
     message.reply_markup.try(&.inline_keyboard.first.first.text).should eq("Open")
   end

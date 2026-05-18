@@ -9,6 +9,7 @@ module TelegramBot
     property sender_chat : Chat?
     property sender_boost_count : Int32?
     property sender_business_bot : User?
+    property sender_tag : String?
     property guest_bot_caller_user : User?
     property guest_bot_caller_chat : Chat?
     property guest_query_id : String?
@@ -96,9 +97,9 @@ module TelegramBot
     property giveaway_completed : GiveawayCompleted?
     property poll_option_added : PollOptionAdded?
     property poll_option_deleted : PollOptionDeleted?
-    property migrate_to_chat_id : Int32?
-    property migrate_from_chat_id : Int32?
-    property pinned_message : Message?
+    property migrate_to_chat_id : Int64?
+    property migrate_from_chat_id : Int64?
+    property pinned_message : MaybeInaccessibleMessage?
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
     property refunded_payment : RefundedPayment?

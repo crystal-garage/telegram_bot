@@ -31,6 +31,7 @@ class RequestBuildingBot < TelegramBot::Bot
     "setMyDefaultAdministratorRights",
     "deleteWebhook",
     "banChatMember",
+    "unbanChatMember",
     "banChatSenderChat",
     "unbanChatSenderChat",
     "restrictChatMember",

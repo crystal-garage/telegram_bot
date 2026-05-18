@@ -10,7 +10,6 @@ module TelegramBot
     property last_name : String?
     property? is_forum : Bool?
     property? is_direct_messages : Bool?
-    property? all_members_are_administrators : Bool?
     property photo : ChatPhoto?
     property business_intro : BusinessIntro?
     property business_location : BusinessLocation?

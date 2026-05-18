@@ -167,7 +167,8 @@ describe TelegramBot::Message do
     message.sender_business_bot.try(&.first_name).should eq("Business Bot")
     message.sender_tag.should eq("Trusted")
     message.business_connection_id.should eq("business-id")
-    message.forward_origin.try(&.type).should eq("user")
+    message.forward_origin.should be_a(TelegramBot::MessageOriginUser)
+    message.forward_origin.try(&.as(TelegramBot::MessageOriginUser).sender_user.first_name).should eq("Original")
     message.is_topic_message?.should be_true
     message.is_automatic_forward?.should be_true
     message.external_reply.try(&.origin.type).should eq("hidden_user")
@@ -572,7 +573,7 @@ end
 
 describe TelegramBot::MessageOriginUser do
   it "parses concrete message origin types" do
-    origin = TelegramBot::MessageOriginUser.from_json(<<-JSON)
+    origin = TelegramBot::MessageOrigin.from_json(<<-JSON)
       {
         "type": "user",
         "date": 0,
@@ -580,7 +581,7 @@ describe TelegramBot::MessageOriginUser do
       }
       JSON
 
-    origin.type.should eq("user")
-    origin.sender_user.first_name.should eq("User")
+    origin.should be_a(TelegramBot::MessageOriginUser)
+    origin.as(TelegramBot::MessageOriginUser).sender_user.first_name.should eq("User")
   end
 end

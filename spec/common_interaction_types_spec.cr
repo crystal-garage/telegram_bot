@@ -234,9 +234,11 @@ describe TelegramBot::ReactionType do
     update.chat.id.should eq(1)
     update.message_id.should eq(1)
     update.date.should eq(0)
-    update.old_reaction.first.emoji.should eq("👍")
-    update.new_reaction.first.custom_emoji_id.should eq("emoji-id")
-    count.type.type.should eq("paid")
+    update.old_reaction.first.should be_a(TelegramBot::ReactionTypeEmoji)
+    update.old_reaction.first.as(TelegramBot::ReactionTypeEmoji).emoji.should eq("👍")
+    update.new_reaction.first.should be_a(TelegramBot::ReactionTypeCustomEmoji)
+    update.new_reaction.first.as(TelegramBot::ReactionTypeCustomEmoji).custom_emoji_id.should eq("emoji-id")
+    count.type.should be_a(TelegramBot::ReactionTypePaid)
     count.total_count.should eq(3)
 
     JSON.parse(TelegramBot::ReactionTypeEmoji.new("👍").to_json).should eq(JSON.parse(%({"type":"emoji","emoji":"👍"})))
@@ -1156,7 +1158,7 @@ describe TelegramBot::ChatFullInfo do
     chat.birthdate.try(&.year).should eq(2000)
     chat.personal_chat.try(&.title).should eq("Personal")
     chat.parent_chat.try(&.title).should eq("Parent")
-    chat.available_reactions.try(&.first.emoji).should eq("👍")
+    chat.available_reactions.try(&.first.as(TelegramBot::ReactionTypeEmoji).emoji).should eq("👍")
     chat.has_private_forwards?.should be_true
     chat.permissions.try(&.can_send_messages?).should be_true
     chat.location.try(&.address).should eq("Main Street")

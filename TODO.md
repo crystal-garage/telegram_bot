@@ -141,6 +141,7 @@ Known high-risk type groups:
   - [x] Add `DirectMessagesTopic` and type `Message#direct_messages_topic`.
   - [x] Add `VideoQuality` and current `Video` optional fields.
   - [x] Align `Message#sender_tag`, migration chat ids, and `MaybeInaccessibleMessage` references.
+  - [x] Parse message origins by discriminator.
   - [x] Align common media file identifiers and large file sizes.
   - [x] Add paid and direct message price change service payload types.
   - [x] Add common chat service payload types.
@@ -163,6 +164,7 @@ Known high-risk type groups:
 - [x] Chat members, administrator rights, permissions, boosts, invite links, and join requests.
 - [x] Reactions.
   - [x] Reaction method coverage is present, including `delete_message_reaction` and `delete_all_message_reactions`.
+  - [x] Parse reaction types by discriminator.
 - [ ] Polls, dice, contacts, venues, locations, and live locations.
   - [x] Add Bot API 10.0 poll media input types and official poll media aliases.
   - [x] Remove undocumented live-location fields from `InputMediaLocation`.

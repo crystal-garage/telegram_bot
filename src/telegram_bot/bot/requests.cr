@@ -36,15 +36,28 @@ module TelegramBot
     # :nodoc:
     protected def serialize_params(params : Hash) : Hash(String, String | ::File)
       params.reduce(Hash(String, String | ::File).new) do |serialized, (key, value)|
-        serialized[key] = serialize_param(value) unless value.nil?
+        unless value.nil?
+          serialized[key] = serialize_param(value)
+          collect_attachments(value, serialized)
+        end
 
         serialized
       end
     end
 
+    # Creates a named multipart attachment reference for nested JSON request objects.
+    def attach(name : String, file : ::File) : AttachedFile
+      AttachedFile.new(name, file)
+    end
+
     # :nodoc:
     protected def serialize_param(value : ::File) : ::File
       value
+    end
+
+    # :nodoc:
+    protected def serialize_param(value : AttachedFile) : String
+      value.reference
     end
 
     # :nodoc:
@@ -73,6 +86,30 @@ module TelegramBot
     end
 
     # :nodoc:
+    protected def collect_attachments(value : AttachedFile, serialized : Hash(String, String | ::File)) : Nil
+      serialized[value.name] = value.file
+    end
+
+    # :nodoc:
+    protected def collect_attachment(value : AttachedFile, serialized : Hash(String, String | ::File)) : Nil
+      serialized[value.name] = value.file
+    end
+
+    # :nodoc:
+    protected def collect_attachment(value, serialized : Hash(String, String | ::File)) : Nil
+    end
+
+    # :nodoc:
+    protected def collect_attachments(value : Array, serialized : Hash(String, String | ::File)) : Nil
+      value.each { |item| collect_attachments(item, serialized) }
+    end
+
+    # :nodoc:
+    protected def collect_attachments(value, serialized : Hash(String, String | ::File)) : Nil
+      value.collect_attachments(serialized) if value.responds_to?(:collect_attachments)
+    end
+
+    # :nodoc:
     protected def handle_http_response(response)
       if response.status_code == 200
         json = JSON.parse(response.body)
@@ -98,6 +135,24 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#getme>
     def get_me
       request("getMe", force_http: true)
+    end
+
+    # Logs out from the cloud Bot API server before launching the bot locally.
+    #
+    # See: <https://core.telegram.org/bots/api#logout>
+    def log_out : Bool?
+      res = request("logOut", force_http: true)
+
+      res.as_bool if res
+    end
+
+    # Closes the bot instance before moving it from one local server to another.
+    #
+    # See: <https://core.telegram.org/bots/api#close>
+    def close : Bool?
+      res = request("close", force_http: true)
+
+      res.as_bool if res
     end
 
     # Receives incoming updates using long polling.

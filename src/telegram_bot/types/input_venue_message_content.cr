@@ -8,6 +8,8 @@ module TelegramBot
     property address : String
     property foursquare_id : String?
     property foursquare_type : String?
+    property google_place_id : String?
+    property google_place_type : String?
 
     def initialize(
       @latitude : Float64,
@@ -15,8 +17,10 @@ module TelegramBot
       @title : String,
       @address : String,
       *,
-      @foursquare_id = nil,
-      @foursquare_type = nil,
+      @foursquare_id : String? = nil,
+      @foursquare_type : String? = nil,
+      @google_place_id : String? = nil,
+      @google_place_type : String? = nil,
     )
     end
   end

@@ -7,10 +7,10 @@
 
 [Telegram Bot API](https://core.telegram.org/bots/api) client library for Crystal.
 
-The shard has partial compatibility with Telegram Bot API 10.0. It supports
-common messaging, media, chat administration, payments, games, polls, reactions,
-keyboards, Web App/Mini App helpers, business features, gifts, and paid media.
-See [Bot API support](#bot-api-support) for the current implementation matrix.
+The shard is aligned with Telegram Bot API 10.0. It supports messaging, media,
+chat administration, payments, games, polls, reactions, keyboards, Web App/Mini
+App helpers, business features, gifts, and paid media. See
+[Bot API support](#bot-api-support) for the implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
 >
@@ -310,8 +310,9 @@ All the examples above use the [`getUpdates`](https://core.telegram.org/bots/api
 Another option is to use the [`setWebhook`](https://core.telegram.org/bots/api#setwebhook) method to tell Telegram where to POST any updates for your bot. Note that you __must__ use HTTPS in this endpoint for Telegram to work, and you can use a self-signed certificate, which you can provide as part of the `setWebhook` method:
 
 ```crystal
-# Certificate has the contents of the certificate, not the path to it
-bot.set_webhook(url, certificate)
+File.open("public.pem") do |certificate|
+  bot.set_webhook("https://example.com/telegram", certificate)
+end
 ```
 
 Webhook options can be passed as keyword arguments:
@@ -367,36 +368,47 @@ However it's not part of the API you can set block or allow lists in the bot's c
 
 ## Bot API support
 
-Telegram currently documents Bot API 10.0. This shard is partially upgraded:
-implemented items are available through Crystal methods and JSON-serializable
-types, while unimplemented items are intentionally left out of the public API.
+Telegram currently documents Bot API 10.0. This shard exposes the documented
+Bot API methods as Crystal methods and represents documented objects as
+JSON-serializable types.
 
 ### Implemented methods
 
+- Core: `get_me`, `log_out`, `close`
 - Messages and media: `send_message`, `reply`, `forward_message`,
   `forward_messages`, `copy_message`, `copy_messages`, `send_photo`,
-  `send_audio`, `send_document`, `send_sticker`, `send_video`,
-  `send_animation`, `send_voice`, `send_video_note`, `send_media_group`,
-  `send_location`, `send_venue`, `send_contact`, `send_poll`, `send_dice`,
+  `send_live_photo`, `send_audio`, `send_document`, `send_sticker`,
+  `send_video`, `send_animation`, `send_voice`, `send_video_note`,
+  `send_paid_media`, `send_media_group`, `send_location`, `send_venue`,
+  `send_contact`, `send_poll`, `send_dice`, `send_checklist`,
   `send_message_draft`, `send_chat_action`
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
-  `edit_message_reply_markup`, `delete_message`
+  `edit_message_media`, `edit_message_checklist`,
+  `edit_message_reply_markup`, `stop_poll`, `delete_message`,
+  `delete_messages`, `approve_suggested_post`, `decline_suggested_post`
 - Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,
   `set_game_score`, `get_game_high_scores`, `get_file`, `download`,
   `set_webhook`, `delete_webhook`, `get_webhook_info`, `serve`
 - Chat basics: `ban_chat_member`, `unban_chat_member`,
-  `restrict_chat_member`, `promote_chat_member`, `export_chat_invite_link`,
+  `ban_chat_sender_chat`, `unban_chat_sender_chat`,
+  `restrict_chat_member`, `set_chat_permissions`, `promote_chat_member`,
+  `set_chat_administrator_custom_title`, `set_chat_member_tag`,
+  `export_chat_invite_link`,
   `create_chat_invite_link`, `edit_chat_invite_link`,
   `create_chat_subscription_invite_link`,
   `edit_chat_subscription_invite_link`, `revoke_chat_invite_link`,
   `approve_chat_join_request`, `decline_chat_join_request`,
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
   `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
-  `get_chat`, `leave_chat`, `get_chat_administrators`, `get_chat_member`,
-  `get_chat_member_count`, `set_chat_sticker_set`, `delete_chat_sticker_set`
+  `unpin_all_chat_messages`, `get_chat`, `leave_chat`,
+  `get_chat_administrators`, `get_chat_member`,
+  `get_user_personal_chat_messages`, `get_user_profile_photos`,
+  `get_user_profile_audios`, `set_user_emoji_status`,
+  `get_user_chat_boosts`, `get_chat_member_count`, `set_chat_sticker_set`,
+  `delete_chat_sticker_set`
 - Forum and reactions: `get_forum_topic_icon_stickers`,
   `create_forum_topic`, `edit_forum_topic`, `close_forum_topic`,
   `reopen_forum_topic`, `delete_forum_topic`,
@@ -405,17 +417,30 @@ types, while unimplemented items are intentionally left out of the public API.
   `hide_general_forum_topic`, `unhide_general_forum_topic`,
   `unpin_all_general_forum_topic_messages`, `set_message_reaction`,
   `delete_message_reaction`, `delete_all_message_reactions`
-- Payments, Stars, gifts, paid media, and stickers: `send_invoice`,
-  `send_paid_media`, `answer_shipping_query`, `answer_pre_checkout_query`,
+- Payments, Stars, gifts, and stickers: `send_invoice`,
+  `create_invoice_link`, `answer_shipping_query`,
+  `answer_pre_checkout_query`, `set_passport_data_errors`,
   `get_my_star_balance`, `get_star_transactions`, `refund_star_payment`,
   `edit_user_star_subscription`, `get_available_gifts`, `send_gift`,
-  `gift_premium_subscription`, `get_sticker_set`, `upload_sticker_file`,
-  `create_new_sticker_set`, `add_sticker_to_set`,
-  `set_sticker_position_in_set`, `delete_sticker_from_set`
+  `gift_premium_subscription`, `get_business_account_star_balance`,
+  `transfer_business_account_stars`, `get_business_account_gifts`,
+  `get_user_gifts`, `get_chat_gifts`, `convert_gift_to_stars`,
+  `upgrade_gift`, `transfer_gift`, `get_sticker_set`, `upload_sticker_file`,
+  `get_custom_emoji_stickers`, `create_new_sticker_set`,
+  `add_sticker_to_set`, `replace_sticker_in_set`,
+  `set_sticker_position_in_set`, `set_sticker_emoji_list`,
+  `set_sticker_keywords`, `set_sticker_mask_position`,
+  `set_sticker_set_title`, `set_sticker_set_thumbnail`,
+  `set_custom_emoji_sticker_set_thumbnail`, `delete_sticker_from_set`,
+  `delete_sticker_set`
 - Bot commands and profile: `set_my_commands`, `get_my_commands`,
   `delete_my_commands`, `set_my_name`, `get_my_name`, `set_my_description`,
   `get_my_description`, `set_my_short_description`,
-  `get_my_short_description`, `set_my_default_administrator_rights`,
+  `get_my_short_description`, `set_my_profile_photo`,
+  `remove_my_profile_photo`, `set_chat_menu_button`,
+  `get_chat_menu_button`, `verify_user`, `verify_chat`,
+  `remove_user_verification`, `remove_chat_verification`,
+  `set_my_default_administrator_rights`,
   `get_my_default_administrator_rights`
 - Business, guest, and managed bots: `get_business_connection`,
   `read_business_message`, `delete_business_messages`,
@@ -423,6 +448,7 @@ types, while unimplemented items are intentionally left out of the public API.
   `set_business_account_bio`, `set_business_account_profile_photo`,
   `remove_business_account_profile_photo`,
   `set_business_account_gift_settings`, `answer_guest_query`,
+  `post_story`, `repost_story`, `edit_story`, `delete_story`,
   `get_managed_bot_token`, `replace_managed_bot_token`,
   `get_managed_bot_access_settings`, `set_managed_bot_access_settings`
 
@@ -460,9 +486,25 @@ Override these methods in your bot subclass:
 
 - Message compatibility: `MessageId`, `InaccessibleMessage`,
   `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
-  `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `MessageOrigin`,
-  `MessageOriginUser`, `MessageOriginHiddenUser`, `MessageOriginChat`,
-  `MessageOriginChannel`
+  `ExternalReplyInfo`, `LinkPreviewOptions`, `Story`, `DirectMessagesTopic`,
+  `MessageOrigin`, `MessageOriginUser`, `MessageOriginHiddenUser`,
+  `MessageOriginChat`, `MessageOriginChannel`, `SuggestedPostInfo`,
+  `SuggestedPostApproved`, `SuggestedPostApprovalFailed`,
+  `SuggestedPostDeclined`, `SuggestedPostPaid`, `SuggestedPostRefunded`,
+  `PaidMessagePriceChanged`, `DirectMessagePriceChanged`, `ChatOwnerLeft`,
+  `ChatOwnerChanged`, `MessageAutoDeleteTimerChanged`, `SharedUser`,
+  `UsersShared`, `ChatShared`, `WriteAccessAllowed`,
+  `ProximityAlertTriggered`, `ChatBoostAdded`, `GiveawayCreated`,
+  `Giveaway`, `GiveawayWinners`, `GiveawayCompleted`,
+  `VideoChatScheduled`, `VideoChatStarted`, `VideoChatEnded`,
+  `VideoChatParticipantsInvited`, `BackgroundFill`, `BackgroundType`,
+  `ChatBackground`
+- Chat profile objects: `Chat`, `ChatFullInfo`, `Birthdate`, `ChatLocation`,
+  `UserRating`
+- Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
+  `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaLocation`,
+  `InputMediaPhoto`, `InputMediaSticker`, `InputMediaVenue`,
+  `InputMediaVideo`
 - Polls, reactions, and forum service messages: `Dice`, `Poll`,
   `PollOption`, `InputPollOption`, `PollMedia`, `PollAnswer`,
   `PollOptionAdded`, `PollOptionDeleted`, `ReactionTypeEmoji`,
@@ -478,11 +520,17 @@ Override these methods in your bot subclass:
   `PaidMediaLivePhoto`, `InputPaidMediaPhoto`, `InputPaidMediaVideo`,
   `InputPaidMediaLivePhoto`, `RefundedPayment`, `StarAmount`,
   `RevenueWithdrawalState`, `AffiliateInfo`, `TransactionPartner`,
-  `StarTransaction`, `StarTransactions`
-- Gifts: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
+  `StarTransaction`, `StarTransactions`, `PassportData`, `PassportFile`,
+  `EncryptedPassportElement`, `EncryptedCredentials`, `PassportElementError`
+- Gifts and stories: `Gift`, `Gifts`, `GiftInfo`, `GiftBackground`, `UniqueGift`,
   `UniqueGiftInfo`, `UniqueGiftModel`, `UniqueGiftSymbol`,
   `UniqueGiftBackdrop`, `UniqueGiftBackdropColors`, `UniqueGiftColors`,
-  `OwnedGift`, `OwnedGifts`
+  `OwnedGift`, `OwnedGiftRegular`, `OwnedGiftUnique`, `OwnedGifts`,
+  `InputStoryContent`,
+  `InputStoryContentPhoto`, `InputStoryContentVideo`, `StoryArea`,
+  `StoryAreaPosition`, `StoryAreaType`, `StoryAreaTypeLocation`,
+  `StoryAreaTypeSuggestedReaction`, `StoryAreaTypeLink`,
+  `StoryAreaTypeWeather`, `StoryAreaTypeUniqueGift`, `LocationAddress`
 - Stickers: `Sticker`, `StickerSet`, `InputSticker`, `MaskPosition`
 - Keyboards and Web Apps: `InlineKeyboardButton`, `InlineKeyboardMarkup`,
   `KeyboardButton`, `ReplyKeyboardMarkup`, `LoginUrl`, `WebAppInfo`,
@@ -505,15 +553,6 @@ Override these methods in your bot subclass:
   `BusinessOpeningHoursInterval`, `InputProfilePhoto`, `SentGuestMessage`,
   `ManagedBotCreated`, `BotAccessSettings`
 
-### Not implemented yet
-
-- Webhook secret-token validation in `serve`
-- Profile photo and chat menu button methods
-- Newer chat administration APIs outside Phase 7, such as `set_chat_member_tag`
-  and user profile audio methods
-- Business-account owned gift management methods beyond gift settings
-- Full business, guest, and managed bot method/type support
-
 ## Compatibility notes
 
 Request parameters that are arrays or `JSON::Serializable` objects are
@@ -521,9 +560,9 @@ JSON-serialized before they are sent to Telegram. This includes inline query
 results, command arrays, media arrays, reply markup, `ReplyParameters`, and
 `LinkPreviewOptions`.
 
-Some update types are parsed and dispatched before all related Bot API
-methods are implemented. For example, `chat_join_request` updates can be
-handled, but `approve_chat_join_request` is not available yet.
+The `serve` helper does not validate Telegram's webhook `secret_token`
+automatically. Applications using webhook secrets should validate the
+`X-Telegram-Bot-Api-Secret-Token` header at their HTTP boundary.
 
 ## Contributing
 

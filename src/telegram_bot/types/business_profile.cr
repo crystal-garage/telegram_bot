@@ -51,17 +51,43 @@ module TelegramBot
     include JSON::Serializable
 
     property type : String
-    property photo : String?
-    property animation : String?
-    property main_frame_timestamp : Float64?
 
     def initialize(
       @type : String,
+    )
+    end
+  end
+
+  class InputProfilePhotoStatic < InputProfilePhoto
+    include JSON::Serializable
+
+    property type : String = "static"
+    property photo : String | AttachedFile
+
+    def initialize(@photo : String | AttachedFile)
+    end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@photo, attachments)
+    end
+  end
+
+  class InputProfilePhotoAnimated < InputProfilePhoto
+    include JSON::Serializable
+
+    property type : String = "animated"
+    property animation : String | AttachedFile
+    property main_frame_timestamp : Float64?
+
+    def initialize(
+      @animation : String | AttachedFile,
       *,
-      @photo : String? = nil,
-      @animation : String? = nil,
       @main_frame_timestamp : Float64? = nil,
     )
+    end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@animation, attachments)
     end
   end
 end

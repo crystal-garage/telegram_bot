@@ -8,7 +8,6 @@ module TelegramBot
     property input_message_content : InputMessageContent
     property reply_markup : InlineKeyboardMarkup?
     property url : String?
-    property? hide_url : Bool?
     property description : String?
     property thumbnail_url : String?
     property thumbnail_width : Int32?
@@ -21,7 +20,6 @@ module TelegramBot
       *,
       @reply_markup : InlineKeyboardMarkup? = nil,
       @url : String? = nil,
-      @hide_url = nil,
       @description = nil,
       @thumbnail_url = nil,
       @thumbnail_width = nil,

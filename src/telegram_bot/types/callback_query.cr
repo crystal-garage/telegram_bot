@@ -4,7 +4,7 @@ module TelegramBot
 
     property id : String
     property from : User
-    property message : Message?
+    property message : MaybeInaccessibleMessage?
     property inline_message_id : String?
     property chat_instance : String
     property data : String?

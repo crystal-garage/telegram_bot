@@ -6,10 +6,14 @@ module TelegramBot
     def send_chat_action(
       chat_id : Int | String,
       action : String,
+      business_connection_id : String? = nil,
+      message_thread_id : Int32? = nil,
     )
       res = def_request(
         "sendChatAction",
+        business_connection_id,
         chat_id,
+        message_thread_id,
         action
       )
 
@@ -42,13 +46,15 @@ module TelegramBot
     def delete_message_reaction(
       chat_id : Int | String,
       message_id : Int,
-      reaction : ReactionType,
+      user_id : Int? = nil,
+      actor_chat_id : Int? = nil,
     )
       res = def_request(
         "deleteMessageReaction",
         chat_id,
         message_id,
-        reaction
+        user_id,
+        actor_chat_id
       )
 
       res.as_bool if res
@@ -59,12 +65,14 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#deleteallmessagereactions>
     def delete_all_message_reactions(
       chat_id : Int | String,
-      message_id : Int,
+      user_id : Int? = nil,
+      actor_chat_id : Int? = nil,
     )
       res = def_request(
         "deleteAllMessageReactions",
         chat_id,
-        message_id
+        user_id,
+        actor_chat_id
       )
 
       res.as_bool if res
@@ -74,7 +82,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#getuserprofilephotos>
     def get_user_profile_photos(
-      user_id : Int32,
+      user_id : Int,
       offset : Int32? = nil,
       limit : Int32? = nil,
     )
@@ -88,15 +96,55 @@ module TelegramBot
       UserProfilePhotos.from_json(res.not_nil!.to_json)
     end
 
+    # Returns profile audios for a user.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserprofileaudios>
+    def get_user_profile_audios(
+      user_id : Int,
+      offset : Int32? = nil,
+      limit : Int32? = nil,
+    )
+      res = def_force_request(
+        "getUserProfileAudios",
+        user_id,
+        offset,
+        limit
+      )
+
+      UserProfileAudios.from_json(res.not_nil!.to_json)
+    end
+
+    # Changes a user's emoji status.
+    #
+    # See: <https://core.telegram.org/bots/api#setuseremojistatus>
+    def set_user_emoji_status(
+      user_id : Int,
+      emoji_status_custom_emoji_id : String? = nil,
+      emoji_status_expiration_date : Int | Time? = nil,
+    )
+      emoji_status_expiration_date = emoji_status_expiration_date.to_unix if emoji_status_expiration_date.is_a?(Time)
+
+      res = def_force_request(
+        "setUserEmojiStatus",
+        user_id,
+        emoji_status_custom_emoji_id,
+        emoji_status_expiration_date
+      )
+
+      res.as_bool if res
+    end
+
     # Bans a user from a chat.
     #
     # See: <https://core.telegram.org/bots/api#banchatmember>
     def ban_chat_member(
       chat_id : Int | String,
       user_id : Int,
-      until_date : Int? = nil,
+      until_date : Int | Time? = nil,
       revoke_messages : Bool? = nil,
     )
+      until_date = until_date.to_unix if until_date.is_a?(Time)
+
       res = def_request(
         "banChatMember",
         chat_id,
@@ -113,12 +161,46 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#unbanchatmember>
     def unban_chat_member(
       chat_id : Int | String,
-      user_id : Int32,
+      user_id : Int,
+      only_if_banned : Bool? = nil,
     )
       res = def_request(
         "unbanChatMember",
         chat_id,
-        user_id
+        user_id,
+        only_if_banned
+      )
+
+      res.as_bool if res
+    end
+
+    # Bans a channel chat in a supergroup or channel.
+    #
+    # See: <https://core.telegram.org/bots/api#banchatsenderchat>
+    def ban_chat_sender_chat(
+      chat_id : Int | String,
+      sender_chat_id : Int,
+    )
+      res = def_request(
+        "banChatSenderChat",
+        chat_id,
+        sender_chat_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Unbans a previously banned channel chat in a supergroup or channel.
+    #
+    # See: <https://core.telegram.org/bots/api#unbanchatsenderchat>
+    def unban_chat_sender_chat(
+      chat_id : Int | String,
+      sender_chat_id : Int,
+    )
+      res = def_request(
+        "unbanChatSenderChat",
+        chat_id,
+        sender_chat_id
       )
 
       res.as_bool if res
@@ -131,9 +213,11 @@ module TelegramBot
       chat_id : Int | String,
       user_id : Int,
       permissions : ChatPermissions,
-      until_date : Int? = nil,
+      until_date : Int | Time? = nil,
       use_independent_chat_permissions : Bool? = nil,
     )
+      until_date = until_date.to_unix if until_date.is_a?(Time)
+
       res = def_request(
         "restrictChatMember",
         chat_id,
@@ -146,33 +230,105 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Sets default chat permissions for all members.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatpermissions>
+    def set_chat_permissions(
+      chat_id : Int | String,
+      permissions : ChatPermissions,
+      use_independent_chat_permissions : Bool? = nil,
+    )
+      res = def_request(
+        "setChatPermissions",
+        chat_id,
+        permissions,
+        use_independent_chat_permissions
+      )
+
+      res.as_bool if res
+    end
+
     # Promotes or demotes a user in a supergroup or channel.
     #
     # See: <https://core.telegram.org/bots/api#promotechatmember>
     def promote_chat_member(
       chat_id : Int | String,
       user_id : Int,
+      is_anonymous : Bool? = nil,
+      can_manage_chat : Bool? = nil,
       can_change_info : Bool? = nil,
       can_post_messages : Bool? = nil,
       can_edit_messages : Bool? = nil,
       can_delete_messages : Bool? = nil,
+      can_manage_video_chats : Bool? = nil,
       can_invite_users : Bool? = nil,
       can_restrict_members : Bool? = nil,
       can_pin_messages : Bool? = nil,
       can_promote_members : Bool? = nil,
+      can_manage_topics : Bool? = nil,
+      can_manage_direct_messages : Bool? = nil,
+      can_post_stories : Bool? = nil,
+      can_edit_stories : Bool? = nil,
+      can_delete_stories : Bool? = nil,
+      can_manage_tags : Bool? = nil,
     )
       res = def_request(
         "promoteChatMember",
         chat_id,
         user_id,
+        is_anonymous,
+        can_manage_chat,
         can_change_info,
         can_post_messages,
         can_edit_messages,
         can_delete_messages,
+        can_manage_video_chats,
         can_invite_users,
         can_restrict_members,
         can_pin_messages,
-        can_promote_members
+        can_promote_members,
+        can_manage_topics,
+        can_manage_direct_messages,
+        can_post_stories,
+        can_edit_stories,
+        can_delete_stories,
+        can_manage_tags
+      )
+
+      res.as_bool if res
+    end
+
+    # Sets a custom title for an administrator in a supergroup.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatadministratorcustomtitle>
+    def set_chat_administrator_custom_title(
+      chat_id : Int | String,
+      user_id : Int,
+      custom_title : String,
+    )
+      res = def_request(
+        "setChatAdministratorCustomTitle",
+        chat_id,
+        user_id,
+        custom_title
+      )
+
+      res.as_bool if res
+    end
+
+    # Sets a tag for a regular member in a group or supergroup.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatmembertag>
+    def set_chat_member_tag(
+      chat_id : Int | String,
+      user_id : Int,
+      tag : String? = nil,
+    )
+      res = def_request(
+        "setChatMemberTag",
+        chat_id,
+        user_id,
+        tag
       )
 
       res.as_bool if res
@@ -198,10 +354,12 @@ module TelegramBot
     def create_chat_invite_link(
       chat_id : Int | String,
       name : String? = nil,
-      expire_date : Int? = nil,
+      expire_date : Int | Time? = nil,
       member_limit : Int32? = nil,
       creates_join_request : Bool? = nil,
     ) : ChatInviteLink?
+      expire_date = expire_date.to_unix if expire_date.is_a?(Time)
+
       res = def_request(
         "createChatInviteLink",
         chat_id,
@@ -221,10 +379,12 @@ module TelegramBot
       chat_id : Int | String,
       invite_link : String,
       name : String? = nil,
-      expire_date : Int? = nil,
+      expire_date : Int | Time? = nil,
       member_limit : Int32? = nil,
       creates_join_request : Bool? = nil,
     ) : ChatInviteLink?
+      expire_date = expire_date.to_unix if expire_date.is_a?(Time)
+
       res = def_request(
         "editChatInviteLink",
         chat_id,
@@ -375,7 +535,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#setchatdescription>
     def set_chat_description(
       chat_id : Int | String,
-      description : String,
+      description : String? = nil,
     )
       res = def_request(
         "setChatDescription",
@@ -392,10 +552,12 @@ module TelegramBot
     def pin_chat_message(
       chat_id : Int | String,
       message_id : Int,
+      business_connection_id : String? = nil,
       disable_notification : Bool? = nil,
     )
       res = def_request(
         "pinChatMessage",
+        business_connection_id,
         chat_id,
         message_id,
         disable_notification
@@ -409,9 +571,27 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#unpinchatmessage>
     def unpin_chat_message(
       chat_id : Int | String,
+      business_connection_id : String? = nil,
+      message_id : Int? = nil,
     )
       res = def_request(
         "unpinChatMessage",
+        business_connection_id,
+        chat_id,
+        message_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Clears the list of pinned messages in a chat.
+    #
+    # See: <https://core.telegram.org/bots/api#unpinallchatmessages>
+    def unpin_all_chat_messages(
+      chat_id : Int | String,
+    )
+      res = def_request(
+        "unpinAllChatMessages",
         chat_id
       )
 
@@ -429,7 +609,7 @@ module TelegramBot
         chat_id
       )
 
-      Chat.from_json(res.not_nil!.to_json)
+      ChatFullInfo.from_json(res.not_nil!.to_json)
     end
 
     # Leaves a chat.
@@ -451,16 +631,16 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#getchatadministrators>
     def get_chat_administrators(
       chat_id : Int | String,
-    )
+      return_bots : Bool? = nil,
+    ) : Array(ChatMember)
       res = def_request(
         "getChatAdministrators",
-        chat_id
+        chat_id,
+        return_bots
       )
       res = res.not_nil!.as_a
-      admins = Array(ChatMember).new
-      res.each { |m| admins << ChatMember.from_json(m.to_json) }
 
-      admins
+      res.each_with_object([] of ChatMember) { |m, admins| admins << ChatMember.from_json(m.to_json) }
     end
 
     # Returns information about a chat member.
@@ -468,7 +648,7 @@ module TelegramBot
     # See: <https://core.telegram.org/bots/api#getchatmember>
     def get_chat_member(
       chat_id : Int | String,
-      user_id : Int32,
+      user_id : Int,
     )
       res = def_request(
         "getChatMember",
@@ -477,6 +657,39 @@ module TelegramBot
       )
 
       ChatMember.from_json(res.not_nil!.to_json)
+    end
+
+    # Returns recent messages from a user's personal chat.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserpersonalchatmessages>
+    def get_user_personal_chat_messages(
+      user_id : Int,
+      limit : Int32,
+    ) : Array(Message)
+      res = def_force_request(
+        "getUserPersonalChatMessages",
+        user_id,
+        limit
+      )
+
+      res = res.not_nil!.as_a
+      res.map { |message| Message.from_json(message.to_json) }
+    end
+
+    # Returns boosts added to a chat by a user.
+    #
+    # See: <https://core.telegram.org/bots/api#getuserchatboosts>
+    def get_user_chat_boosts(
+      chat_id : Int | String,
+      user_id : Int,
+    ) : UserChatBoosts
+      res = def_request(
+        "getUserChatBoosts",
+        chat_id,
+        user_id
+      )
+
+      UserChatBoosts.from_json(res.not_nil!.to_json)
     end
 
     # Returns the number of members in a chat.
@@ -532,10 +745,8 @@ module TelegramBot
         force_http: true
       )
       res = res.not_nil!.as_a
-      stickers = Array(Sticker).new
-      res.each { |sticker| stickers << Sticker.from_json(sticker.to_json) }
 
-      stickers
+      res.each_with_object([] of Sticker) { |s, stickers| stickers << Sticker.from_json(s.to_json) }
     end
 
     # Creates a forum topic.

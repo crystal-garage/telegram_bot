@@ -9,9 +9,13 @@ module TelegramBot
     include JSON::Serializable
 
     property type : String = "photo"
-    property media : String
+    property media : String | AttachedFile
 
-    def initialize(@media : String)
+    def initialize(@media : String | AttachedFile)
+    end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@media, attachments)
     end
   end
 
@@ -19,9 +23,9 @@ module TelegramBot
     include JSON::Serializable
 
     property type : String = "video"
-    property media : String
-    property thumbnail : String?
-    property cover : String?
+    property media : String | AttachedFile
+    property thumbnail : String | AttachedFile?
+    property cover : String | AttachedFile?
     property start_timestamp : Int32?
     property width : Int32?
     property height : Int32?
@@ -29,10 +33,10 @@ module TelegramBot
     property? supports_streaming : Bool?
 
     def initialize(
-      @media : String,
+      @media : String | AttachedFile,
       *,
-      @thumbnail : String? = nil,
-      @cover : String? = nil,
+      @thumbnail : String | AttachedFile? = nil,
+      @cover : String | AttachedFile? = nil,
       @start_timestamp : Int32? = nil,
       @width : Int32? = nil,
       @height : Int32? = nil,
@@ -40,32 +44,27 @@ module TelegramBot
       @supports_streaming = nil,
     )
     end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@media, attachments)
+      TelegramBot.collect_attachment(@thumbnail, attachments)
+      TelegramBot.collect_attachment(@cover, attachments)
+    end
   end
 
   class InputPaidMediaLivePhoto < InputPaidMedia
     include JSON::Serializable
 
     property type : String = "live_photo"
-    property media : String
-    property thumbnail : String?
-    property cover : String?
-    property start_timestamp : Int32?
-    property width : Int32?
-    property height : Int32?
-    property duration : Int32?
-    property? supports_streaming : Bool?
+    property media : String | AttachedFile
+    property photo : String | AttachedFile
 
-    def initialize(
-      @media : String,
-      *,
-      @thumbnail : String? = nil,
-      @cover : String? = nil,
-      @start_timestamp : Int32? = nil,
-      @width : Int32? = nil,
-      @height : Int32? = nil,
-      @duration : Int32? = nil,
-      @supports_streaming = nil,
-    )
+    def initialize(@media : String | AttachedFile, @photo : String | AttachedFile)
+    end
+
+    def collect_attachments(attachments : Hash(String, String | ::File)) : Nil
+      TelegramBot.collect_attachment(@media, attachments)
+      TelegramBot.collect_attachment(@photo, attachments)
     end
   end
 end

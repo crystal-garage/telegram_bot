@@ -62,6 +62,290 @@ module TelegramBot
       res.as_bool if res
     end
 
+    # Returns the Star balance of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#getbusinessaccountstarbalance>
+    def get_business_account_star_balance(
+      business_connection_id : String,
+    ) : StarAmount
+      res = def_force_request(
+        "getBusinessAccountStarBalance",
+        business_connection_id
+      )
+
+      StarAmount.from_json(res.to_json)
+    end
+
+    # Transfers Stars from a business account to the bot's balance.
+    #
+    # See: <https://core.telegram.org/bots/api#transferbusinessaccountstars>
+    def transfer_business_account_stars(
+      business_connection_id : String,
+      star_count : Int,
+    )
+      res = def_force_request(
+        "transferBusinessAccountStars",
+        business_connection_id,
+        star_count
+      )
+
+      res.as_bool if res
+    end
+
+    # Returns gifts owned by a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#getbusinessaccountgifts>
+    def get_business_account_gifts(
+      business_connection_id : String,
+      exclude_unsaved : Bool? = nil,
+      exclude_saved : Bool? = nil,
+      exclude_unlimited : Bool? = nil,
+      exclude_limited_upgradable : Bool? = nil,
+      exclude_limited_non_upgradable : Bool? = nil,
+      exclude_from_blockchain : Bool? = nil,
+      exclude_unique : Bool? = nil,
+      sort_by_price : Bool? = nil,
+      offset : String? = nil,
+      limit : Int32? = nil,
+    ) : OwnedGifts
+      res = def_force_request(
+        "getBusinessAccountGifts",
+        business_connection_id,
+        exclude_unsaved,
+        exclude_saved,
+        exclude_unlimited,
+        exclude_limited_upgradable,
+        exclude_limited_non_upgradable,
+        exclude_from_blockchain,
+        exclude_unique,
+        sort_by_price,
+        offset,
+        limit
+      )
+
+      OwnedGifts.from_json(res.to_json)
+    end
+
+    # Returns gifts owned and hosted by a user.
+    #
+    # See: <https://core.telegram.org/bots/api#getusergifts>
+    def get_user_gifts(
+      user_id : Int,
+      exclude_unlimited : Bool? = nil,
+      exclude_limited_upgradable : Bool? = nil,
+      exclude_limited_non_upgradable : Bool? = nil,
+      exclude_from_blockchain : Bool? = nil,
+      exclude_unique : Bool? = nil,
+      sort_by_price : Bool? = nil,
+      offset : String? = nil,
+      limit : Int32? = nil,
+    ) : OwnedGifts
+      res = def_force_request(
+        "getUserGifts",
+        user_id,
+        exclude_unlimited,
+        exclude_limited_upgradable,
+        exclude_limited_non_upgradable,
+        exclude_from_blockchain,
+        exclude_unique,
+        sort_by_price,
+        offset,
+        limit
+      )
+
+      OwnedGifts.from_json(res.to_json)
+    end
+
+    # Returns gifts owned by a chat.
+    #
+    # See: <https://core.telegram.org/bots/api#getchatgifts>
+    def get_chat_gifts(
+      chat_id : Int | String,
+      exclude_unsaved : Bool? = nil,
+      exclude_saved : Bool? = nil,
+      exclude_unlimited : Bool? = nil,
+      exclude_limited_upgradable : Bool? = nil,
+      exclude_limited_non_upgradable : Bool? = nil,
+      exclude_from_blockchain : Bool? = nil,
+      exclude_unique : Bool? = nil,
+      sort_by_price : Bool? = nil,
+      offset : String? = nil,
+      limit : Int32? = nil,
+    ) : OwnedGifts
+      res = def_force_request(
+        "getChatGifts",
+        chat_id,
+        exclude_unsaved,
+        exclude_saved,
+        exclude_unlimited,
+        exclude_limited_upgradable,
+        exclude_limited_non_upgradable,
+        exclude_from_blockchain,
+        exclude_unique,
+        sort_by_price,
+        offset,
+        limit
+      )
+
+      OwnedGifts.from_json(res.to_json)
+    end
+
+    # Converts a regular gift owned by a business account to Stars.
+    #
+    # See: <https://core.telegram.org/bots/api#convertgifttostars>
+    def convert_gift_to_stars(
+      business_connection_id : String,
+      owned_gift_id : String,
+    )
+      res = def_force_request(
+        "convertGiftToStars",
+        business_connection_id,
+        owned_gift_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Upgrades a regular gift owned by a business account to a unique gift.
+    #
+    # See: <https://core.telegram.org/bots/api#upgradegift>
+    def upgrade_gift(
+      business_connection_id : String,
+      owned_gift_id : String,
+      keep_original_details : Bool? = nil,
+      star_count : Int? = nil,
+    )
+      res = def_force_request(
+        "upgradeGift",
+        business_connection_id,
+        owned_gift_id,
+        keep_original_details,
+        star_count
+      )
+
+      res.as_bool if res
+    end
+
+    # Transfers a unique gift owned by a business account to another user.
+    #
+    # See: <https://core.telegram.org/bots/api#transfergift>
+    def transfer_gift(
+      business_connection_id : String,
+      owned_gift_id : String,
+      new_owner_chat_id : Int,
+      star_count : Int? = nil,
+    )
+      res = def_force_request(
+        "transferGift",
+        business_connection_id,
+        owned_gift_id,
+        new_owner_chat_id,
+        star_count
+      )
+
+      res.as_bool if res
+    end
+
+    # Posts a story on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#poststory>
+    def post_story(
+      business_connection_id : String,
+      content : InputStoryContent,
+      active_period : Int | Time::Span,
+      caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      areas : Array(StoryArea)? = nil,
+      post_to_chat_page : Bool? = nil,
+      protect_content : Bool? = nil,
+    ) : Story
+      active_period = active_period.total_seconds.to_i if active_period.is_a?(Time::Span)
+
+      res = def_force_request(
+        "postStory",
+        business_connection_id,
+        content,
+        active_period,
+        caption,
+        parse_mode,
+        caption_entities,
+        areas,
+        post_to_chat_page,
+        protect_content
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Reposts a story on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#repoststory>
+    def repost_story(
+      business_connection_id : String,
+      from_chat_id : Int,
+      from_story_id : Int,
+      active_period : Int | Time::Span,
+      post_to_chat_page : Bool? = nil,
+      protect_content : Bool? = nil,
+    ) : Story
+      active_period = active_period.total_seconds.to_i if active_period.is_a?(Time::Span)
+
+      res = def_force_request(
+        "repostStory",
+        business_connection_id,
+        from_chat_id,
+        from_story_id,
+        active_period,
+        post_to_chat_page,
+        protect_content
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Edits a story posted on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#editstory>
+    def edit_story(
+      business_connection_id : String,
+      story_id : Int,
+      content : InputStoryContent,
+      caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      areas : Array(StoryArea)? = nil,
+    ) : Story
+      res = def_force_request(
+        "editStory",
+        business_connection_id,
+        story_id,
+        content,
+        caption,
+        parse_mode,
+        caption_entities,
+        areas
+      )
+
+      Story.from_json(res.to_json)
+    end
+
+    # Deletes a story posted on behalf of a managed business account.
+    #
+    # See: <https://core.telegram.org/bots/api#deletestory>
+    def delete_story(
+      business_connection_id : String,
+      story_id : Int,
+    )
+      res = def_force_request(
+        "deleteStory",
+        business_connection_id,
+        story_id
+      )
+
+      res.as_bool if res
+    end
+
     # Sends an answer to a guest query.
     #
     # See: <https://core.telegram.org/bots/api#answerguestquery>

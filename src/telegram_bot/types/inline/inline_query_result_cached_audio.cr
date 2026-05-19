@@ -5,6 +5,9 @@ module TelegramBot
     property type : String = "audio"
     property id : String
     property audio_file_id : String
+    property caption : String?
+    property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
     property reply_markup : InlineKeyboardMarkup?
     property input_message_content : InputMessageContent?
 
@@ -12,8 +15,11 @@ module TelegramBot
       @id : String,
       @audio_file_id : String,
       *,
-      @reply_markup = nil,
-      @input_message_content = nil,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
     )
     end
   end

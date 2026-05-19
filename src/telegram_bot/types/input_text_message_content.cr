@@ -4,13 +4,15 @@ module TelegramBot
 
     property message_text : String
     property parse_mode : String?
+    property entities : Array(MessageEntity)?
     property link_preview_options : LinkPreviewOptions?
 
     def initialize(
       @message_text : String,
       *,
-      @parse_mode = nil,
-      @link_preview_options = nil,
+      @parse_mode : String? = nil,
+      @entities : Array(MessageEntity)? = nil,
+      @link_preview_options : LinkPreviewOptions? = nil,
     )
     end
   end

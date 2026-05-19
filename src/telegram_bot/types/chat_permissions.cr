@@ -16,6 +16,7 @@ module TelegramBot
     property? can_invite_users : Bool?
     property? can_pin_messages : Bool?
     property? can_manage_topics : Bool?
+    property? can_edit_tag : Bool?
     property? can_react_to_messages : Bool?
 
     def initialize(
@@ -34,6 +35,7 @@ module TelegramBot
       @can_invite_users = nil,
       @can_pin_messages = nil,
       @can_manage_topics = nil,
+      @can_edit_tag = nil,
       @can_react_to_messages = nil,
     )
     end

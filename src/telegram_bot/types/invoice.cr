@@ -6,6 +6,6 @@ module TelegramBot
     property description : String
     property start_parameter : String
     property currency : String
-    property total_amount : Int32
+    property total_amount : Int64
   end
 end

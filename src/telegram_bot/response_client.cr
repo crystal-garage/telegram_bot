@@ -9,8 +9,8 @@ module TelegramBot
 
     def post_form(method : String, params : Hash(String, String))
       body = HTTP::Params.build do |form_builder|
-        params.each { |key, value| form_builder.add key, value }
-        form_builder.add "method", method
+        params.each { |key, value| form_builder.add(key, value) }
+        form_builder.add("method", method)
       end
 
       @response.content_type = "application/x-www-form-urlencoded"

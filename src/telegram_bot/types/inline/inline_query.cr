@@ -7,5 +7,6 @@ module TelegramBot
     property location : Location?
     property query : String
     property offset : String
+    property chat_type : String?
   end
 end

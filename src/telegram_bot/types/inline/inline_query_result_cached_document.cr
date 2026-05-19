@@ -8,6 +8,8 @@ module TelegramBot
     property document_file_id : String
     property description : String?
     property caption : String?
+    property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
     property reply_markup : InlineKeyboardMarkup?
     property input_message_content : InputMessageContent?
 
@@ -16,10 +18,12 @@ module TelegramBot
       @title : String,
       @document_file_id : String,
       *,
-      @description = nil,
-      @caption = nil,
-      @reply_markup = nil,
-      @input_message_content = nil,
+      @description : String? = nil,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
     )
     end
   end

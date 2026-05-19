@@ -6,6 +6,8 @@ module TelegramBot
     property id : String
     property title : String
     property caption : String?
+    property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
     property document_url : String
     property mime_type : String
     property description : String?
@@ -19,15 +21,17 @@ module TelegramBot
       @id : String,
       @title : String,
       *,
-      @caption = nil,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
       @document_url : String,
       @mime_type : String,
-      @description = nil,
-      @reply_markup = nil,
-      @input_message_content = nil,
-      @thumbnail_url = nil,
-      @thumbnail_width = nil,
-      @thumbnail_height = nil,
+      @description : String? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
+      @thumbnail_url : String? = nil,
+      @thumbnail_width : Int32? = nil,
+      @thumbnail_height : Int32? = nil,
     )
     end
   end

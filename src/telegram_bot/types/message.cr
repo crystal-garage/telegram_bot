@@ -4,11 +4,12 @@ module TelegramBot
 
     property message_id : Int32
     property message_thread_id : Int32?
-    property direct_messages_topic : JSON::Any?
+    property direct_messages_topic : DirectMessagesTopic?
     property from : User?
     property sender_chat : Chat?
     property sender_boost_count : Int32?
     property sender_business_bot : User?
+    property sender_tag : String?
     property guest_bot_caller_user : User?
     property guest_bot_caller_chat : Chat?
     property guest_query_id : String?
@@ -16,12 +17,6 @@ module TelegramBot
     property business_connection_id : String?
     property chat : Chat
     property forward_origin : MessageOrigin?
-    property forward_from : User?
-    property forward_from_chat : Chat?
-    property forward_from_message_id : Int32?
-    property forward_signature : String?
-    property forward_sender_name : String?
-    property forward_date : Int32?
     property? is_topic_message : Bool?
     property? is_automatic_forward : Bool?
     property reply_to_message : Message?
@@ -35,6 +30,7 @@ module TelegramBot
     property? has_protected_content : Bool?
     property? is_from_offline : Bool?
     property? is_paid_post : Bool?
+    property suggested_post_info : SuggestedPostInfo?
     property media_group_id : String?
     property author_signature : String?
     property paid_star_count : Int32?
@@ -49,6 +45,7 @@ module TelegramBot
     property paid_media : PaidMediaInfo?
     property photo : Array(PhotoSize)?
     property sticker : Sticker?
+    property story : Story?
     property video : Video?
     property video_note : VideoNote?
     property voice : Voice?
@@ -56,6 +53,7 @@ module TelegramBot
     property caption_entities : Array(MessageEntity)?
     property? show_caption_above_media : Bool?
     property? has_media_spoiler : Bool?
+    property checklist : Checklist?
     property contact : Contact?
     property dice : Dice?
     property game : Game?
@@ -65,30 +63,58 @@ module TelegramBot
     property venue : Venue?
     property new_chat_members : Array(User)?
     property left_chat_member : User?
+    property chat_owner_left : ChatOwnerLeft?
+    property chat_owner_changed : ChatOwnerChanged?
     property new_chat_title : String?
     property new_chat_photo : Array(PhotoSize)?
     property? delete_chat_photo : Bool?
     property? group_chat_created : Bool?
     property? supergroup_chat_created : Bool?
     property? channel_chat_created : Bool?
+    property message_auto_delete_timer_changed : MessageAutoDeleteTimerChanged?
+    property users_shared : UsersShared?
+    property chat_shared : ChatShared?
+    property connected_website : String?
+    property write_access_allowed : WriteAccessAllowed?
+    property proximity_alert_triggered : ProximityAlertTriggered?
+    property boost_added : ChatBoostAdded?
+    property chat_background_set : ChatBackground?
     property forum_topic_created : ForumTopicCreated?
     property forum_topic_edited : ForumTopicEdited?
     property forum_topic_closed : ForumTopicClosed?
     property forum_topic_reopened : ForumTopicReopened?
     property general_forum_topic_hidden : GeneralForumTopicHidden?
     property general_forum_topic_unhidden : GeneralForumTopicUnhidden?
+    property giveaway_created : GiveawayCreated?
+    property giveaway : Giveaway?
+    property giveaway_winners : GiveawayWinners?
+    property giveaway_completed : GiveawayCompleted?
     property poll_option_added : PollOptionAdded?
     property poll_option_deleted : PollOptionDeleted?
-    property migrate_to_chat_id : Int32?
-    property migrate_from_chat_id : Int32?
-    property pinned_message : Message?
+    property migrate_to_chat_id : Int64?
+    property migrate_from_chat_id : Int64?
+    property pinned_message : MaybeInaccessibleMessage?
     property invoice : Invoice?
     property successful_payment : SuccessfulPayment?
     property refunded_payment : RefundedPayment?
+    property passport_data : PassportData?
     property gift : GiftInfo?
     property unique_gift : UniqueGiftInfo?
     property gift_upgrade_sent : GiftInfo?
+    property checklist_tasks_done : ChecklistTasksDone?
+    property checklist_tasks_added : ChecklistTasksAdded?
     property managed_bot_created : ManagedBotCreated?
+    property direct_message_price_changed : DirectMessagePriceChanged?
+    property paid_message_price_changed : PaidMessagePriceChanged?
+    property suggested_post_approved : SuggestedPostApproved?
+    property suggested_post_approval_failed : SuggestedPostApprovalFailed?
+    property suggested_post_declined : SuggestedPostDeclined?
+    property suggested_post_paid : SuggestedPostPaid?
+    property suggested_post_refunded : SuggestedPostRefunded?
+    property video_chat_scheduled : VideoChatScheduled?
+    property video_chat_started : VideoChatStarted?
+    property video_chat_ended : VideoChatEnded?
+    property video_chat_participants_invited : VideoChatParticipantsInvited?
     property reply_markup : InlineKeyboardMarkup?
   end
 end

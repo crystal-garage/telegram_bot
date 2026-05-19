@@ -13,10 +13,8 @@ module TelegramBot
         language_code
       )
       res = res.not_nil!.as_a
-      commands = Array(BotCommand).new
-      res.each { |command| commands << BotCommand.from_json(command.to_json) }
 
-      commands
+      res.each_with_object([] of BotCommand) { |c, commands| commands << BotCommand.from_json(c.to_json) }
     end
 
     # Sets the bot's command list.
@@ -141,6 +139,119 @@ module TelegramBot
       )
 
       BotShortDescription.from_json(res.to_json)
+    end
+
+    # Sets the bot's profile photo.
+    #
+    # See: <https://core.telegram.org/bots/api#setmyprofilephoto>
+    def set_my_profile_photo(
+      photo : InputProfilePhoto,
+    )
+      res = def_force_request(
+        "setMyProfilePhoto",
+        photo
+      )
+
+      res.as_bool if res
+    end
+
+    # Removes the bot's profile photo.
+    #
+    # See: <https://core.telegram.org/bots/api#removemyprofilephoto>
+    def remove_my_profile_photo
+      res = request("removeMyProfilePhoto", force_http: true)
+
+      res.as_bool if res
+    end
+
+    # Sets the bot's menu button in a private chat or globally.
+    #
+    # See: <https://core.telegram.org/bots/api#setchatmenubutton>
+    def set_chat_menu_button(
+      chat_id : Int? = nil,
+      menu_button : MenuButton? = nil,
+    )
+      res = def_force_request(
+        "setChatMenuButton",
+        chat_id,
+        menu_button
+      )
+
+      res.as_bool if res
+    end
+
+    # Returns the bot's menu button in a private chat or globally.
+    #
+    # See: <https://core.telegram.org/bots/api#getchatmenubutton>
+    def get_chat_menu_button(
+      chat_id : Int? = nil,
+    ) : MenuButton
+      res = def_force_request(
+        "getChatMenuButton",
+        chat_id
+      )
+
+      MenuButton.from_json(res.to_json)
+    end
+
+    # Verifies a user on behalf of the bot's organization.
+    #
+    # See: <https://core.telegram.org/bots/api#verifyuser>
+    def verify_user(
+      user_id : Int,
+      custom_description : String? = nil,
+    )
+      res = def_force_request(
+        "verifyUser",
+        user_id,
+        custom_description
+      )
+
+      res.as_bool if res
+    end
+
+    # Verifies a chat on behalf of the bot's organization.
+    #
+    # See: <https://core.telegram.org/bots/api#verifychat>
+    def verify_chat(
+      chat_id : Int | String,
+      custom_description : String? = nil,
+    )
+      res = def_force_request(
+        "verifyChat",
+        chat_id,
+        custom_description
+      )
+
+      res.as_bool if res
+    end
+
+    # Removes verification from a user.
+    #
+    # See: <https://core.telegram.org/bots/api#removeuserverification>
+    def remove_user_verification(
+      user_id : Int,
+    )
+      res = def_force_request(
+        "removeUserVerification",
+        user_id
+      )
+
+      res.as_bool if res
+    end
+
+    # Removes verification from a chat.
+    #
+    # See: <https://core.telegram.org/bots/api#removechatverification>
+    def remove_chat_verification(
+      chat_id : Int | String,
+    )
+      res = def_force_request(
+        "removeChatVerification",
+        chat_id
+      )
+
+      res.as_bool if res
     end
 
     # Sets the bot's default administrator rights.

@@ -10,6 +10,8 @@ module TelegramBot
     property address : String
     property foursquare_id : String?
     property foursquare_type : String?
+    property google_place_id : String?
+    property google_place_type : String?
     property reply_markup : InlineKeyboardMarkup?
     property input_message_content : InputMessageContent?
     property thumbnail_url : String?
@@ -23,13 +25,15 @@ module TelegramBot
       @title : String,
       @address : String,
       *,
-      @foursquare_id = nil,
-      @foursquare_type = nil,
-      @reply_markup = nil,
-      @input_message_content = nil,
-      @thumbnail_url = nil,
-      @thumbnail_width = nil,
-      @thumbnail_height = nil,
+      @foursquare_id : String? = nil,
+      @foursquare_type : String? = nil,
+      @google_place_id : String? = nil,
+      @google_place_type : String? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
+      @thumbnail_url : String? = nil,
+      @thumbnail_width : Int32? = nil,
+      @thumbnail_height : Int32? = nil,
     )
     end
   end

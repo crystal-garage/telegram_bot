@@ -12,6 +12,8 @@ module TelegramBot
     property title : String
     property caption : String?
     property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
+    property? show_caption_above_media : Bool?
     property video_width : Int32?
     property video_height : Int32?
     property video_duration : Int32?
@@ -26,14 +28,16 @@ module TelegramBot
       @thumbnail_url : String,
       @title : String,
       *,
-      @caption = nil,
-      @parse_mode = nil,
-      @video_width = nil,
-      @video_height = nil,
-      @video_duration = nil,
-      @description = nil,
-      @reply_markup = nil,
-      @input_message_content = nil,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
+      @show_caption_above_media : Bool? = nil,
+      @video_width : Int32? = nil,
+      @video_height : Int32? = nil,
+      @video_duration : Int32? = nil,
+      @description : String? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
     )
     end
   end

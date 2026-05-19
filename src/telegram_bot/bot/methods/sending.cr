@@ -47,6 +47,34 @@ module TelegramBot
       send_message(message.chat.id, text, reply_parameters: ReplyParameters.new(message.message_id))
     end
 
+    # Sends checklists on behalf of a connected business account.
+    #
+    # See: <https://core.telegram.org/bots/api#sendchecklist>
+    def send_checklist(
+      business_connection_id : String,
+      chat_id : Int | String,
+      checklist : InputChecklist,
+      disable_notification : Bool? = nil,
+      protect_content : Bool? = nil,
+      message_effect_id : String? = nil,
+      reply_parameters : ReplyParameters? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message?
+      res = def_request(
+        "sendChecklist",
+        business_connection_id,
+        chat_id,
+        checklist,
+        disable_notification,
+        protect_content,
+        message_effect_id,
+        reply_parameters,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Forwards a message.
     #
     # See: <https://core.telegram.org/bots/api#forwardmessage>
@@ -227,13 +255,61 @@ module TelegramBot
       Message.from_json(res.to_json) if res
     end
 
+    # Sends live photos.
+    #
+    # See: <https://core.telegram.org/bots/api#sendlivephoto>
+    def send_live_photo(
+      chat_id : Int | String,
+      live_photo : ::File | String,
+      photo : ::File | String,
+      caption : String? = nil,
+      disable_notification : Bool? = nil,
+      reply_markup : ReplyMarkup = nil,
+      business_connection_id : String? = nil,
+      message_thread_id : Int32? = nil,
+      direct_messages_topic_id : Int64? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      show_caption_above_media : Bool? = nil,
+      has_spoiler : Bool? = nil,
+      protect_content : Bool? = nil,
+      reply_parameters : ReplyParameters? = nil,
+      message_effect_id : String? = nil,
+      allow_paid_broadcast : Bool? = nil,
+      suggested_post_parameters : SuggestedPostParameters? = nil,
+    ) : Message?
+      res = def_request(
+        "sendLivePhoto",
+        business_connection_id,
+        chat_id,
+        message_thread_id,
+        direct_messages_topic_id,
+        live_photo,
+        photo,
+        caption,
+        parse_mode,
+        caption_entities,
+        show_caption_above_media,
+        has_spoiler,
+        disable_notification,
+        protect_content,
+        allow_paid_broadcast,
+        message_effect_id,
+        suggested_post_parameters,
+        reply_parameters,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Sends audio files.
     #
     # See: <https://core.telegram.org/bots/api#sendaudio>
     def send_audio(
       chat_id : Int | String,
       audio : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       performer : String? = nil,
       title : String? = nil,
       disable_notification : Bool? = nil,
@@ -251,6 +327,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendAudio",
         business_connection_id,
@@ -367,7 +445,7 @@ module TelegramBot
     def send_video(
       chat_id : Int | String,
       video : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       width : Int32? = nil,
       height : Int32? = nil,
       caption : String? = nil,
@@ -390,6 +468,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVideo",
         business_connection_id,
@@ -427,7 +507,7 @@ module TelegramBot
     def send_animation(
       chat_id : Int | String,
       animation : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       width : Int32? = nil,
       height : Int32? = nil,
       caption : String? = nil,
@@ -447,6 +527,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendAnimation",
         business_connection_id,
@@ -481,7 +563,7 @@ module TelegramBot
     def send_voice(
       chat_id : Int | String,
       voice : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
       business_connection_id : String? = nil,
@@ -496,6 +578,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVoice",
         business_connection_id,
@@ -525,7 +609,7 @@ module TelegramBot
     def send_video_note(
       chat_id : Int | String,
       video_note : ::File | String,
-      duration : Int32? = nil,
+      duration : Int32 | Time::Span? = nil,
       length : Int32? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
@@ -539,6 +623,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
+
       res = def_request(
         "sendVideoNote",
         business_connection_id,
@@ -621,7 +707,6 @@ module TelegramBot
       reply_parameters : ReplyParameters? = nil,
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
-      suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Array(Message)
       res = def_request(
         "sendMediaGroup",
@@ -634,7 +719,6 @@ module TelegramBot
         protect_content,
         allow_paid_broadcast,
         message_effect_id,
-        suggested_post_parameters,
         reply_parameters
       )
 
@@ -649,7 +733,7 @@ module TelegramBot
       chat_id : Int | String,
       latitude : Float,
       longitude : Float,
-      live_period : Int32? = nil,
+      live_period : Int32 | Time::Span? = nil,
       disable_notification : Bool? = nil,
       reply_markup : ReplyMarkup = nil,
       business_connection_id : String? = nil,
@@ -664,6 +748,8 @@ module TelegramBot
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
     ) : Message?
+      live_period = live_period.total_seconds.to_i if live_period.is_a?(Time::Span)
+
       res = def_request(
         "sendLocation",
         business_connection_id,
@@ -694,18 +780,30 @@ module TelegramBot
     def edit_message_live_location(
       latitude : Float,
       longitude : Float,
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
+      live_period : Int32 | Time::Span? = nil,
+      horizontal_accuracy : Float? = nil,
+      heading : Int32? = nil,
+      proximity_alert_radius : Int32? = nil,
       reply_markup : ReplyMarkup? = nil,
     )
+      live_period = live_period.total_seconds.to_i if live_period.is_a?(Time::Span)
+
       res = def_request(
         "editMessageLiveLocation",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         latitude,
         longitude,
+        live_period,
+        horizontal_accuracy,
+        heading,
+        proximity_alert_radius,
         reply_markup
       )
 
@@ -722,6 +820,7 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#stopmessagelivelocation>
     def stop_message_live_location(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
@@ -729,6 +828,7 @@ module TelegramBot
     )
       res = def_request(
         "stopMessageLiveLocation",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
@@ -861,8 +961,8 @@ module TelegramBot
       explanation_parse_mode : String? = nil,
       explanation_entities : Array(MessageEntity)? = nil,
       explanation_media : InputPollMedia? = nil,
-      open_period : Int32? = nil,
-      close_date : Int32? = nil,
+      open_period : Int32 | Time::Span? = nil,
+      close_date : Int32 | Time? = nil,
       is_closed : Bool? = nil,
       description : String? = nil,
       description_parse_mode : String? = nil,
@@ -875,6 +975,9 @@ module TelegramBot
       reply_parameters : ReplyParameters? = nil,
       reply_markup : ReplyMarkup = nil,
     ) : Message?
+      open_period = open_period.total_seconds.to_i if open_period.is_a?(Time::Span)
+      close_date = close_date.to_unix if close_date.is_a?(Time)
+
       res = def_request(
         "sendPoll",
         business_connection_id,
@@ -914,6 +1017,26 @@ module TelegramBot
       )
 
       Message.from_json(res.to_json) if res
+    end
+
+    # Stops a poll sent by the bot.
+    #
+    # See: <https://core.telegram.org/bots/api#stoppoll>
+    def stop_poll(
+      chat_id : Int | String,
+      message_id : Int32,
+      business_connection_id : String? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Poll?
+      res = def_request(
+        "stopPoll",
+        business_connection_id,
+        chat_id,
+        message_id,
+        reply_markup
+      )
+
+      Poll.from_json(res.to_json) if res
     end
 
     # Sends an animated dice message.

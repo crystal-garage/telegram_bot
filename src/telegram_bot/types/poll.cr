@@ -5,7 +5,7 @@ module TelegramBot
     property animation : Animation?
     property audio : Audio?
     property document : Document?
-    property live_photo : JSON::Any?
+    property live_photo : LivePhoto?
     property location : Location?
     property photo : Array(PhotoSize)?
     property sticker : Sticker?
@@ -13,15 +13,15 @@ module TelegramBot
     property video : Video?
   end
 
-  alias InputPollMedia = InputMedia
-  alias InputPollOptionMedia = InputMedia
+  alias InputPollMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocument | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaVenue | InputMediaVideo
+  alias InputPollOptionMedia = InputMediaAnimation | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaSticker | InputMediaVenue | InputMediaVideo
 
   class PollOption
     include JSON::Serializable
 
-    property text : String?
+    property text : String
     property text_entities : Array(MessageEntity)?
-    property voter_count : Int32?
+    property voter_count : Int32
     property persistent_id : String?
     property added_by_user : User?
     property added_by_chat : Chat?
@@ -50,15 +50,15 @@ module TelegramBot
   class Poll
     include JSON::Serializable
 
-    property id : String?
-    property question : String?
+    property id : String
+    property question : String
     property question_entities : Array(MessageEntity)?
-    property options : Array(PollOption)?
-    property total_voter_count : Int32?
-    property? is_closed : Bool?
-    property? is_anonymous : Bool?
-    property type : String?
-    property? allows_multiple_answers : Bool?
+    property options : Array(PollOption)
+    property total_voter_count : Int32
+    property? is_closed : Bool
+    property? is_anonymous : Bool
+    property type : String
+    property? allows_multiple_answers : Bool
     property correct_option_ids : Array(Int32)?
     property explanation : String?
     property explanation_entities : Array(MessageEntity)?
@@ -76,7 +76,7 @@ module TelegramBot
   class PollOptionAdded
     include JSON::Serializable
 
-    property poll_message : JSON::Any?
+    property poll_message : MaybeInaccessibleMessage?
     property option_persistent_id : String
     property option_text : String
     property option_text_entities : Array(MessageEntity)?
@@ -85,7 +85,7 @@ module TelegramBot
   class PollOptionDeleted
     include JSON::Serializable
 
-    property poll_message : JSON::Any?
+    property poll_message : MaybeInaccessibleMessage?
     property option_persistent_id : String
     property option_text : String
     property option_text_entities : Array(MessageEntity)?

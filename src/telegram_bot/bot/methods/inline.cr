@@ -26,21 +26,25 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#editmessagetext>
     def edit_message_text(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
       text : String? = nil,
       parse_mode : String? = nil,
+      entities : Array(MessageEntity)? = nil,
       link_preview_options : LinkPreviewOptions? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
       res = def_request(
         "editMessageText",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         text,
         parse_mode,
+        entities,
         link_preview_options,
         reply_markup
       )
@@ -58,18 +62,26 @@ module TelegramBot
     #
     # See: <https://core.telegram.org/bots/api#editmessagecaption>
     def edit_message_caption(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
       caption : String? = nil,
+      parse_mode : String? = nil,
+      caption_entities : Array(MessageEntity)? = nil,
+      show_caption_above_media : Bool? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
     ) : Message | Bool?
       res = def_request(
         "editMessageCaption",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
         caption,
+        parse_mode,
+        caption_entities,
+        show_caption_above_media,
         reply_markup
       )
 
@@ -82,10 +94,63 @@ module TelegramBot
       end
     end
 
+    # Edits animation, audio, document, live photo, photo, or video messages.
+    #
+    # See: <https://core.telegram.org/bots/api#editmessagemedia>
+    def edit_message_media(
+      media : InputMedia,
+      chat_id : Int | String? = nil,
+      message_id : Int32? = nil,
+      inline_message_id : String? = nil,
+      business_connection_id : String? = nil,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message | Bool?
+      res = def_request(
+        "editMessageMedia",
+        business_connection_id,
+        chat_id,
+        message_id,
+        inline_message_id,
+        media,
+        reply_markup
+      )
+
+      if res
+        if res.as_bool?
+          true
+        else
+          Message.from_json(res.to_json)
+        end
+      end
+    end
+
+    # Edits checklists on behalf of a connected business account.
+    #
+    # See: <https://core.telegram.org/bots/api#editmessagechecklist>
+    def edit_message_checklist(
+      business_connection_id : String,
+      chat_id : Int | String,
+      message_id : Int32,
+      checklist : InputChecklist,
+      reply_markup : InlineKeyboardMarkup? = nil,
+    ) : Message?
+      res = def_request(
+        "editMessageChecklist",
+        business_connection_id,
+        chat_id,
+        message_id,
+        checklist,
+        reply_markup
+      )
+
+      Message.from_json(res.to_json) if res
+    end
+
     # Edits only the reply markup of messages.
     #
     # See: <https://core.telegram.org/bots/api#editmessagereplymarkup>
     def edit_message_reply_markup(
+      business_connection_id : String? = nil,
       chat_id : Int | String? = nil,
       message_id : Int32? = nil,
       inline_message_id : String? = nil,
@@ -93,6 +158,7 @@ module TelegramBot
     ) : Message | Bool?
       res = def_request(
         "editMessageReplyMarkup",
+        business_connection_id,
         chat_id,
         message_id,
         inline_message_id,
@@ -114,20 +180,68 @@ module TelegramBot
     def delete_message(
       chat_id : Int | String,
       message_id : Int32,
-    ) : Message | Bool?
+    ) : Bool?
       res = def_request(
         "deleteMessage",
         chat_id,
         message_id
       )
 
-      if res
-        if res.as_bool?
-          true
-        else
-          Message.from_json(res.to_json)
-        end
-      end
+      res.as_bool if res
+    end
+
+    # Deletes multiple messages.
+    #
+    # See: <https://core.telegram.org/bots/api#deletemessages>
+    def delete_messages(
+      chat_id : Int | String,
+      message_ids : Array(Int32),
+    ) : Bool?
+      res = def_request(
+        "deleteMessages",
+        chat_id,
+        message_ids
+      )
+
+      res.as_bool if res
+    end
+
+    # Approves a suggested post in a direct messages chat.
+    #
+    # See: <https://core.telegram.org/bots/api#approvesuggestedpost>
+    def approve_suggested_post(
+      chat_id : Int,
+      message_id : Int32,
+      send_date : Int32 | Time? = nil,
+    ) : Bool?
+      send_date = send_date.to_unix if send_date.is_a?(Time)
+
+      res = def_request(
+        "approveSuggestedPost",
+        chat_id,
+        message_id,
+        send_date
+      )
+
+      res.as_bool if res
+    end
+
+    # Declines a suggested post in a direct messages chat.
+    #
+    # See: <https://core.telegram.org/bots/api#declinesuggestedpost>
+    def decline_suggested_post(
+      chat_id : Int,
+      message_id : Int32,
+      comment : String? = nil,
+    ) : Bool?
+      res = def_request(
+        "declineSuggestedPost",
+        chat_id,
+        message_id,
+        comment
+      )
+
+      res.as_bool if res
     end
 
     # Sends answers to an inline query.
@@ -139,18 +253,16 @@ module TelegramBot
       cache_time : Int32? = nil,
       is_personal : Bool? = nil,
       next_offset : String? = nil,
-      switch_pm_text : String? = nil,
-      switch_pm_parameter : String? = nil,
+      button : InlineQueryResultsButton? = nil,
     ) : Bool?
       res = def_request(
         "answerInlineQuery",
         inline_query_id,
+        results,
         cache_time,
         is_personal,
         next_offset,
-        results,
-        switch_pm_text,
-        switch_pm_parameter
+        button
       )
 
       res.as_bool if res

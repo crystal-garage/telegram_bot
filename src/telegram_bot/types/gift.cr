@@ -120,15 +120,25 @@ module TelegramBot
     property next_transfer_date : Int32?
   end
 
-  class OwnedGift
+  abstract class OwnedGift
+    include JSON::Serializable
+
+    use_json_discriminator "type", {
+      regular: OwnedGiftRegular,
+      unique:  OwnedGiftUnique,
+    }
+
+    property type : String
+  end
+
+  class OwnedGiftRegular < OwnedGift
     include JSON::Serializable
 
     property type : String
-    property gift : Gift?
-    property unique_gift : UniqueGift?
+    property gift : Gift
     property owned_gift_id : String?
     property sender_user : User?
-    property send_date : Int32?
+    property send_date : Int32
     property text : String?
     property entities : Array(MessageEntity)?
     property? is_private : Bool?
@@ -139,9 +149,52 @@ module TelegramBot
     property prepaid_upgrade_star_count : Int32?
     property? is_upgrade_separate : Bool?
     property unique_gift_number : Int32?
+
+    def initialize(
+      @gift : Gift,
+      @send_date : Int32,
+      @owned_gift_id : String? = nil,
+      @sender_user : User? = nil,
+      @text : String? = nil,
+      @entities : Array(MessageEntity)? = nil,
+      @is_private : Bool? = nil,
+      @is_saved : Bool? = nil,
+      @can_be_upgraded : Bool? = nil,
+      @was_refunded : Bool? = nil,
+      @convert_star_count : Int32? = nil,
+      @prepaid_upgrade_star_count : Int32? = nil,
+      @is_upgrade_separate : Bool? = nil,
+      @unique_gift_number : Int32? = nil,
+    )
+      @type = "regular"
+    end
+  end
+
+  class OwnedGiftUnique < OwnedGift
+    include JSON::Serializable
+
+    property type : String
+    property gift : UniqueGift
+    property owned_gift_id : String?
+    property sender_user : User?
+    property send_date : Int32
+    property? is_saved : Bool?
     property? can_be_transferred : Bool?
     property transfer_star_count : Int32?
     property next_transfer_date : Int32?
+
+    def initialize(
+      @gift : UniqueGift,
+      @send_date : Int32,
+      @owned_gift_id : String? = nil,
+      @sender_user : User? = nil,
+      @is_saved : Bool? = nil,
+      @can_be_transferred : Bool? = nil,
+      @transfer_star_count : Int32? = nil,
+      @next_transfer_date : Int32? = nil,
+    )
+      @type = "unique"
+    end
   end
 
   class OwnedGifts

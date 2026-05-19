@@ -24,7 +24,6 @@ module TelegramBot
     property? can_edit_stories : Bool?
     property? can_delete_stories : Bool?
     property? can_manage_tags : Bool?
-    property? can_edit_tag : Bool?
     property tag : String?
     property? can_send_messages : Bool?
     property? can_send_audios : Bool?

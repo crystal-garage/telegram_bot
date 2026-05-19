@@ -6,7 +6,7 @@ module TelegramBot
     property file_unique_id : String
     property width : Int32
     property height : Int32
-    property file_size : Int32?
+    property file_size : Int64?
 
     def initialize(
       @file_id : String,

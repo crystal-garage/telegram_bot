@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.19.1">
+<meta name="crystal_docs.project_version" content="1.0.0-rc2">
+<meta name="crystal_docs.project_name" content="telegram_bot">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="telegram_bot">
+  <title>TelegramBot::InlineQueryResultCachedDocument - telegram_bot 1.0.0-rc2</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          telegram_bot
+        </a>
+      </h1>
+
+      <span class="project-version">
+        1.0.0-rc2
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="telegram_bot/Fiber" data-name="fiber">
+      <a href="../Fiber.html">Fiber</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="telegram_bot/TelegramBot" data-name="telegrambot">
+      <a href="../TelegramBot.html">TelegramBot</a>
+      
+        <ul>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/AcceptedGiftTypes" data-name="telegrambot::acceptedgifttypes">
+      <a href="../TelegramBot/AcceptedGiftTypes.html">AcceptedGiftTypes</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/AffiliateInfo" data-name="telegrambot::affiliateinfo">
+      <a href="../TelegramBot/AffiliateInfo.html">AffiliateInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Animation" data-name="telegrambot::animation">
+      <a href="../TelegramBot/Animation.html">Animation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/APIException" data-name="telegrambot::apiexception">
+      <a href="../TelegramBot/APIException.html">APIException</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/AttachedFile" data-name="telegrambot::attachedfile">
+      <a href="../TelegramBot/AttachedFile.html">AttachedFile</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Audio" data-name="telegrambot::audio">
+      <a href="../TelegramBot/Audio.html">Audio</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundFill" data-name="telegrambot::backgroundfill">
+      <a href="../TelegramBot/BackgroundFill.html">BackgroundFill</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundFillFreeformGradient" data-name="telegrambot::backgroundfillfreeformgradient">
+      <a href="../TelegramBot/BackgroundFillFreeformGradient.html">BackgroundFillFreeformGradient</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundFillGradient" data-name="telegrambot::backgroundfillgradient">
+      <a href="../TelegramBot/BackgroundFillGradient.html">BackgroundFillGradient</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundFillSolid" data-name="telegrambot::backgroundfillsolid">
+      <a href="../TelegramBot/BackgroundFillSolid.html">BackgroundFillSolid</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundType" data-name="telegrambot::backgroundtype">
+      <a href="../TelegramBot/BackgroundType.html">BackgroundType</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundTypeChatTheme" data-name="telegrambot::backgroundtypechattheme">
+      <a href="../TelegramBot/BackgroundTypeChatTheme.html">BackgroundTypeChatTheme</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundTypeFill" data-name="telegrambot::backgroundtypefill">
+      <a href="../TelegramBot/BackgroundTypeFill.html">BackgroundTypeFill</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundTypePattern" data-name="telegrambot::backgroundtypepattern">
+      <a href="../TelegramBot/BackgroundTypePattern.html">BackgroundTypePattern</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BackgroundTypeWallpaper" data-name="telegrambot::backgroundtypewallpaper">
+      <a href="../TelegramBot/BackgroundTypeWallpaper.html">BackgroundTypeWallpaper</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Birthdate" data-name="telegrambot::birthdate">
+      <a href="../TelegramBot/Birthdate.html">Birthdate</a>
+      
+    </li>
+  
+  <li class="parent " data-id="telegram_bot/TelegramBot/Bot" data-name="telegrambot::bot">
+      <a href="../TelegramBot/Bot.html">Bot</a>
+      
+        <ul>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/BusinessConnectionHandler" data-name="telegrambot::bot::businessconnectionhandler">
+      <a href="../TelegramBot/Bot/BusinessConnectionHandler.html">BusinessConnectionHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/BusinessMessagesDeletedHandler" data-name="telegrambot::bot::businessmessagesdeletedhandler">
+      <a href="../TelegramBot/Bot/BusinessMessagesDeletedHandler.html">BusinessMessagesDeletedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/CallbackQueryHandler" data-name="telegrambot::bot::callbackqueryhandler">
+      <a href="../TelegramBot/Bot/CallbackQueryHandler.html">CallbackQueryHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ChatBoostRemovedHandler" data-name="telegrambot::bot::chatboostremovedhandler">
+      <a href="../TelegramBot/Bot/ChatBoostRemovedHandler.html">ChatBoostRemovedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ChatBoostUpdatedHandler" data-name="telegrambot::bot::chatboostupdatedhandler">
+      <a href="../TelegramBot/Bot/ChatBoostUpdatedHandler.html">ChatBoostUpdatedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ChatJoinRequestHandler" data-name="telegrambot::bot::chatjoinrequesthandler">
+      <a href="../TelegramBot/Bot/ChatJoinRequestHandler.html">ChatJoinRequestHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ChatMemberUpdatedHandler" data-name="telegrambot::bot::chatmemberupdatedhandler">
+      <a href="../TelegramBot/Bot/ChatMemberUpdatedHandler.html">ChatMemberUpdatedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ChosenInlineResultHandler" data-name="telegrambot::bot::choseninlineresulthandler">
+      <a href="../TelegramBot/Bot/ChosenInlineResultHandler.html">ChosenInlineResultHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/InlineQueryHandler" data-name="telegrambot::bot::inlinequeryhandler">
+      <a href="../TelegramBot/Bot/InlineQueryHandler.html">InlineQueryHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ManagedBotUpdatedHandler" data-name="telegrambot::bot::managedbotupdatedhandler">
+      <a href="../TelegramBot/Bot/ManagedBotUpdatedHandler.html">ManagedBotUpdatedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/MessageHandler" data-name="telegrambot::bot::messagehandler">
+      <a href="../TelegramBot/Bot/MessageHandler.html">MessageHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/MessageReactionCountUpdatedHandler" data-name="telegrambot::bot::messagereactioncountupdatedhandler">
+      <a href="../TelegramBot/Bot/MessageReactionCountUpdatedHandler.html">MessageReactionCountUpdatedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/MessageReactionUpdatedHandler" data-name="telegrambot::bot::messagereactionupdatedhandler">
+      <a href="../TelegramBot/Bot/MessageReactionUpdatedHandler.html">MessageReactionUpdatedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/PaidMediaPurchasedHandler" data-name="telegrambot::bot::paidmediapurchasedhandler">
+      <a href="../TelegramBot/Bot/PaidMediaPurchasedHandler.html">PaidMediaPurchasedHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/PollAnswerHandler" data-name="telegrambot::bot::pollanswerhandler">
+      <a href="../TelegramBot/Bot/PollAnswerHandler.html">PollAnswerHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/PollHandler" data-name="telegrambot::bot::pollhandler">
+      <a href="../TelegramBot/Bot/PollHandler.html">PollHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/PreCheckoutQueryHandler" data-name="telegrambot::bot::precheckoutqueryhandler">
+      <a href="../TelegramBot/Bot/PreCheckoutQueryHandler.html">PreCheckoutQueryHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ReplyMarkup" data-name="telegrambot::bot::replymarkup">
+      <a href="../TelegramBot/Bot/ReplyMarkup.html">ReplyMarkup</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Bot/ShippingQueryHandler" data-name="telegrambot::bot::shippingqueryhandler">
+      <a href="../TelegramBot/Bot/ShippingQueryHandler.html">ShippingQueryHandler</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotAccessSettings" data-name="telegrambot::botaccesssettings">
+      <a href="../TelegramBot/BotAccessSettings.html">BotAccessSettings</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommand" data-name="telegrambot::botcommand">
+      <a href="../TelegramBot/BotCommand.html">BotCommand</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScope" data-name="telegrambot::botcommandscope">
+      <a href="../TelegramBot/BotCommandScope.html">BotCommandScope</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeAllChatAdministrators" data-name="telegrambot::botcommandscopeallchatadministrators">
+      <a href="../TelegramBot/BotCommandScopeAllChatAdministrators.html">BotCommandScopeAllChatAdministrators</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeAllGroupChats" data-name="telegrambot::botcommandscopeallgroupchats">
+      <a href="../TelegramBot/BotCommandScopeAllGroupChats.html">BotCommandScopeAllGroupChats</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeAllPrivateChats" data-name="telegrambot::botcommandscopeallprivatechats">
+      <a href="../TelegramBot/BotCommandScopeAllPrivateChats.html">BotCommandScopeAllPrivateChats</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeChat" data-name="telegrambot::botcommandscopechat">
+      <a href="../TelegramBot/BotCommandScopeChat.html">BotCommandScopeChat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeChatAdministrators" data-name="telegrambot::botcommandscopechatadministrators">
+      <a href="../TelegramBot/BotCommandScopeChatAdministrators.html">BotCommandScopeChatAdministrators</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeChatMember" data-name="telegrambot::botcommandscopechatmember">
+      <a href="../TelegramBot/BotCommandScopeChatMember.html">BotCommandScopeChatMember</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotCommandScopeDefault" data-name="telegrambot::botcommandscopedefault">
+      <a href="../TelegramBot/BotCommandScopeDefault.html">BotCommandScopeDefault</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotDescription" data-name="telegrambot::botdescription">
+      <a href="../TelegramBot/BotDescription.html">BotDescription</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotName" data-name="telegrambot::botname">
+      <a href="../TelegramBot/BotName.html">BotName</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BotShortDescription" data-name="telegrambot::botshortdescription">
+      <a href="../TelegramBot/BotShortDescription.html">BotShortDescription</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessBotRights" data-name="telegrambot::businessbotrights">
+      <a href="../TelegramBot/BusinessBotRights.html">BusinessBotRights</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessConnection" data-name="telegrambot::businessconnection">
+      <a href="../TelegramBot/BusinessConnection.html">BusinessConnection</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessIntro" data-name="telegrambot::businessintro">
+      <a href="../TelegramBot/BusinessIntro.html">BusinessIntro</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessLocation" data-name="telegrambot::businesslocation">
+      <a href="../TelegramBot/BusinessLocation.html">BusinessLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessMessagesDeleted" data-name="telegrambot::businessmessagesdeleted">
+      <a href="../TelegramBot/BusinessMessagesDeleted.html">BusinessMessagesDeleted</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessOpeningHours" data-name="telegrambot::businessopeninghours">
+      <a href="../TelegramBot/BusinessOpeningHours.html">BusinessOpeningHours</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/BusinessOpeningHoursInterval" data-name="telegrambot::businessopeninghoursinterval">
+      <a href="../TelegramBot/BusinessOpeningHoursInterval.html">BusinessOpeningHoursInterval</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/CallbackGame" data-name="telegrambot::callbackgame">
+      <a href="../TelegramBot/CallbackGame.html">CallbackGame</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/CallbackQuery" data-name="telegrambot::callbackquery">
+      <a href="../TelegramBot/CallbackQuery.html">CallbackQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Chat" data-name="telegrambot::chat">
+      <a href="../TelegramBot/Chat.html">Chat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatAdministratorRights" data-name="telegrambot::chatadministratorrights">
+      <a href="../TelegramBot/ChatAdministratorRights.html">ChatAdministratorRights</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBackground" data-name="telegrambot::chatbackground">
+      <a href="../TelegramBot/ChatBackground.html">ChatBackground</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoost" data-name="telegrambot::chatboost">
+      <a href="../TelegramBot/ChatBoost.html">ChatBoost</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostAdded" data-name="telegrambot::chatboostadded">
+      <a href="../TelegramBot/ChatBoostAdded.html">ChatBoostAdded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostRemoved" data-name="telegrambot::chatboostremoved">
+      <a href="../TelegramBot/ChatBoostRemoved.html">ChatBoostRemoved</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostSource" data-name="telegrambot::chatboostsource">
+      <a href="../TelegramBot/ChatBoostSource.html">ChatBoostSource</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostSourceGiftCode" data-name="telegrambot::chatboostsourcegiftcode">
+      <a href="../TelegramBot/ChatBoostSourceGiftCode.html">ChatBoostSourceGiftCode</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostSourceGiveaway" data-name="telegrambot::chatboostsourcegiveaway">
+      <a href="../TelegramBot/ChatBoostSourceGiveaway.html">ChatBoostSourceGiveaway</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostSourcePremium" data-name="telegrambot::chatboostsourcepremium">
+      <a href="../TelegramBot/ChatBoostSourcePremium.html">ChatBoostSourcePremium</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatBoostUpdated" data-name="telegrambot::chatboostupdated">
+      <a href="../TelegramBot/ChatBoostUpdated.html">ChatBoostUpdated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatFullInfo" data-name="telegrambot::chatfullinfo">
+      <a href="../TelegramBot/ChatFullInfo.html">ChatFullInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatInviteLink" data-name="telegrambot::chatinvitelink">
+      <a href="../TelegramBot/ChatInviteLink.html">ChatInviteLink</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatJoinRequest" data-name="telegrambot::chatjoinrequest">
+      <a href="../TelegramBot/ChatJoinRequest.html">ChatJoinRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatLocation" data-name="telegrambot::chatlocation">
+      <a href="../TelegramBot/ChatLocation.html">ChatLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatMember" data-name="telegrambot::chatmember">
+      <a href="../TelegramBot/ChatMember.html">ChatMember</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatMemberUpdated" data-name="telegrambot::chatmemberupdated">
+      <a href="../TelegramBot/ChatMemberUpdated.html">ChatMemberUpdated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatOwnerChanged" data-name="telegrambot::chatownerchanged">
+      <a href="../TelegramBot/ChatOwnerChanged.html">ChatOwnerChanged</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatOwnerLeft" data-name="telegrambot::chatownerleft">
+      <a href="../TelegramBot/ChatOwnerLeft.html">ChatOwnerLeft</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatPermissions" data-name="telegrambot::chatpermissions">
+      <a href="../TelegramBot/ChatPermissions.html">ChatPermissions</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatPhoto" data-name="telegrambot::chatphoto">
+      <a href="../TelegramBot/ChatPhoto.html">ChatPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChatShared" data-name="telegrambot::chatshared">
+      <a href="../TelegramBot/ChatShared.html">ChatShared</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Checklist" data-name="telegrambot::checklist">
+      <a href="../TelegramBot/Checklist.html">Checklist</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChecklistTask" data-name="telegrambot::checklisttask">
+      <a href="../TelegramBot/ChecklistTask.html">ChecklistTask</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChecklistTasksAdded" data-name="telegrambot::checklisttasksadded">
+      <a href="../TelegramBot/ChecklistTasksAdded.html">ChecklistTasksAdded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChecklistTasksDone" data-name="telegrambot::checklisttasksdone">
+      <a href="../TelegramBot/ChecklistTasksDone.html">ChecklistTasksDone</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ChosenInlineResult" data-name="telegrambot::choseninlineresult">
+      <a href="../TelegramBot/ChosenInlineResult.html">ChosenInlineResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/CmdHandler" data-name="telegrambot::cmdhandler">
+      <a href="../TelegramBot/CmdHandler.html">CmdHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Contact" data-name="telegrambot::contact">
+      <a href="../TelegramBot/Contact.html">Contact</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/CopyTextButton" data-name="telegrambot::copytextbutton">
+      <a href="../TelegramBot/CopyTextButton.html">CopyTextButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Dice" data-name="telegrambot::dice">
+      <a href="../TelegramBot/Dice.html">Dice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/DirectMessagePriceChanged" data-name="telegrambot::directmessagepricechanged">
+      <a href="../TelegramBot/DirectMessagePriceChanged.html">DirectMessagePriceChanged</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/DirectMessagesTopic" data-name="telegrambot::directmessagestopic">
+      <a href="../TelegramBot/DirectMessagesTopic.html">DirectMessagesTopic</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Document" data-name="telegrambot::document">
+      <a href="../TelegramBot/Document.html">Document</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/EncryptedCredentials" data-name="telegrambot::encryptedcredentials">
+      <a href="../TelegramBot/EncryptedCredentials.html">EncryptedCredentials</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/EncryptedPassportElement" data-name="telegrambot::encryptedpassportelement">
+      <a href="../TelegramBot/EncryptedPassportElement.html">EncryptedPassportElement</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ExternalReplyInfo" data-name="telegrambot::externalreplyinfo">
+      <a href="../TelegramBot/ExternalReplyInfo.html">ExternalReplyInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/File" data-name="telegrambot::file">
+      <a href="../TelegramBot/File.html">File</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForceReply" data-name="telegrambot::forcereply">
+      <a href="../TelegramBot/ForceReply.html">ForceReply</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForumTopic" data-name="telegrambot::forumtopic">
+      <a href="../TelegramBot/ForumTopic.html">ForumTopic</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForumTopicClosed" data-name="telegrambot::forumtopicclosed">
+      <a href="../TelegramBot/ForumTopicClosed.html">ForumTopicClosed</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForumTopicCreated" data-name="telegrambot::forumtopiccreated">
+      <a href="../TelegramBot/ForumTopicCreated.html">ForumTopicCreated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForumTopicEdited" data-name="telegrambot::forumtopicedited">
+      <a href="../TelegramBot/ForumTopicEdited.html">ForumTopicEdited</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ForumTopicReopened" data-name="telegrambot::forumtopicreopened">
+      <a href="../TelegramBot/ForumTopicReopened.html">ForumTopicReopened</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Game" data-name="telegrambot::game">
+      <a href="../TelegramBot/Game.html">Game</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GameHighScore" data-name="telegrambot::gamehighscore">
+      <a href="../TelegramBot/GameHighScore.html">GameHighScore</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GeneralForumTopicHidden" data-name="telegrambot::generalforumtopichidden">
+      <a href="../TelegramBot/GeneralForumTopicHidden.html">GeneralForumTopicHidden</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GeneralForumTopicUnhidden" data-name="telegrambot::generalforumtopicunhidden">
+      <a href="../TelegramBot/GeneralForumTopicUnhidden.html">GeneralForumTopicUnhidden</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Gift" data-name="telegrambot::gift">
+      <a href="../TelegramBot/Gift.html">Gift</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GiftBackground" data-name="telegrambot::giftbackground">
+      <a href="../TelegramBot/GiftBackground.html">GiftBackground</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GiftInfo" data-name="telegrambot::giftinfo">
+      <a href="../TelegramBot/GiftInfo.html">GiftInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Gifts" data-name="telegrambot::gifts">
+      <a href="../TelegramBot/Gifts.html">Gifts</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Giveaway" data-name="telegrambot::giveaway">
+      <a href="../TelegramBot/Giveaway.html">Giveaway</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GiveawayCompleted" data-name="telegrambot::giveawaycompleted">
+      <a href="../TelegramBot/GiveawayCompleted.html">GiveawayCompleted</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GiveawayCreated" data-name="telegrambot::giveawaycreated">
+      <a href="../TelegramBot/GiveawayCreated.html">GiveawayCreated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/GiveawayWinners" data-name="telegrambot::giveawaywinners">
+      <a href="../TelegramBot/GiveawayWinners.html">GiveawayWinners</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/HttpClient" data-name="telegrambot::httpclient">
+      <a href="../TelegramBot/HttpClient.html">HttpClient</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InaccessibleMessage" data-name="telegrambot::inaccessiblemessage">
+      <a href="../TelegramBot/InaccessibleMessage.html">InaccessibleMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineKeyboardButton" data-name="telegrambot::inlinekeyboardbutton">
+      <a href="../TelegramBot/InlineKeyboardButton.html">InlineKeyboardButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineKeyboardMarkup" data-name="telegrambot::inlinekeyboardmarkup">
+      <a href="../TelegramBot/InlineKeyboardMarkup.html">InlineKeyboardMarkup</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQuery" data-name="telegrambot::inlinequery">
+      <a href="../TelegramBot/InlineQuery.html">InlineQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResult" data-name="telegrambot::inlinequeryresult">
+      <a href="../TelegramBot/InlineQueryResult.html">InlineQueryResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultArticle" data-name="telegrambot::inlinequeryresultarticle">
+      <a href="../TelegramBot/InlineQueryResultArticle.html">InlineQueryResultArticle</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultAudio" data-name="telegrambot::inlinequeryresultaudio">
+      <a href="../TelegramBot/InlineQueryResultAudio.html">InlineQueryResultAudio</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedAudio" data-name="telegrambot::inlinequeryresultcachedaudio">
+      <a href="../TelegramBot/InlineQueryResultCachedAudio.html">InlineQueryResultCachedAudio</a>
+      
+    </li>
+  
+  <li class=" current" data-id="telegram_bot/TelegramBot/InlineQueryResultCachedDocument" data-name="telegrambot::inlinequeryresultcacheddocument">
+      <a href="../TelegramBot/InlineQueryResultCachedDocument.html">InlineQueryResultCachedDocument</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedGif" data-name="telegrambot::inlinequeryresultcachedgif">
+      <a href="../TelegramBot/InlineQueryResultCachedGif.html">InlineQueryResultCachedGif</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedMpeg4Gif" data-name="telegrambot::inlinequeryresultcachedmpeg4gif">
+      <a href="../TelegramBot/InlineQueryResultCachedMpeg4Gif.html">InlineQueryResultCachedMpeg4Gif</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedPhoto" data-name="telegrambot::inlinequeryresultcachedphoto">
+      <a href="../TelegramBot/InlineQueryResultCachedPhoto.html">InlineQueryResultCachedPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedSticker" data-name="telegrambot::inlinequeryresultcachedsticker">
+      <a href="../TelegramBot/InlineQueryResultCachedSticker.html">InlineQueryResultCachedSticker</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedVideo" data-name="telegrambot::inlinequeryresultcachedvideo">
+      <a href="../TelegramBot/InlineQueryResultCachedVideo.html">InlineQueryResultCachedVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultCachedVoice" data-name="telegrambot::inlinequeryresultcachedvoice">
+      <a href="../TelegramBot/InlineQueryResultCachedVoice.html">InlineQueryResultCachedVoice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultContact" data-name="telegrambot::inlinequeryresultcontact">
+      <a href="../TelegramBot/InlineQueryResultContact.html">InlineQueryResultContact</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultDocument" data-name="telegrambot::inlinequeryresultdocument">
+      <a href="../TelegramBot/InlineQueryResultDocument.html">InlineQueryResultDocument</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultGame" data-name="telegrambot::inlinequeryresultgame">
+      <a href="../TelegramBot/InlineQueryResultGame.html">InlineQueryResultGame</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultGif" data-name="telegrambot::inlinequeryresultgif">
+      <a href="../TelegramBot/InlineQueryResultGif.html">InlineQueryResultGif</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultLocation" data-name="telegrambot::inlinequeryresultlocation">
+      <a href="../TelegramBot/InlineQueryResultLocation.html">InlineQueryResultLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultMpeg4Gif" data-name="telegrambot::inlinequeryresultmpeg4gif">
+      <a href="../TelegramBot/InlineQueryResultMpeg4Gif.html">InlineQueryResultMpeg4Gif</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultPhoto" data-name="telegrambot::inlinequeryresultphoto">
+      <a href="../TelegramBot/InlineQueryResultPhoto.html">InlineQueryResultPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultsButton" data-name="telegrambot::inlinequeryresultsbutton">
+      <a href="../TelegramBot/InlineQueryResultsButton.html">InlineQueryResultsButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultVenue" data-name="telegrambot::inlinequeryresultvenue">
+      <a href="../TelegramBot/InlineQueryResultVenue.html">InlineQueryResultVenue</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultVideo" data-name="telegrambot::inlinequeryresultvideo">
+      <a href="../TelegramBot/InlineQueryResultVideo.html">InlineQueryResultVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InlineQueryResultVoice" data-name="telegrambot::inlinequeryresultvoice">
+      <a href="../TelegramBot/InlineQueryResultVoice.html">InlineQueryResultVoice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputChecklist" data-name="telegrambot::inputchecklist">
+      <a href="../TelegramBot/InputChecklist.html">InputChecklist</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputChecklistTask" data-name="telegrambot::inputchecklisttask">
+      <a href="../TelegramBot/InputChecklistTask.html">InputChecklistTask</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputContactMessageContent" data-name="telegrambot::inputcontactmessagecontent">
+      <a href="../TelegramBot/InputContactMessageContent.html">InputContactMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputInvoiceMessageContent" data-name="telegrambot::inputinvoicemessagecontent">
+      <a href="../TelegramBot/InputInvoiceMessageContent.html">InputInvoiceMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputLocationMessageContent" data-name="telegrambot::inputlocationmessagecontent">
+      <a href="../TelegramBot/InputLocationMessageContent.html">InputLocationMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMedia" data-name="telegrambot::inputmedia">
+      <a href="../TelegramBot/InputMedia.html">InputMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaAnimation" data-name="telegrambot::inputmediaanimation">
+      <a href="../TelegramBot/InputMediaAnimation.html">InputMediaAnimation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaAudio" data-name="telegrambot::inputmediaaudio">
+      <a href="../TelegramBot/InputMediaAudio.html">InputMediaAudio</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaDocument" data-name="telegrambot::inputmediadocument">
+      <a href="../TelegramBot/InputMediaDocument.html">InputMediaDocument</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaLivePhoto" data-name="telegrambot::inputmedialivephoto">
+      <a href="../TelegramBot/InputMediaLivePhoto.html">InputMediaLivePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaLocation" data-name="telegrambot::inputmedialocation">
+      <a href="../TelegramBot/InputMediaLocation.html">InputMediaLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaPhoto" data-name="telegrambot::inputmediaphoto">
+      <a href="../TelegramBot/InputMediaPhoto.html">InputMediaPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaSticker" data-name="telegrambot::inputmediasticker">
+      <a href="../TelegramBot/InputMediaSticker.html">InputMediaSticker</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaVenue" data-name="telegrambot::inputmediavenue">
+      <a href="../TelegramBot/InputMediaVenue.html">InputMediaVenue</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMediaVideo" data-name="telegrambot::inputmediavideo">
+      <a href="../TelegramBot/InputMediaVideo.html">InputMediaVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputMessageContent" data-name="telegrambot::inputmessagecontent">
+      <a href="../TelegramBot/InputMessageContent.html">InputMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPaidMedia" data-name="telegrambot::inputpaidmedia">
+      <a href="../TelegramBot/InputPaidMedia.html">InputPaidMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPaidMediaLivePhoto" data-name="telegrambot::inputpaidmedialivephoto">
+      <a href="../TelegramBot/InputPaidMediaLivePhoto.html">InputPaidMediaLivePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPaidMediaPhoto" data-name="telegrambot::inputpaidmediaphoto">
+      <a href="../TelegramBot/InputPaidMediaPhoto.html">InputPaidMediaPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPaidMediaVideo" data-name="telegrambot::inputpaidmediavideo">
+      <a href="../TelegramBot/InputPaidMediaVideo.html">InputPaidMediaVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPollMedia" data-name="telegrambot::inputpollmedia">
+      <a href="../TelegramBot/InputPollMedia.html">InputPollMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPollOption" data-name="telegrambot::inputpolloption">
+      <a href="../TelegramBot/InputPollOption.html">InputPollOption</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputPollOptionMedia" data-name="telegrambot::inputpolloptionmedia">
+      <a href="../TelegramBot/InputPollOptionMedia.html">InputPollOptionMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputProfilePhoto" data-name="telegrambot::inputprofilephoto">
+      <a href="../TelegramBot/InputProfilePhoto.html">InputProfilePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputProfilePhotoAnimated" data-name="telegrambot::inputprofilephotoanimated">
+      <a href="../TelegramBot/InputProfilePhotoAnimated.html">InputProfilePhotoAnimated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputProfilePhotoStatic" data-name="telegrambot::inputprofilephotostatic">
+      <a href="../TelegramBot/InputProfilePhotoStatic.html">InputProfilePhotoStatic</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputSticker" data-name="telegrambot::inputsticker">
+      <a href="../TelegramBot/InputSticker.html">InputSticker</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputStoryContent" data-name="telegrambot::inputstorycontent">
+      <a href="../TelegramBot/InputStoryContent.html">InputStoryContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputStoryContentPhoto" data-name="telegrambot::inputstorycontentphoto">
+      <a href="../TelegramBot/InputStoryContentPhoto.html">InputStoryContentPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputStoryContentVideo" data-name="telegrambot::inputstorycontentvideo">
+      <a href="../TelegramBot/InputStoryContentVideo.html">InputStoryContentVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputTextMessageContent" data-name="telegrambot::inputtextmessagecontent">
+      <a href="../TelegramBot/InputTextMessageContent.html">InputTextMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/InputVenueMessageContent" data-name="telegrambot::inputvenuemessagecontent">
+      <a href="../TelegramBot/InputVenueMessageContent.html">InputVenueMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Invoice" data-name="telegrambot::invoice">
+      <a href="../TelegramBot/Invoice.html">Invoice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/KeyboardButton" data-name="telegrambot::keyboardbutton">
+      <a href="../TelegramBot/KeyboardButton.html">KeyboardButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/KeyboardButtonPollType" data-name="telegrambot::keyboardbuttonpolltype">
+      <a href="../TelegramBot/KeyboardButtonPollType.html">KeyboardButtonPollType</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/KeyboardButtonRequestChat" data-name="telegrambot::keyboardbuttonrequestchat">
+      <a href="../TelegramBot/KeyboardButtonRequestChat.html">KeyboardButtonRequestChat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/KeyboardButtonRequestManagedBot" data-name="telegrambot::keyboardbuttonrequestmanagedbot">
+      <a href="../TelegramBot/KeyboardButtonRequestManagedBot.html">KeyboardButtonRequestManagedBot</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/KeyboardButtonRequestUsers" data-name="telegrambot::keyboardbuttonrequestusers">
+      <a href="../TelegramBot/KeyboardButtonRequestUsers.html">KeyboardButtonRequestUsers</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/LabeledPrice" data-name="telegrambot::labeledprice">
+      <a href="../TelegramBot/LabeledPrice.html">LabeledPrice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/LinkPreviewOptions" data-name="telegrambot::linkpreviewoptions">
+      <a href="../TelegramBot/LinkPreviewOptions.html">LinkPreviewOptions</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/LivePhoto" data-name="telegrambot::livephoto">
+      <a href="../TelegramBot/LivePhoto.html">LivePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Location" data-name="telegrambot::location">
+      <a href="../TelegramBot/Location.html">Location</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/LocationAddress" data-name="telegrambot::locationaddress">
+      <a href="../TelegramBot/LocationAddress.html">LocationAddress</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/LoginUrl" data-name="telegrambot::loginurl">
+      <a href="../TelegramBot/LoginUrl.html">LoginUrl</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ManagedBotCreated" data-name="telegrambot::managedbotcreated">
+      <a href="../TelegramBot/ManagedBotCreated.html">ManagedBotCreated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ManagedBotUpdated" data-name="telegrambot::managedbotupdated">
+      <a href="../TelegramBot/ManagedBotUpdated.html">ManagedBotUpdated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MaskPosition" data-name="telegrambot::maskposition">
+      <a href="../TelegramBot/MaskPosition.html">MaskPosition</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MaybeInaccessibleMessage" data-name="telegrambot::maybeinaccessiblemessage">
+      <a href="../TelegramBot/MaybeInaccessibleMessage.html">MaybeInaccessibleMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MenuButton" data-name="telegrambot::menubutton">
+      <a href="../TelegramBot/MenuButton.html">MenuButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MenuButtonCommands" data-name="telegrambot::menubuttoncommands">
+      <a href="../TelegramBot/MenuButtonCommands.html">MenuButtonCommands</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MenuButtonDefault" data-name="telegrambot::menubuttondefault">
+      <a href="../TelegramBot/MenuButtonDefault.html">MenuButtonDefault</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MenuButtonWebApp" data-name="telegrambot::menubuttonwebapp">
+      <a href="../TelegramBot/MenuButtonWebApp.html">MenuButtonWebApp</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Message" data-name="telegrambot::message">
+      <a href="../TelegramBot/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageAutoDeleteTimerChanged" data-name="telegrambot::messageautodeletetimerchanged">
+      <a href="../TelegramBot/MessageAutoDeleteTimerChanged.html">MessageAutoDeleteTimerChanged</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageEntity" data-name="telegrambot::messageentity">
+      <a href="../TelegramBot/MessageEntity.html">MessageEntity</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageId" data-name="telegrambot::messageid">
+      <a href="../TelegramBot/MessageId.html">MessageId</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageOrigin" data-name="telegrambot::messageorigin">
+      <a href="../TelegramBot/MessageOrigin.html">MessageOrigin</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageOriginChannel" data-name="telegrambot::messageoriginchannel">
+      <a href="../TelegramBot/MessageOriginChannel.html">MessageOriginChannel</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageOriginChat" data-name="telegrambot::messageoriginchat">
+      <a href="../TelegramBot/MessageOriginChat.html">MessageOriginChat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageOriginHiddenUser" data-name="telegrambot::messageoriginhiddenuser">
+      <a href="../TelegramBot/MessageOriginHiddenUser.html">MessageOriginHiddenUser</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageOriginUser" data-name="telegrambot::messageoriginuser">
+      <a href="../TelegramBot/MessageOriginUser.html">MessageOriginUser</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageReactionCountUpdated" data-name="telegrambot::messagereactioncountupdated">
+      <a href="../TelegramBot/MessageReactionCountUpdated.html">MessageReactionCountUpdated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/MessageReactionUpdated" data-name="telegrambot::messagereactionupdated">
+      <a href="../TelegramBot/MessageReactionUpdated.html">MessageReactionUpdated</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/OrderInfo" data-name="telegrambot::orderinfo">
+      <a href="../TelegramBot/OrderInfo.html">OrderInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/OwnedGift" data-name="telegrambot::ownedgift">
+      <a href="../TelegramBot/OwnedGift.html">OwnedGift</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/OwnedGiftRegular" data-name="telegrambot::ownedgiftregular">
+      <a href="../TelegramBot/OwnedGiftRegular.html">OwnedGiftRegular</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/OwnedGifts" data-name="telegrambot::ownedgifts">
+      <a href="../TelegramBot/OwnedGifts.html">OwnedGifts</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/OwnedGiftUnique" data-name="telegrambot::ownedgiftunique">
+      <a href="../TelegramBot/OwnedGiftUnique.html">OwnedGiftUnique</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMedia" data-name="telegrambot::paidmedia">
+      <a href="../TelegramBot/PaidMedia.html">PaidMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaInfo" data-name="telegrambot::paidmediainfo">
+      <a href="../TelegramBot/PaidMediaInfo.html">PaidMediaInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaLivePhoto" data-name="telegrambot::paidmedialivephoto">
+      <a href="../TelegramBot/PaidMediaLivePhoto.html">PaidMediaLivePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaPhoto" data-name="telegrambot::paidmediaphoto">
+      <a href="../TelegramBot/PaidMediaPhoto.html">PaidMediaPhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaPreview" data-name="telegrambot::paidmediapreview">
+      <a href="../TelegramBot/PaidMediaPreview.html">PaidMediaPreview</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaPurchased" data-name="telegrambot::paidmediapurchased">
+      <a href="../TelegramBot/PaidMediaPurchased.html">PaidMediaPurchased</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMediaVideo" data-name="telegrambot::paidmediavideo">
+      <a href="../TelegramBot/PaidMediaVideo.html">PaidMediaVideo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PaidMessagePriceChanged" data-name="telegrambot::paidmessagepricechanged">
+      <a href="../TelegramBot/PaidMessagePriceChanged.html">PaidMessagePriceChanged</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportData" data-name="telegrambot::passportdata">
+      <a href="../TelegramBot/PassportData.html">PassportData</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementError" data-name="telegrambot::passportelementerror">
+      <a href="../TelegramBot/PassportElementError.html">PassportElementError</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorDataField" data-name="telegrambot::passportelementerrordatafield">
+      <a href="../TelegramBot/PassportElementErrorDataField.html">PassportElementErrorDataField</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorFile" data-name="telegrambot::passportelementerrorfile">
+      <a href="../TelegramBot/PassportElementErrorFile.html">PassportElementErrorFile</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorFiles" data-name="telegrambot::passportelementerrorfiles">
+      <a href="../TelegramBot/PassportElementErrorFiles.html">PassportElementErrorFiles</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorFrontSide" data-name="telegrambot::passportelementerrorfrontside">
+      <a href="../TelegramBot/PassportElementErrorFrontSide.html">PassportElementErrorFrontSide</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorReverseSide" data-name="telegrambot::passportelementerrorreverseside">
+      <a href="../TelegramBot/PassportElementErrorReverseSide.html">PassportElementErrorReverseSide</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorSelfie" data-name="telegrambot::passportelementerrorselfie">
+      <a href="../TelegramBot/PassportElementErrorSelfie.html">PassportElementErrorSelfie</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorTranslationFile" data-name="telegrambot::passportelementerrortranslationfile">
+      <a href="../TelegramBot/PassportElementErrorTranslationFile.html">PassportElementErrorTranslationFile</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorTranslationFiles" data-name="telegrambot::passportelementerrortranslationfiles">
+      <a href="../TelegramBot/PassportElementErrorTranslationFiles.html">PassportElementErrorTranslationFiles</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportElementErrorUnspecified" data-name="telegrambot::passportelementerrorunspecified">
+      <a href="../TelegramBot/PassportElementErrorUnspecified.html">PassportElementErrorUnspecified</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PassportFile" data-name="telegrambot::passportfile">
+      <a href="../TelegramBot/PassportFile.html">PassportFile</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PhotoSize" data-name="telegrambot::photosize">
+      <a href="../TelegramBot/PhotoSize.html">PhotoSize</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Poll" data-name="telegrambot::poll">
+      <a href="../TelegramBot/Poll.html">Poll</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PollAnswer" data-name="telegrambot::pollanswer">
+      <a href="../TelegramBot/PollAnswer.html">PollAnswer</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PollMedia" data-name="telegrambot::pollmedia">
+      <a href="../TelegramBot/PollMedia.html">PollMedia</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PollOption" data-name="telegrambot::polloption">
+      <a href="../TelegramBot/PollOption.html">PollOption</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PollOptionAdded" data-name="telegrambot::polloptionadded">
+      <a href="../TelegramBot/PollOptionAdded.html">PollOptionAdded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PollOptionDeleted" data-name="telegrambot::polloptiondeleted">
+      <a href="../TelegramBot/PollOptionDeleted.html">PollOptionDeleted</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PreCheckoutQuery" data-name="telegrambot::precheckoutquery">
+      <a href="../TelegramBot/PreCheckoutQuery.html">PreCheckoutQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PreparedInlineMessage" data-name="telegrambot::preparedinlinemessage">
+      <a href="../TelegramBot/PreparedInlineMessage.html">PreparedInlineMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/PreparedKeyboardButton" data-name="telegrambot::preparedkeyboardbutton">
+      <a href="../TelegramBot/PreparedKeyboardButton.html">PreparedKeyboardButton</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ProximityAlertTriggered" data-name="telegrambot::proximityalerttriggered">
+      <a href="../TelegramBot/ProximityAlertTriggered.html">ProximityAlertTriggered</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReactionCount" data-name="telegrambot::reactioncount">
+      <a href="../TelegramBot/ReactionCount.html">ReactionCount</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReactionType" data-name="telegrambot::reactiontype">
+      <a href="../TelegramBot/ReactionType.html">ReactionType</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReactionTypeCustomEmoji" data-name="telegrambot::reactiontypecustomemoji">
+      <a href="../TelegramBot/ReactionTypeCustomEmoji.html">ReactionTypeCustomEmoji</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReactionTypeEmoji" data-name="telegrambot::reactiontypeemoji">
+      <a href="../TelegramBot/ReactionTypeEmoji.html">ReactionTypeEmoji</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReactionTypePaid" data-name="telegrambot::reactiontypepaid">
+      <a href="../TelegramBot/ReactionTypePaid.html">ReactionTypePaid</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/RefundedPayment" data-name="telegrambot::refundedpayment">
+      <a href="../TelegramBot/RefundedPayment.html">RefundedPayment</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReplyKeyboardMarkup" data-name="telegrambot::replykeyboardmarkup">
+      <a href="../TelegramBot/ReplyKeyboardMarkup.html">ReplyKeyboardMarkup</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReplyKeyboardRemove" data-name="telegrambot::replykeyboardremove">
+      <a href="../TelegramBot/ReplyKeyboardRemove.html">ReplyKeyboardRemove</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ReplyParameters" data-name="telegrambot::replyparameters">
+      <a href="../TelegramBot/ReplyParameters.html">ReplyParameters</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ResponseClient" data-name="telegrambot::responseclient">
+      <a href="../TelegramBot/ResponseClient.html">ResponseClient</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ResponseParameters" data-name="telegrambot::responseparameters">
+      <a href="../TelegramBot/ResponseParameters.html">ResponseParameters</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/RevenueWithdrawalState" data-name="telegrambot::revenuewithdrawalstate">
+      <a href="../TelegramBot/RevenueWithdrawalState.html">RevenueWithdrawalState</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/RevenueWithdrawalStateFailed" data-name="telegrambot::revenuewithdrawalstatefailed">
+      <a href="../TelegramBot/RevenueWithdrawalStateFailed.html">RevenueWithdrawalStateFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/RevenueWithdrawalStatePending" data-name="telegrambot::revenuewithdrawalstatepending">
+      <a href="../TelegramBot/RevenueWithdrawalStatePending.html">RevenueWithdrawalStatePending</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/RevenueWithdrawalStateSucceeded" data-name="telegrambot::revenuewithdrawalstatesucceeded">
+      <a href="../TelegramBot/RevenueWithdrawalStateSucceeded.html">RevenueWithdrawalStateSucceeded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SentGuestMessage" data-name="telegrambot::sentguestmessage">
+      <a href="../TelegramBot/SentGuestMessage.html">SentGuestMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SentWebAppMessage" data-name="telegrambot::sentwebappmessage">
+      <a href="../TelegramBot/SentWebAppMessage.html">SentWebAppMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SharedUser" data-name="telegrambot::shareduser">
+      <a href="../TelegramBot/SharedUser.html">SharedUser</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ShippingAddress" data-name="telegrambot::shippingaddress">
+      <a href="../TelegramBot/ShippingAddress.html">ShippingAddress</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ShippingOption" data-name="telegrambot::shippingoption">
+      <a href="../TelegramBot/ShippingOption.html">ShippingOption</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/ShippingQuery" data-name="telegrambot::shippingquery">
+      <a href="../TelegramBot/ShippingQuery.html">ShippingQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StarAmount" data-name="telegrambot::staramount">
+      <a href="../TelegramBot/StarAmount.html">StarAmount</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StarTransaction" data-name="telegrambot::startransaction">
+      <a href="../TelegramBot/StarTransaction.html">StarTransaction</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StarTransactions" data-name="telegrambot::startransactions">
+      <a href="../TelegramBot/StarTransactions.html">StarTransactions</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Sticker" data-name="telegrambot::sticker">
+      <a href="../TelegramBot/Sticker.html">Sticker</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StickerSet" data-name="telegrambot::stickerset">
+      <a href="../TelegramBot/StickerSet.html">StickerSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Story" data-name="telegrambot::story">
+      <a href="../TelegramBot/Story.html">Story</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryArea" data-name="telegrambot::storyarea">
+      <a href="../TelegramBot/StoryArea.html">StoryArea</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaPosition" data-name="telegrambot::storyareaposition">
+      <a href="../TelegramBot/StoryAreaPosition.html">StoryAreaPosition</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaType" data-name="telegrambot::storyareatype">
+      <a href="../TelegramBot/StoryAreaType.html">StoryAreaType</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaTypeLink" data-name="telegrambot::storyareatypelink">
+      <a href="../TelegramBot/StoryAreaTypeLink.html">StoryAreaTypeLink</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaTypeLocation" data-name="telegrambot::storyareatypelocation">
+      <a href="../TelegramBot/StoryAreaTypeLocation.html">StoryAreaTypeLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaTypeSuggestedReaction" data-name="telegrambot::storyareatypesuggestedreaction">
+      <a href="../TelegramBot/StoryAreaTypeSuggestedReaction.html">StoryAreaTypeSuggestedReaction</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaTypeUniqueGift" data-name="telegrambot::storyareatypeuniquegift">
+      <a href="../TelegramBot/StoryAreaTypeUniqueGift.html">StoryAreaTypeUniqueGift</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/StoryAreaTypeWeather" data-name="telegrambot::storyareatypeweather">
+      <a href="../TelegramBot/StoryAreaTypeWeather.html">StoryAreaTypeWeather</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuccessfulPayment" data-name="telegrambot::successfulpayment">
+      <a href="../TelegramBot/SuccessfulPayment.html">SuccessfulPayment</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostApprovalFailed" data-name="telegrambot::suggestedpostapprovalfailed">
+      <a href="../TelegramBot/SuggestedPostApprovalFailed.html">SuggestedPostApprovalFailed</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostApproved" data-name="telegrambot::suggestedpostapproved">
+      <a href="../TelegramBot/SuggestedPostApproved.html">SuggestedPostApproved</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostDeclined" data-name="telegrambot::suggestedpostdeclined">
+      <a href="../TelegramBot/SuggestedPostDeclined.html">SuggestedPostDeclined</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostInfo" data-name="telegrambot::suggestedpostinfo">
+      <a href="../TelegramBot/SuggestedPostInfo.html">SuggestedPostInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostPaid" data-name="telegrambot::suggestedpostpaid">
+      <a href="../TelegramBot/SuggestedPostPaid.html">SuggestedPostPaid</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostParameters" data-name="telegrambot::suggestedpostparameters">
+      <a href="../TelegramBot/SuggestedPostParameters.html">SuggestedPostParameters</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostPrice" data-name="telegrambot::suggestedpostprice">
+      <a href="../TelegramBot/SuggestedPostPrice.html">SuggestedPostPrice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SuggestedPostRefunded" data-name="telegrambot::suggestedpostrefunded">
+      <a href="../TelegramBot/SuggestedPostRefunded.html">SuggestedPostRefunded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/SwitchInlineQueryChosenChat" data-name="telegrambot::switchinlinequerychosenchat">
+      <a href="../TelegramBot/SwitchInlineQueryChosenChat.html">SwitchInlineQueryChosenChat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TextQuote" data-name="telegrambot::textquote">
+      <a href="../TelegramBot/TextQuote.html">TextQuote</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartner" data-name="telegrambot::transactionpartner">
+      <a href="../TelegramBot/TransactionPartner.html">TransactionPartner</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerAffiliateProgram" data-name="telegrambot::transactionpartneraffiliateprogram">
+      <a href="../TelegramBot/TransactionPartnerAffiliateProgram.html">TransactionPartnerAffiliateProgram</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerChat" data-name="telegrambot::transactionpartnerchat">
+      <a href="../TelegramBot/TransactionPartnerChat.html">TransactionPartnerChat</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerFragment" data-name="telegrambot::transactionpartnerfragment">
+      <a href="../TelegramBot/TransactionPartnerFragment.html">TransactionPartnerFragment</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerOther" data-name="telegrambot::transactionpartnerother">
+      <a href="../TelegramBot/TransactionPartnerOther.html">TransactionPartnerOther</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerTelegramAds" data-name="telegrambot::transactionpartnertelegramads">
+      <a href="../TelegramBot/TransactionPartnerTelegramAds.html">TransactionPartnerTelegramAds</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerTelegramApi" data-name="telegrambot::transactionpartnertelegramapi">
+      <a href="../TelegramBot/TransactionPartnerTelegramApi.html">TransactionPartnerTelegramApi</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/TransactionPartnerUser" data-name="telegrambot::transactionpartneruser">
+      <a href="../TelegramBot/TransactionPartnerUser.html">TransactionPartnerUser</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGift" data-name="telegrambot::uniquegift">
+      <a href="../TelegramBot/UniqueGift.html">UniqueGift</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftBackdrop" data-name="telegrambot::uniquegiftbackdrop">
+      <a href="../TelegramBot/UniqueGiftBackdrop.html">UniqueGiftBackdrop</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftBackdropColors" data-name="telegrambot::uniquegiftbackdropcolors">
+      <a href="../TelegramBot/UniqueGiftBackdropColors.html">UniqueGiftBackdropColors</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftColors" data-name="telegrambot::uniquegiftcolors">
+      <a href="../TelegramBot/UniqueGiftColors.html">UniqueGiftColors</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftInfo" data-name="telegrambot::uniquegiftinfo">
+      <a href="../TelegramBot/UniqueGiftInfo.html">UniqueGiftInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftModel" data-name="telegrambot::uniquegiftmodel">
+      <a href="../TelegramBot/UniqueGiftModel.html">UniqueGiftModel</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UniqueGiftSymbol" data-name="telegrambot::uniquegiftsymbol">
+      <a href="../TelegramBot/UniqueGiftSymbol.html">UniqueGiftSymbol</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Update" data-name="telegrambot::update">
+      <a href="../TelegramBot/Update.html">Update</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/User" data-name="telegrambot::user">
+      <a href="../TelegramBot/User.html">User</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UserChatBoosts" data-name="telegrambot::userchatboosts">
+      <a href="../TelegramBot/UserChatBoosts.html">UserChatBoosts</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UserProfileAudios" data-name="telegrambot::userprofileaudios">
+      <a href="../TelegramBot/UserProfileAudios.html">UserProfileAudios</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UserProfilePhoto" data-name="telegrambot::userprofilephoto">
+      <a href="../TelegramBot/UserProfilePhoto.html">UserProfilePhoto</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UserRating" data-name="telegrambot::userrating">
+      <a href="../TelegramBot/UserRating.html">UserRating</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/UsersShared" data-name="telegrambot::usersshared">
+      <a href="../TelegramBot/UsersShared.html">UsersShared</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Venue" data-name="telegrambot::venue">
+      <a href="../TelegramBot/Venue.html">Venue</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Video" data-name="telegrambot::video">
+      <a href="../TelegramBot/Video.html">Video</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoChatEnded" data-name="telegrambot::videochatended">
+      <a href="../TelegramBot/VideoChatEnded.html">VideoChatEnded</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoChatParticipantsInvited" data-name="telegrambot::videochatparticipantsinvited">
+      <a href="../TelegramBot/VideoChatParticipantsInvited.html">VideoChatParticipantsInvited</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoChatScheduled" data-name="telegrambot::videochatscheduled">
+      <a href="../TelegramBot/VideoChatScheduled.html">VideoChatScheduled</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoChatStarted" data-name="telegrambot::videochatstarted">
+      <a href="../TelegramBot/VideoChatStarted.html">VideoChatStarted</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoNote" data-name="telegrambot::videonote">
+      <a href="../TelegramBot/VideoNote.html">VideoNote</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/VideoQuality" data-name="telegrambot::videoquality">
+      <a href="../TelegramBot/VideoQuality.html">VideoQuality</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/Voice" data-name="telegrambot::voice">
+      <a href="../TelegramBot/Voice.html">Voice</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/WebAppData" data-name="telegrambot::webappdata">
+      <a href="../TelegramBot/WebAppData.html">WebAppData</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/WebAppInfo" data-name="telegrambot::webappinfo">
+      <a href="../TelegramBot/WebAppInfo.html">WebAppInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/WebhookInfo" data-name="telegrambot::webhookinfo">
+      <a href="../TelegramBot/WebhookInfo.html">WebhookInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="telegram_bot/TelegramBot/WriteAccessAllowed" data-name="telegrambot::writeaccessallowed">
+      <a href="../TelegramBot/WriteAccessAllowed.html">WriteAccessAllowed</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    class
+  </span> TelegramBot::<wbr>InlineQueryResultCachedDocument
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../TelegramBot/InlineQueryResultCachedDocument.html">TelegramBot::InlineQueryResultCachedDocument</a></li><li class="superclass"><a href="../TelegramBot/InlineQueryResult.html">TelegramBot::InlineQueryResult</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type">JSON::Serializable</li>
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      telegram_bot/types/inline/inline_query_result_cached_document.cr
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28id%3AString%2Ctitle%3AString%2Cdocument_file_id%3AString%2C%2A%2Cdescription%3AString%7CNil%3Dnil%2Ccaption%3AString%7CNil%3Dnil%2Cparse_mode%3AString%7CNil%3Dnil%2Ccaption_entities%3AArray%28MessageEntity%29%7CNil%3Dnil%2Creply_markup%3AInlineKeyboardMarkup%7CNil%3Dnil%2Cinput_message_content%3AInputMessageContent%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(id : String, title : String, document_file_id : String, *, description : String | Nil = <span class="n">nil</span>, caption : String | Nil = <span class="n">nil</span>, parse_mode : String | Nil = <span class="n">nil</span>, caption_entities : Array(MessageEntity) | Nil = <span class="n">nil</span>, reply_markup : InlineKeyboardMarkup | Nil = <span class="n">nil</span>, input_message_content : InputMessageContent | Nil = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28pull%3AJSON%3A%3APullParser%29-class-method" class="signature"><strong>.new</strong>(pull : JSON::PullParser)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28%2A%2C__pull_for_json_serializablepull%3AJSON%3A%3APullParser%29-class-method" class="signature"><strong>.new</strong>(*, __pull_for_json_serializable pull : JSON::PullParser)</a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#caption%3AString%7CNil-instance-method" class="signature"><strong>#caption</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#caption%3D%28caption%3AString%7CNil%29-instance-method" class="signature"><strong>#caption=</strong>(caption : String | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#caption_entities%3AArray%28MessageEntity%29%7CNil-instance-method" class="signature"><strong>#caption_entities</strong> : Array(MessageEntity) | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#caption_entities%3D%28caption_entities%3AArray%28MessageEntity%29%7CNil%29-instance-method" class="signature"><strong>#caption_entities=</strong>(caption_entities : Array(MessageEntity) | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#description%3AString%7CNil-instance-method" class="signature"><strong>#description</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#description%3D%28description%3AString%7CNil%29-instance-method" class="signature"><strong>#description=</strong>(description : String | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#document_file_id%3AString-instance-method" class="signature"><strong>#document_file_id</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#document_file_id%3D%28document_file_id%3AString%29-instance-method" class="signature"><strong>#document_file_id=</strong>(document_file_id : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#id%3AString-instance-method" class="signature"><strong>#id</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#id%3D%28id%3AString%29-instance-method" class="signature"><strong>#id=</strong>(id : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#input_message_content%3AInputMessageContent%7CNil-instance-method" class="signature"><strong>#input_message_content</strong> : InputMessageContent | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#input_message_content%3D%28input_message_content%3AInputMessageContent%7CNil%29-instance-method" class="signature"><strong>#input_message_content=</strong>(input_message_content : InputMessageContent | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#parse_mode%3AString%7CNil-instance-method" class="signature"><strong>#parse_mode</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#parse_mode%3D%28parse_mode%3AString%7CNil%29-instance-method" class="signature"><strong>#parse_mode=</strong>(parse_mode : String | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reply_markup%3AInlineKeyboardMarkup%7CNil-instance-method" class="signature"><strong>#reply_markup</strong> : InlineKeyboardMarkup | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reply_markup%3D%28reply_markup%3AInlineKeyboardMarkup%7CNil%29-instance-method" class="signature"><strong>#reply_markup=</strong>(reply_markup : InlineKeyboardMarkup | Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#title%3AString-instance-method" class="signature"><strong>#title</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#title%3D%28title%3AString%29-instance-method" class="signature"><strong>#title=</strong>(title : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#type%3AString-instance-method" class="signature"><strong>#type</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#type%3D%28type%3AString%29-instance-method" class="signature"><strong>#type=</strong>(type : String)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+  <h3>Instance methods inherited from class <code><a href="../TelegramBot/InlineQueryResult.html">TelegramBot::InlineQueryResult</a></code></h3>
+  
+  
+    <a href="../TelegramBot/InlineQueryResult.html#to_json%28json%3AJSON%3A%3ABuilder%29-instance-method" class="tooltip">
+      <span>to_json(json : JSON::Builder)</span>
+    to_json</a>
+    
+  
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(id:String,title:String,document_file_id:String,*,description:String|Nil=nil,caption:String|Nil=nil,parse_mode:String|Nil=nil,caption_entities:Array(MessageEntity)|Nil=nil,reply_markup:InlineKeyboardMarkup|Nil=nil,input_message_content:InputMessageContent|Nil=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(id : String, title : String, document_file_id : String, *, description : String | Nil = <span class="n">nil</span>, caption : String | Nil = <span class="n">nil</span>, parse_mode : String | Nil = <span class="n">nil</span>, caption_entities : Array(<a href="../TelegramBot/MessageEntity.html">MessageEntity</a>) | Nil = <span class="n">nil</span>, reply_markup : <a href="../TelegramBot/InlineKeyboardMarkup.html">InlineKeyboardMarkup</a> | Nil = <span class="n">nil</span>, input_message_content : <a href="../TelegramBot/InputMessageContent.html">InputMessageContent</a> | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#new%28id%3AString%2Ctitle%3AString%2Cdocument_file_id%3AString%2C%2A%2Cdescription%3AString%7CNil%3Dnil%2Ccaption%3AString%7CNil%3Dnil%2Cparse_mode%3AString%7CNil%3Dnil%2Ccaption_entities%3AArray%28MessageEntity%29%7CNil%3Dnil%2Creply_markup%3AInlineKeyboardMarkup%7CNil%3Dnil%2Cinput_message_content%3AInputMessageContent%7CNil%3Dnil%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(pull:JSON::PullParser)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(pull : JSON::PullParser)
+
+        <a class="method-permalink" href="#new%28pull%3AJSON%3A%3APullParser%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(*,__pull_for_json_serializablepull:JSON::PullParser)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(*, __pull_for_json_serializable pull : JSON::PullParser)
+
+        <a class="method-permalink" href="#new%28%2A%2C__pull_for_json_serializablepull%3AJSON%3A%3APullParser%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="caption:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>caption</strong> : String | Nil
+
+        <a class="method-permalink" href="#caption%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="caption=(caption:String|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>caption=</strong>(caption : String | Nil)
+
+        <a class="method-permalink" href="#caption%3D%28caption%3AString%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="caption_entities:Array(MessageEntity)|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>caption_entities</strong> : Array(<a href="../TelegramBot/MessageEntity.html">MessageEntity</a>) | Nil
+
+        <a class="method-permalink" href="#caption_entities%3AArray%28MessageEntity%29%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="caption_entities=(caption_entities:Array(MessageEntity)|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>caption_entities=</strong>(caption_entities : Array(<a href="../TelegramBot/MessageEntity.html">MessageEntity</a>) | Nil)
+
+        <a class="method-permalink" href="#caption_entities%3D%28caption_entities%3AArray%28MessageEntity%29%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="description:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>description</strong> : String | Nil
+
+        <a class="method-permalink" href="#description%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="description=(description:String|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>description=</strong>(description : String | Nil)
+
+        <a class="method-permalink" href="#description%3D%28description%3AString%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="document_file_id:String-instance-method">
+      <div class="signature">
+        
+        def <strong>document_file_id</strong> : String
+
+        <a class="method-permalink" href="#document_file_id%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="document_file_id=(document_file_id:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>document_file_id=</strong>(document_file_id : String)
+
+        <a class="method-permalink" href="#document_file_id%3D%28document_file_id%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="id:String-instance-method">
+      <div class="signature">
+        
+        def <strong>id</strong> : String
+
+        <a class="method-permalink" href="#id%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="id=(id:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>id=</strong>(id : String)
+
+        <a class="method-permalink" href="#id%3D%28id%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="input_message_content:InputMessageContent|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>input_message_content</strong> : <a href="../TelegramBot/InputMessageContent.html">InputMessageContent</a> | Nil
+
+        <a class="method-permalink" href="#input_message_content%3AInputMessageContent%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="input_message_content=(input_message_content:InputMessageContent|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>input_message_content=</strong>(input_message_content : <a href="../TelegramBot/InputMessageContent.html">InputMessageContent</a> | Nil)
+
+        <a class="method-permalink" href="#input_message_content%3D%28input_message_content%3AInputMessageContent%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="parse_mode:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>parse_mode</strong> : String | Nil
+
+        <a class="method-permalink" href="#parse_mode%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="parse_mode=(parse_mode:String|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>parse_mode=</strong>(parse_mode : String | Nil)
+
+        <a class="method-permalink" href="#parse_mode%3D%28parse_mode%3AString%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reply_markup:InlineKeyboardMarkup|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>reply_markup</strong> : <a href="../TelegramBot/InlineKeyboardMarkup.html">InlineKeyboardMarkup</a> | Nil
+
+        <a class="method-permalink" href="#reply_markup%3AInlineKeyboardMarkup%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reply_markup=(reply_markup:InlineKeyboardMarkup|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>reply_markup=</strong>(reply_markup : <a href="../TelegramBot/InlineKeyboardMarkup.html">InlineKeyboardMarkup</a> | Nil)
+
+        <a class="method-permalink" href="#reply_markup%3D%28reply_markup%3AInlineKeyboardMarkup%7CNil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="title:String-instance-method">
+      <div class="signature">
+        
+        def <strong>title</strong> : String
+
+        <a class="method-permalink" href="#title%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="title=(title:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>title=</strong>(title : String)
+
+        <a class="method-permalink" href="#title%3D%28title%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="type:String-instance-method">
+      <div class="signature">
+        
+        def <strong>type</strong> : String
+
+        <a class="method-permalink" href="#type%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="type=(type:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>type=</strong>(type : String)
+
+        <a class="method-permalink" href="#type%3D%28type%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>

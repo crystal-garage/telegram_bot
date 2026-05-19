@@ -1,13 +1,11 @@
-require "json"
-
 module TelegramBot
   class ForceReply
-    FIELDS = {
-      force_reply: {type: Bool, mustbe: true},
-      selective:   {type: Bool, nilable: true},
-    }
+    include JSON::Serializable
 
-    JSON.mapping({{FIELDS}})
-    initializer_for({{FIELDS}})
+    property? force_reply : Bool = true
+    property? selective : Bool?
+
+    def initialize(@selective : Bool? = nil)
+    end
   end
 end

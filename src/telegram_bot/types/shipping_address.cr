@@ -1,14 +1,12 @@
-require "json"
-
 module TelegramBot
   class ShippingAddress
-    JSON.mapping({
-      country_code: String,
-      state:        String,
-      city:         String,
-      street_line1: String,
-      street_line2: String,
-      post_code:    String,
-    })
+    include JSON::Serializable
+
+    property country_code : String
+    property state : String
+    property city : String
+    property street_line1 : String
+    property street_line2 : String
+    property post_code : String
   end
 end

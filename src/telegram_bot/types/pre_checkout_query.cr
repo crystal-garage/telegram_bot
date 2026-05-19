@@ -1,15 +1,13 @@
-require "json"
-
 module TelegramBot
   class PreCheckoutQuery
-    JSON.mapping({
-      id:                 String,
-      from:               User,
-      currency:           String,
-      total_amount:       Int32,
-      invoice_payload:    String,
-      shipping_option_id: {type: String, nilable: true},
-      order_info:         {type: OrderInfo, nilable: true},
-    })
+    include JSON::Serializable
+
+    property id : String
+    property from : User
+    property currency : String
+    property total_amount : Int64
+    property invoice_payload : String
+    property shipping_option_id : String?
+    property order_info : OrderInfo?
   end
 end

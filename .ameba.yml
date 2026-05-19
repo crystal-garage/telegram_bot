@@ -1,0 +1,28 @@
+# Run `ameba --only Lint/NotNil` for details
+Lint/NotNil:
+  Description: Identifies usage of `not_nil!` calls
+  Excluded:
+  - src/telegram_bot/bot.cr
+  - src/telegram_bot/bot/**/*.cr
+  - spec/message_type_upgrade_spec.cr
+  Enabled: true
+  Severity: Warning
+
+# Run `ameba --only Metrics/CyclomaticComplexity` for details
+Metrics/CyclomaticComplexity:
+  Description: Disallows methods with a cyclomatic complexity higher than `MaxComplexity`
+  MaxComplexity: 10
+  Excluded:
+  - src/telegram_bot/bot.cr
+  - src/telegram_bot/bot/**/*.cr
+  Enabled: true
+  Severity: Warning
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/BinaryOperatorParameterName:
+  Enabled: false
+
+Naming/BlockParameterName:
+  Enabled: false

@@ -1,10 +1,8 @@
-require "json"
-
 module TelegramBot
   class InlineKeyboardMarkup
-    JSON.mapping({
-      inline_keyboard: Array(Array(InlineKeyboardButton)),
-    })
+    include JSON::Serializable
+
+    property inline_keyboard : Array(Array(InlineKeyboardButton))
 
     def initialize
       @inline_keyboard = Array(Array(InlineKeyboardButton)).new

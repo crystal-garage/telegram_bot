@@ -3,22 +3,30 @@ require "http/client"
 module TelegramBot
   class HttpClient
     def initialize(@token : String)
+      uri = URI.parse("https://api.telegram.org")
+      @client = HTTP::Client.new(uri)
+      @client.dns_timeout = 5.seconds
+      @client.connect_timeout = 5.seconds
     end
 
     def post(method : String)
-      HTTP::Client.post(url_for(method))
+      @client.post(url_for(method))
     end
 
     def post_form(method : String, params : Hash)
-      HTTP::Client.post(url_for(method), form: params)
+      @client.post(url_for(method), form: params)
     end
 
     def post_multipart(method : String, params)
-      HTTP::Client.post_multipart(url_for(method), params)
+      @client.post_multipart(url_for(method), params)
+    end
+
+    def close
+      @client.close
     end
 
     protected def url_for(method) : String
-      "https://api.telegram.org/bot#{@token}/#{method}"
+      "/bot#{@token}/#{method}"
     end
   end
 end

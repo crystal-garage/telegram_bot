@@ -1,47 +1,120 @@
-require "json"
-
 module TelegramBot
   class Message
-    JSON.mapping({
-      message_id:              Int32,
-      from:                    {type: User, nilable: true},
-      date:                    Int32,
-      chat:                    Chat,
-      forward_from:            {type: User, nilable: true},
-      forward_from_chat:       {type: Chat, nilable: true},
-      forward_from_message_id: {type: Int32, nilable: true},
-      forward_signature:       {type: String, nilable: true},
-      forward_date:            {type: Int32, nilable: true},
-      reply_to_message:        {type: Message, nilable: true},
-      edit_date:               {type: Int32, nilable: true},
-      author_signature:        {type: String, nilable: true},
-      text:                    {type: String, nilable: true},
-      entities:                {type: Array(MessageEntity), nilable: true},
-      caption_entities:        {type: Array(MessageEntity), nilable: true},
-      audio:                   {type: Audio, nilable: true},
-      document:                {type: Document, nilable: true},
-      photo:                   {type: Array(PhotoSize), nilable: true},
-      sticker:                 {type: Sticker, nilable: true},
-      video:                   {type: Video, nilable: true},
-      voice:                   {type: Voice, nilable: true},
-      video_note:              {type: VideoNote, nilable: true},
-      caption:                 {type: String, nilable: true},
-      contact:                 {type: Contact, nilable: true},
-      location:                {type: Location, nilable: true},
-      venue:                   {type: Venue, nilable: true},
-      new_chat_members:        {type: Array(User), nilable: true},
-      left_chat_member:        {type: User, nilable: true},
-      new_chat_title:          {type: String, nilable: true},
-      new_chat_photo:          {type: Array(PhotoSize), nilable: true},
-      delete_chat_photo:       {type: Bool, nilable: true}, # must be true
-      group_chat_created:      {type: Bool, nilable: true}, # must be true
-      supergroup_chat_created: {type: Bool, nilable: true}, # must be true
-      channel_chat_created:    {type: Bool, nilable: true}, # must be true
-      migrate_to_chat_id:      {type: Int32, nilable: true},
-      migrate_from_chat_id:    {type: Int32, nilable: true},
-      pinned_message:          {type: Message, nilable: true},
-      invoice:                 {type: Invoice, nilable: true},
-      successful_payment:      {type: SuccessfulPayment, nilable: true},
-    })
+    include JSON::Serializable
+
+    property message_id : Int32
+    property message_thread_id : Int32?
+    property direct_messages_topic : DirectMessagesTopic?
+    property from : User?
+    property sender_chat : Chat?
+    property sender_boost_count : Int32?
+    property sender_business_bot : User?
+    property sender_tag : String?
+    property guest_bot_caller_user : User?
+    property guest_bot_caller_chat : Chat?
+    property guest_query_id : String?
+    property date : Int32
+    property business_connection_id : String?
+    property chat : Chat
+    property forward_origin : MessageOrigin?
+    property? is_topic_message : Bool?
+    property? is_automatic_forward : Bool?
+    property reply_to_message : Message?
+    property external_reply : ExternalReplyInfo?
+    property quote : TextQuote?
+    property reply_to_story : Story?
+    property reply_to_checklist_task_id : Int32?
+    property reply_to_poll_option_id : String?
+    property via_bot : User?
+    property edit_date : Int32?
+    property? has_protected_content : Bool?
+    property? is_from_offline : Bool?
+    property? is_paid_post : Bool?
+    property suggested_post_info : SuggestedPostInfo?
+    property media_group_id : String?
+    property author_signature : String?
+    property paid_star_count : Int32?
+    property text : String?
+    property entities : Array(MessageEntity)?
+    property link_preview_options : LinkPreviewOptions?
+    property effect_id : String?
+    property animation : Animation?
+    property audio : Audio?
+    property document : Document?
+    property live_photo : LivePhoto?
+    property paid_media : PaidMediaInfo?
+    property photo : Array(PhotoSize)?
+    property sticker : Sticker?
+    property story : Story?
+    property video : Video?
+    property video_note : VideoNote?
+    property voice : Voice?
+    property caption : String?
+    property caption_entities : Array(MessageEntity)?
+    property? show_caption_above_media : Bool?
+    property? has_media_spoiler : Bool?
+    property checklist : Checklist?
+    property contact : Contact?
+    property dice : Dice?
+    property game : Game?
+    property poll : Poll?
+    property web_app_data : WebAppData?
+    property location : Location?
+    property venue : Venue?
+    property new_chat_members : Array(User)?
+    property left_chat_member : User?
+    property chat_owner_left : ChatOwnerLeft?
+    property chat_owner_changed : ChatOwnerChanged?
+    property new_chat_title : String?
+    property new_chat_photo : Array(PhotoSize)?
+    property? delete_chat_photo : Bool?
+    property? group_chat_created : Bool?
+    property? supergroup_chat_created : Bool?
+    property? channel_chat_created : Bool?
+    property message_auto_delete_timer_changed : MessageAutoDeleteTimerChanged?
+    property users_shared : UsersShared?
+    property chat_shared : ChatShared?
+    property connected_website : String?
+    property write_access_allowed : WriteAccessAllowed?
+    property proximity_alert_triggered : ProximityAlertTriggered?
+    property boost_added : ChatBoostAdded?
+    property chat_background_set : ChatBackground?
+    property forum_topic_created : ForumTopicCreated?
+    property forum_topic_edited : ForumTopicEdited?
+    property forum_topic_closed : ForumTopicClosed?
+    property forum_topic_reopened : ForumTopicReopened?
+    property general_forum_topic_hidden : GeneralForumTopicHidden?
+    property general_forum_topic_unhidden : GeneralForumTopicUnhidden?
+    property giveaway_created : GiveawayCreated?
+    property giveaway : Giveaway?
+    property giveaway_winners : GiveawayWinners?
+    property giveaway_completed : GiveawayCompleted?
+    property poll_option_added : PollOptionAdded?
+    property poll_option_deleted : PollOptionDeleted?
+    property migrate_to_chat_id : Int64?
+    property migrate_from_chat_id : Int64?
+    property pinned_message : MaybeInaccessibleMessage?
+    property invoice : Invoice?
+    property successful_payment : SuccessfulPayment?
+    property refunded_payment : RefundedPayment?
+    property passport_data : PassportData?
+    property gift : GiftInfo?
+    property unique_gift : UniqueGiftInfo?
+    property gift_upgrade_sent : GiftInfo?
+    property checklist_tasks_done : ChecklistTasksDone?
+    property checklist_tasks_added : ChecklistTasksAdded?
+    property managed_bot_created : ManagedBotCreated?
+    property direct_message_price_changed : DirectMessagePriceChanged?
+    property paid_message_price_changed : PaidMessagePriceChanged?
+    property suggested_post_approved : SuggestedPostApproved?
+    property suggested_post_approval_failed : SuggestedPostApprovalFailed?
+    property suggested_post_declined : SuggestedPostDeclined?
+    property suggested_post_paid : SuggestedPostPaid?
+    property suggested_post_refunded : SuggestedPostRefunded?
+    property video_chat_scheduled : VideoChatScheduled?
+    property video_chat_started : VideoChatStarted?
+    property video_chat_ended : VideoChatEnded?
+    property video_chat_participants_invited : VideoChatParticipantsInvited?
+    property reply_markup : InlineKeyboardMarkup?
   end
 end

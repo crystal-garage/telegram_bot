@@ -1,13 +1,11 @@
-require "json"
-
 module TelegramBot
   class Invoice
-    JSON.mapping({
-      title:           String,
-      description:     String,
-      start_parameter: String,
-      currency:        String,
-      total_amount:    Int32,
-    })
+    include JSON::Serializable
+
+    property title : String
+    property description : String
+    property start_parameter : String
+    property currency : String
+    property total_amount : Int64
   end
 end

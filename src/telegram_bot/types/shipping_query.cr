@@ -1,12 +1,10 @@
-require "json"
-
 module TelegramBot
   class ShippingQuery
-    JSON.mapping({
-      id:               String,
-      from:             User,
-      invoice_payload:  String,
-      shipping_address: ShippingAddress,
-    })
+    include JSON::Serializable
+
+    property id : String
+    property from : User
+    property invoice_payload : String
+    property shipping_address : ShippingAddress
   end
 end

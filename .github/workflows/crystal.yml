@@ -1,0 +1,46 @@
+name: Crystal CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  check_format:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: shards install --ignore-crystal-version
+      - name: Check format
+        run: crystal tool format --check
+  check_ameba:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v6
+      - name: Run Ameba linter
+        uses: crystal-ameba/github-action@master
+  test_latest:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: shards install --ignore-crystal-version
+      - name: Run tests
+        run: crystal spec
+  test_nightly:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:nightly
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: shards install --ignore-crystal-version
+      - name: Run tests
+        run: crystal spec

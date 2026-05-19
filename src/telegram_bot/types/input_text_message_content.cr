@@ -1,13 +1,19 @@
-require "json"
-
 module TelegramBot
   class InputTextMessageContent < InputMessageContent
-    FIELDS = {
-      message_text:             String,
-      parse_mode:               {type: String, nilable: true},
-      disable_web_page_preview: {type: Bool, nilable: true},
-    }
-    JSON.mapping({{FIELDS}})
-    initializer_for({{FIELDS}})
+    include JSON::Serializable
+
+    property message_text : String
+    property parse_mode : String?
+    property entities : Array(MessageEntity)?
+    property link_preview_options : LinkPreviewOptions?
+
+    def initialize(
+      @message_text : String,
+      *,
+      @parse_mode : String? = nil,
+      @entities : Array(MessageEntity)? = nil,
+      @link_preview_options : LinkPreviewOptions? = nil,
+    )
+    end
   end
 end

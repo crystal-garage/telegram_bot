@@ -19,6 +19,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendMessage",
@@ -36,7 +37,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -230,6 +232,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendPhoto",
@@ -249,7 +252,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -277,6 +281,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendLivePhoto",
@@ -297,7 +302,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -326,6 +332,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
 
@@ -349,7 +356,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -376,6 +384,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendDocument",
@@ -395,7 +404,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -418,6 +428,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendSticker",
@@ -433,7 +444,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -467,6 +479,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
 
@@ -495,7 +508,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -526,6 +540,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
 
@@ -551,7 +566,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -577,6 +593,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
 
@@ -597,7 +614,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -622,6 +640,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       duration = duration.total_seconds.to_i if duration.is_a?(Time::Span)
 
@@ -641,7 +660,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -747,6 +767,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       live_period = live_period.total_seconds.to_i if live_period.is_a?(Time::Span)
 
@@ -768,7 +789,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -867,6 +889,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendVenue",
@@ -888,7 +911,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -913,6 +937,7 @@ module TelegramBot
       message_effect_id : String? = nil,
       allow_paid_broadcast : Bool? = nil,
       suggested_post_parameters : SuggestedPostParameters? = nil,
+      ephemeral_message_parameters : EphemeralMessageParameters? = nil,
     ) : Message?
       res = def_request(
         "sendContact",
@@ -930,7 +955,8 @@ module TelegramBot
         message_effect_id,
         suggested_post_parameters,
         reply_parameters,
-        reply_markup
+        reply_markup,
+        ephemeral_message_parameters
       )
 
       Message.from_json(res.to_json) if res
@@ -1085,6 +1111,8 @@ module TelegramBot
       message_thread_id : Int32? = nil,
       parse_mode : String? = nil,
       entities : Array(MessageEntity)? = nil,
+      can_stop : Bool? = nil,
+      keep_on_stop : Bool? = nil,
     ) : Bool?
       res = def_force_request(
         "sendMessageDraft",
@@ -1093,7 +1121,9 @@ module TelegramBot
         draft_id,
         text,
         parse_mode,
-        entities
+        entities,
+        can_stop,
+        keep_on_stop
       )
 
       res.as_bool if res

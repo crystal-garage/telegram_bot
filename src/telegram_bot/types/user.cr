@@ -2,6 +2,8 @@ module TelegramBot
   class User
     include JSON::Serializable
 
+    property? supports_join_request_queries : Bool?
+
     property id : Int64
     property? is_bot : Bool
     property first_name : String
@@ -39,6 +41,7 @@ module TelegramBot
       @has_topics_enabled = nil,
       @allows_users_to_create_topics = nil,
       @can_manage_bots = nil,
+      @supports_join_request_queries : Bool? = nil,
     )
     end
   end

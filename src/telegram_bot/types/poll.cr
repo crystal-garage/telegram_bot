@@ -2,6 +2,8 @@ module TelegramBot
   class PollMedia
     include JSON::Serializable
 
+    property link : Link?
+
     property animation : Animation?
     property audio : Audio?
     property document : Document?
@@ -14,7 +16,7 @@ module TelegramBot
   end
 
   alias InputPollMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocument | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaVenue | InputMediaVideo
-  alias InputPollOptionMedia = InputMediaAnimation | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaSticker | InputMediaVenue | InputMediaVideo
+  alias InputPollOptionMedia = InputMediaLink | InputMediaAnimation | InputMediaLivePhoto | InputMediaLocation | InputMediaPhoto | InputMediaSticker | InputMediaVenue | InputMediaVideo
 
   class PollOption
     include JSON::Serializable

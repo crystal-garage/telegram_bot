@@ -16,4 +16,11 @@ describe TelegramBot::InlineQueryResultArticle do
     inline_query_result_article.thumbnail_width.should eq(64)
     inline_query_result_article.thumbnail_height.should eq(64)
   end
+
+  it "serializes rich input message content" do
+    rich = TelegramBot::InputRichMessage.new(html: "<b>Hello</b>")
+    article = TelegramBot::InlineQueryResultArticle.new("1", "Title", TelegramBot::InputRichMessageContent.new(rich))
+    json = JSON.parse(article.to_json)
+    json["input_message_content"]["rich_message"]["html"].should eq("<b>Hello</b>")
+  end
 end

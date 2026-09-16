@@ -2,6 +2,8 @@ module TelegramBot
   class ChatMember
     include JSON::Serializable
 
+    property? can_send_welcome_messages : Bool?
+
     property user : User
     property status : String
     property until_date : Int64?

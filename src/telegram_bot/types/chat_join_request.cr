@@ -2,6 +2,8 @@ module TelegramBot
   class ChatJoinRequest
     include JSON::Serializable
 
+    property query_id : String?
+
     property chat : Chat?
     property from : User?
     property user_chat_id : Int64?

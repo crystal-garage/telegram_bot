@@ -4,8 +4,9 @@ module TelegramBot
 
     property command : String
     property description : String
+    property? is_ephemeral : Bool?
 
-    def initialize(@command : String, @description : String)
+    def initialize(@command : String, @description : String, *, @is_ephemeral : Bool? = nil)
     end
   end
 end

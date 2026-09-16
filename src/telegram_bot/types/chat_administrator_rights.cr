@@ -2,6 +2,8 @@ module TelegramBot
   class ChatAdministratorRights
     include JSON::Serializable
 
+    property? can_send_welcome_messages : Bool?
+
     property? is_anonymous : Bool
     property? can_manage_chat : Bool
     property? can_delete_messages : Bool
@@ -39,6 +41,7 @@ module TelegramBot
       @can_manage_topics = nil,
       @can_manage_direct_messages = nil,
       @can_manage_tags = nil,
+      @can_send_welcome_messages : Bool? = nil,
     )
     end
   end

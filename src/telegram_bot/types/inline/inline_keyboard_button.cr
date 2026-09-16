@@ -2,6 +2,8 @@ module TelegramBot
   class InlineKeyboardButton
     include JSON::Serializable
 
+    property disabled : DisabledButton?
+
     property text : String
     property icon_custom_emoji_id : String?
     property style : String?
@@ -31,6 +33,7 @@ module TelegramBot
       @copy_text : CopyTextButton? = nil,
       @callback_game : CallbackGame? = nil,
       @pay = nil,
+      @disabled : DisabledButton? = nil,
     )
     end
   end

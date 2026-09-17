@@ -125,6 +125,32 @@ module TelegramBot
       @managed_bot_handler = ->(managed_bot : ManagedBotUpdated) { block.call(managed_bot); nil }
     end
 
+    # Registers a block handler for subscription updates.
+    def on_subscription(&block : BotSubscriptionUpdated -> _)
+      @subscription_handler = ->(update : BotSubscriptionUpdated) { block.call(update); nil }
+    end
+
+    def handle(update : BotSubscriptionUpdated)
+      if handler = @subscription_handler
+        return handler.call(update)
+      end
+
+      raise "subscription handler is not implemented"
+    end
+
+    # Registers a block handler for stopped message generation updates.
+    def on_stopped_message_generation(&block : MessageGenerationStopped -> _)
+      @stopped_message_generation_handler = ->(update : MessageGenerationStopped) { block.call(update); nil }
+    end
+
+    def handle(update : MessageGenerationStopped)
+      if handler = @stopped_message_generation_handler
+        return handler.call(update)
+      end
+
+      raise "stopped_message_generation handler is not implemented"
+    end
+
     # handle messages
     def handle(message : Message)
       if handler = @message_handler
@@ -384,14 +410,12 @@ module TelegramBot
       ssl_key_path : String? = nil,
     )
       server = HTTP::Server.new do |context|
-        begin
-          Fiber.current.telegram_bot_server_http_context = context
-          handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
-        rescue ex
-          Log.error { ex }
-        ensure
-          Fiber.current.telegram_bot_server_http_context = nil
-        end
+        Fiber.current.telegram_bot_server_http_context = context
+        handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
+      rescue ex
+        Log.error { ex }
+      ensure
+        Fiber.current.telegram_bot_server_http_context = nil
       end
 
       if ssl_certificate_path && ssl_key_path
@@ -460,6 +484,10 @@ module TelegramBot
         handle chat_boost
       elsif removed_chat_boost = u.removed_chat_boost
         handle removed_chat_boost
+      elsif update = u.subscription
+        handle update
+      elsif update = u.stopped_message_generation
+        handle update
       elsif managed_bot = u.managed_bot
         handle managed_bot
       elsif message = u.edited_message

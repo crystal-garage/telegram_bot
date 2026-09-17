@@ -32,6 +32,8 @@ module TelegramBot
   class ReplyKeyboardMarkup
     include JSON::Serializable
 
+    property? force_reply : Bool?
+
     property keyboard : Array(Array(KeyboardButton))
     property? resize_keyboard : Bool?
     property? one_time_keyboard : Bool?
@@ -43,6 +45,7 @@ module TelegramBot
       @resize_keyboard = nil,
       @one_time_keyboard = nil,
       @selective = nil,
+      @force_reply : Bool? = nil,
     )
     end
 
@@ -53,13 +56,15 @@ module TelegramBot
       resize_keyboard : Bool? = nil,
       one_time_keyboard : Bool? = nil,
       selective : Bool? = nil,
+      force_reply : Bool? = nil,
     )
       buttons = keyboard.map { |row| row.map { |text| KeyboardButton.new(text) } }
       initialize(
         buttons,
         resize_keyboard: resize_keyboard,
         one_time_keyboard: one_time_keyboard,
-        selective: selective
+        selective: selective,
+        force_reply: force_reply
       )
     end
   end

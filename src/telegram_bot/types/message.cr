@@ -2,6 +2,13 @@ module TelegramBot
   class Message
     include JSON::Serializable
 
+    property rich_message : RichMessage?
+    property receiver_user : User?
+    property ephemeral_message_id : Int32?
+    property community_chat_added : CommunityChatAdded?
+    property community_chat_removed : CommunityChatRemoved?
+    property community_chat_joined : CommunityChatJoined?
+
     property message_id : Int32
     property message_thread_id : Int32?
     property direct_messages_topic : DirectMessagesTopic?

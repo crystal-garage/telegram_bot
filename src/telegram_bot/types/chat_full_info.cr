@@ -21,6 +21,8 @@ module TelegramBot
   end
 
   class ChatFullInfo < Chat
+    property guard_bot : User?
+    property community : Community?
     property accent_color_id : Int32
     property max_reaction_count : Int32
     property active_usernames : Array(String)?

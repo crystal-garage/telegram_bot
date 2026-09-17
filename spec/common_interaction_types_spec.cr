@@ -789,6 +789,9 @@ describe TelegramBot::Gift do
           "text": "Thanks"
         },
         "unique_gift": {
+          "text": "A gift for you",
+          "entities": [{"type":"bold","offset":0,"length":6}],
+          "is_private": true,
           "origin": "upgrade",
           "gift": {
             "gift_id": "gift-id",
@@ -860,6 +863,9 @@ describe TelegramBot::Gift do
     message.gift.try(&.owned_gift_id).should eq("owned-gift-id")
     message.gift.try(&.can_be_upgraded?).should be_true
     message.unique_gift.try(&.gift.name).should eq("Gift #1")
+    message.unique_gift.try(&.text).should eq("A gift for you")
+    message.unique_gift.try(&.entities.try(&.first.type)).should eq("bold")
+    message.unique_gift.try(&.is_private?).should be_true
     message.gift_upgrade_sent.try(&.gift.id).should eq("gift-id")
     transaction.should be_a(TelegramBot::TransactionPartnerUser)
     transaction.as(TelegramBot::TransactionPartnerUser).gift.try(&.star_count).should eq(100)
@@ -1221,5 +1227,111 @@ describe TelegramBot::Sticker do
     sticker.file_size.should eq(1024)
     input_json["sticker"].should eq("attach://sticker")
     input_json["keywords"][0].should eq("crystal")
+  end
+end
+
+describe TelegramBot::RichText do
+  it "parses recursive rich text without losing plain strings, arrays, or entity types" do
+    json = <<-JSON
+      ["Hello ", {"type":"bold","text":["bold ",{"type":"italic","text":"nested"}]},
+       {"type":"button","button":{"text":"Press","callback_data":"press","disabled":{}}}]
+      JSON
+    text = TelegramBot::RichText.from_json(json)
+    parts = text.value.as(Array(TelegramBot::RichText))
+    parts[0].value.should eq("Hello ")
+    bold = parts[1].value.as(TelegramBot::RichTextBold)
+    bold.text.value.as(Array(TelegramBot::RichText))[1].value.should be_a(TelegramBot::RichTextItalic)
+    parts[2].value.as(TelegramBot::RichTextButton).button.disabled.should be_a(TelegramBot::DisabledButton)
+    JSON.parse(text.to_json).should eq(JSON.parse(json))
+  end
+end
+
+describe TelegramBot::Message do
+  it "parses rich message blocks" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {"message_id":1,"date":0,"chat":{"id":1,"type":"private"},"rich_message":{
+        "blocks":[
+          {"type":"details","summary":"More","blocks":[
+            {"type":"expandable_blockquote","text":"Quote","credit":"Author"},
+            {"type":"table","cells":[[{"text":"Cell","align":"left","valign":"top"}]],"is_compact":true}
+          ],"is_open":true},
+          {"type":"document","document":{"file_id":"file","file_unique_id":"unique"}},
+          {"type":"buttons","buttons":[{"text":"Open","url":"https://example.com"}],"align":"center"}
+        ],"is_rtl":false
+      }}
+      JSON
+    rich = message.rich_message.should_not be_nil
+    details = rich.blocks[0].as(TelegramBot::RichBlockDetails)
+    details.blocks[0].should be_a(TelegramBot::RichBlockExpandableBlockQuotation)
+    details.blocks[1].as(TelegramBot::RichBlockTable).is_compact?.should be_true
+    rich.blocks[1].as(TelegramBot::RichBlockDocument).document.file_id.should eq("file")
+    rich.blocks[2].as(TelegramBot::RichBlockButtons).buttons[0].text.value.should eq("Open")
+    rich.is_rtl?.should be_false
+  end
+
+  it "parses community service messages and ephemeral message recipients" do
+    message = TelegramBot::Message.from_json(<<-JSON)
+      {"message_id":0,"date":0,"chat":{"id":1,"type":"supergroup"},
+       "receiver_user":{"id":5000000000,"is_bot":false,"first_name":"User"},"ephemeral_message_id":9,
+       "community_chat_added":{"community":{"id":6000000000,"name":"Community"}},
+       "community_chat_joined":{"community":{"id":6000000000,"name":"Community"}},
+       "community_chat_removed":{}}
+      JSON
+    message.receiver_user.try(&.id).should eq(5_000_000_000_i64)
+    message.ephemeral_message_id.should eq(9)
+    message.community_chat_added.try(&.community.id).should eq(6_000_000_000_i64)
+    message.community_chat_joined.try(&.community.name).should eq("Community")
+    message.community_chat_removed.should be_a(TelegramBot::CommunityChatRemoved)
+  end
+end
+
+describe TelegramBot::ChatFullInfo do
+  it "parses join-query capabilities, guard bots, and community chat metadata" do
+    user = TelegramBot::User.new(1_i64, true, "Guard", supports_join_request_queries: true)
+    TelegramBot::User.from_json(user.to_json).supports_join_request_queries?.should be_true
+    chat = TelegramBot::ChatFullInfo.from_json(<<-JSON)
+      {"id":1,"type":"supergroup","accent_color_id":0,"max_reaction_count":3,
+       "guard_bot":{"id":2,"is_bot":true,"first_name":"Guard"},
+       "community":{"id":6000000000,"name":"Community"}}
+      JSON
+    chat.guard_bot.try(&.first_name).should eq("Guard")
+    chat.community.try(&.id).should eq(6_000_000_000_i64)
+    request = TelegramBot::ChatJoinRequest.from_json(<<-JSON)
+      {"chat":{"id":1,"type":"supergroup"},"from":{"id":2,"is_bot":false,"first_name":"User"},
+       "user_chat_id":2,"date":0,"query_id":"join-query"}
+      JSON
+    request.query_id.should eq("join-query")
+    member = TelegramBot::ChatMember.from_json(<<-JSON)
+      {"user":{"id":1,"is_bot":true,"first_name":"Bot"},"status":"administrator","can_send_welcome_messages":true}
+      JSON
+    member.can_send_welcome_messages?.should be_true
+  end
+end
+
+describe TelegramBot::PollMedia do
+  it "parses links" do
+    TelegramBot::PollMedia.from_json(%({"link":{"url":"https://example.com"}})).link.try(&.url).should eq("https://example.com")
+  end
+end
+
+describe TelegramBot::ReplyParameters do
+  it "supports ephemeral replies without a message ID" do
+    reply = TelegramBot::ReplyParameters.new(ephemeral_message_id: 42)
+    JSON.parse(reply.to_json).should eq(JSON.parse(%({"ephemeral_message_id":42})))
+    TelegramBot::ReplyParameters.new(12).message_id.should eq(12)
+  end
+end
+
+describe TelegramBot::ChatAdministratorRights do
+  it "serializes welcome-message permissions" do
+    rights = TelegramBot::ChatAdministratorRights.new(can_send_welcome_messages: true)
+    JSON.parse(rights.to_json)["can_send_welcome_messages"].as_bool.should be_true
+  end
+end
+
+describe TelegramBot::BotCommand do
+  it "serializes ephemeral commands" do
+    command = TelegramBot::BotCommand.new("private", "Private reply", is_ephemeral: true)
+    JSON.parse(command.to_json)["is_ephemeral"].as_bool.should be_true
   end
 end

@@ -7,9 +7,10 @@
 
 [Telegram Bot API](https://core.telegram.org/bots/api) client library for Crystal.
 
-The shard is aligned with Telegram Bot API 10.0. It supports messaging, media,
+The shard is aligned with Telegram Bot API 10.3. It supports messaging, media,
 chat administration, payments, games, polls, reactions, keyboards, Web App/Mini
-App helpers, business features, gifts, and paid media. See
+App helpers, business features, gifts, paid media, rich messages, ephemeral messages, and
+communities. See
 [Bot API support](#bot-api-support) for the implementation matrix.
 
 > This is a fork of [telegram_bot](https://github.com/hangyas/telegram_bot) which was originally written by Krisztián Ádám.
@@ -60,6 +61,9 @@ api methods and types:
 - [x] invite link, join request, forum topic, and reaction methods
 - [x] Stars, gifts, and paid media methods
 - [x] business, guest, and managed bot helpers
+- [x] rich messages and stoppable streaming drafts
+- [x] ephemeral messages and commands
+- [x] communities and join request queries
 
 getting updates:
 
@@ -226,6 +230,84 @@ class WebAppBot < TelegramBot::Bot
 end
 ```
 
+### Rich messages and streaming drafts
+
+Send formatted rich content using HTML, Markdown, or typed blocks:
+
+```crystal
+rich = TelegramBot::InputRichMessage.new(markdown: "# Results\n\n**Ready**")
+# Stream a temporary preview, then send the final message to keep it in the chat.
+bot.on_stopped_message_generation do |update|
+  # Stop producing drafts for update.chat.id and update.draft_id.
+end
+bot.send_rich_message_draft(chat_id, 1, rich, can_stop: true, keep_on_stop: true)
+bot.send_rich_message(chat_id, rich)
+```
+
+Typed blocks use `RichText` for plain strings, arrays of rich text, or formatting
+entities. Received rich messages expose `RichBlock` subclasses and
+`RichText#value` for inspecting nested content:
+
+```crystal
+blocks = [
+  TelegramBot::InputRichBlockParagraph.new(TelegramBot::RichText.new("Hello")),
+] of TelegramBot::InputRichBlock
+bot.send_rich_message(chat_id, TelegramBot::InputRichMessage.new(blocks: blocks))
+```
+
+Use `bot.attach` to upload files nested in rich blocks or in the explicit media
+list used by HTML/Markdown:
+
+```crystal
+File.open("report.pdf") do |file|
+  media = TelegramBot::InputRichMessageMedia.new(
+    "report",
+    TelegramBot::InputMediaDocument.new(bot.attach("report_file", file))
+  )
+  rich = TelegramBot::InputRichMessage.new(
+    html: %(<tg-document src="tg://document?id=report"/>),
+    media: [media]
+  )
+  bot.send_rich_message(chat_id, rich)
+end
+```
+
+Drafts and rich inline-query results require previously uploaded media; direct
+file uploads are supported when sending regular rich messages.
+
+### Ephemeral messages
+
+Send a message visible only to a specific user and the bot in a group:
+
+```crystal
+parameters = TelegramBot::EphemeralMessageParameters.new(user_id)
+bot.send_message(chat_id, "Only you can see this", ephemeral_message_parameters: parameters)
+
+# Use the returned message's ephemeral_message_id to edit or delete it.
+bot.edit_ephemeral_message_text(chat_id, user_id, ephemeral_message_id, text: "Updated")
+bot.delete_ephemeral_message(chat_id, user_id, ephemeral_message_id)
+```
+
+For a reply to an incoming ephemeral message, use
+`ReplyParameters.new(ephemeral_message_id: ...)` together with
+`ephemeral_message_parameters`. Ephemeral delivery and edits are not guaranteed
+when the recipient is offline.
+
+### Join request queries and subscription updates
+
+```crystal
+bot.on_chat_join_request do |request|
+  if query_id = request.query_id
+    bot.answer_chat_join_request_query(query_id, "queue")
+    # Or show a Mini App with send_chat_join_request_web_app before deciding.
+  end
+end
+
+bot.on_subscription do |subscription|
+  # Inspect subscription.user, subscription.invoice_payload, and subscription.state.
+end
+```
+
 ### Logging
 
 ```crystal
@@ -368,25 +450,29 @@ However it's not part of the API you can set block or allow lists in the bot's c
 
 ## Bot API support
 
-Telegram currently documents Bot API 10.0. This shard exposes the documented
-Bot API methods as Crystal methods and represents documented objects as
+This shard targets Bot API 10.3, including the additions in versions 10.1–10.3.
+It exposes the documented Bot API methods as Crystal methods and represents
+documented objects as
 JSON-serializable types.
 
 ### Implemented methods
 
 - Core: `get_me`, `log_out`, `close`
-- Messages and media: `send_message`, `reply`, `forward_message`,
+- Messages and media: `send_message`, `send_rich_message`, `reply`, `forward_message`,
   `forward_messages`, `copy_message`, `copy_messages`, `send_photo`,
   `send_live_photo`, `send_audio`, `send_document`, `send_sticker`,
   `send_video`, `send_animation`, `send_voice`, `send_video_note`,
   `send_paid_media`, `send_media_group`, `send_location`, `send_venue`,
   `send_contact`, `send_poll`, `send_dice`, `send_checklist`,
-  `send_message_draft`, `send_chat_action`
+  `send_message_draft`, `send_rich_message_draft`, `send_chat_action`
 - Message editing and deletion: `edit_message_live_location`,
   `stop_message_live_location`, `edit_message_text`, `edit_message_caption`,
   `edit_message_media`, `edit_message_checklist`,
   `edit_message_reply_markup`, `stop_poll`, `delete_message`,
   `delete_messages`, `approve_suggested_post`, `decline_suggested_post`
+- Ephemeral messages: `edit_ephemeral_message_text`,
+  `edit_ephemeral_message_media`, `edit_ephemeral_message_caption`,
+  `edit_ephemeral_message_reply_markup`, `delete_ephemeral_message`
 - Inline and Web App: `answer_inline_query`, `answer_web_app_query`,
   `save_prepared_inline_message`, `save_prepared_keyboard_button`
 - Callback, games, files, webhooks: `answer_callback_query`, `send_game`,
@@ -401,6 +487,7 @@ JSON-serializable types.
   `create_chat_subscription_invite_link`,
   `edit_chat_subscription_invite_link`, `revoke_chat_invite_link`,
   `approve_chat_join_request`, `decline_chat_join_request`,
+  `answer_chat_join_request_query`, `send_chat_join_request_web_app`,
   `set_chat_photo`, `delete_chat_photo`, `set_chat_title`,
   `set_chat_description`, `pin_chat_message`, `unpin_chat_message`,
   `unpin_all_chat_messages`, `get_chat`, `leave_chat`,
@@ -481,8 +568,20 @@ Override these methods in your bot subclass:
 - `handle(chat_boost : ChatBoostUpdated)`
 - `handle(removed_chat_boost : ChatBoostRemoved)`
 - `handle(managed_bot : ManagedBotUpdated)`
+- `handle(subscription : BotSubscriptionUpdated)`
+- `handle(stopped_message_generation : MessageGenerationStopped)`
 
 ### Implemented Types
+
+- Rich messages: `RichMessage`, `InputRichMessage`, `InputRichMessageMedia`,
+  `InputRichMessageContent`, `RichMessageButton`, `RichText` and its formatting
+  entities, `RichBlock` and `InputRichBlock` variants (including tables, buttons,
+  expandable quotations, documents, and thinking blocks), `RichBlockCaption`,
+  `RichBlockTableCell`, `RichBlockListItem`, `InputRichBlockListItem`
+- Ephemeral messages, communities, and new updates:
+  `EphemeralMessageParameters`, `Community`, `CommunityChatAdded`,
+  `CommunityChatRemoved`, `CommunityChatJoined`, `BotSubscriptionUpdated`,
+  `MessageGenerationStopped`
 
 - Message compatibility: `MessageId`, `InaccessibleMessage`,
   `MaybeInaccessibleMessage`, `ReplyParameters`, `TextQuote`,
@@ -504,9 +603,9 @@ Override these methods in your bot subclass:
 - Input media: `InputMedia`, `InputMediaAnimation`, `InputMediaAudio`,
   `InputMediaDocument`, `InputMediaLivePhoto`, `InputMediaLocation`,
   `InputMediaPhoto`, `InputMediaSticker`, `InputMediaVenue`,
-  `InputMediaVideo`
+  `InputMediaVideo`, `InputMediaVoiceNote`, `InputMediaLink`
 - Polls, reactions, and forum service messages: `Dice`, `Poll`,
-  `PollOption`, `InputPollOption`, `PollMedia`, `PollAnswer`,
+  `PollOption`, `InputPollOption`, `PollMedia`, `Link`, `PollAnswer`,
   `PollOptionAdded`, `PollOptionDeleted`, `ReactionTypeEmoji`,
   `ReactionTypeCustomEmoji`, `ReactionTypePaid`, `MessageReactionUpdated`,
   `MessageReactionCountUpdated`, `ReactionCount`, `ForumTopic`,
@@ -538,7 +637,7 @@ Override these methods in your bot subclass:
   `KeyboardButtonRequestUsers`, `KeyboardButtonRequestChat`,
   `KeyboardButtonRequestManagedBot`, `KeyboardButtonPollType`,
   `ChatAdministratorRights`, `SentWebAppMessage`, `PreparedInlineMessage`,
-  `PreparedKeyboardButton`
+  `PreparedKeyboardButton`, `DisabledButton`
 - Webhook, command scope, and bot profile: `WebhookInfo`,
   `BotCommandScopeDefault`, `BotCommandScopeAllPrivateChats`,
   `BotCommandScopeAllGroupChats`, `BotCommandScopeAllChatAdministrators`,

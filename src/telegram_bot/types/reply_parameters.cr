@@ -2,7 +2,9 @@ module TelegramBot
   class ReplyParameters
     include JSON::Serializable
 
-    property message_id : Int32
+    property ephemeral_message_id : Int32?
+
+    property message_id : Int32?
     property chat_id : Int64 | String?
     property? allow_sending_without_reply : Bool?
     property quote : String?
@@ -13,7 +15,7 @@ module TelegramBot
     property poll_option_id : String?
 
     def initialize(
-      @message_id : Int32,
+      @message_id : Int32? = nil,
       *,
       @chat_id = nil,
       @allow_sending_without_reply = nil,
@@ -23,6 +25,7 @@ module TelegramBot
       @quote_position = nil,
       @checklist_task_id = nil,
       @poll_option_id = nil,
+      @ephemeral_message_id : Int32? = nil,
     )
     end
   end

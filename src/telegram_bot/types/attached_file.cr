@@ -22,6 +22,11 @@ module TelegramBot
     attachments[value.name] = value.file
   end
 
+  def self.collect_attachment(value : Array, attachments : Hash(String, String | ::File)) : Nil
+    value.each { |item| collect_attachment(item, attachments) }
+  end
+
   def self.collect_attachment(value, attachments : Hash(String, String | ::File)) : Nil
+    value.collect_attachments(attachments) if value.responds_to?(:collect_attachments)
   end
 end

@@ -12,6 +12,14 @@ class RequestBuildingBot < TelegramBot::Bot
     "pinChatMessage",
     "unpinChatMessage",
     "sendMessageDraft",
+    "sendRichMessageDraft",
+    "answerChatJoinRequestQuery",
+    "sendChatJoinRequestWebApp",
+    "editEphemeralMessageText",
+    "editEphemeralMessageMedia",
+    "editEphemeralMessageCaption",
+    "editEphemeralMessageReplyMarkup",
+    "deleteEphemeralMessage",
     "deleteMessages",
     "approveSuggestedPost",
     "declineSuggestedPost",
@@ -248,6 +256,16 @@ class RequestBuildingBot < TelegramBot::Bot
 
   def handle(managed_bot : TelegramBot::ManagedBotUpdated)
     @handled_update = managed_bot.bot.username
+  end
+end
+
+# Capture serialized parameters while reusing the request fixtures above.
+class SerializedRequestBuildingBot < RequestBuildingBot
+  getter serialized_params = {} of String => String | ::File
+
+  protected def request(method : String, force_http : Bool = false, params = {} of String => String)
+    @serialized_params = serialize_params(params)
+    super(method, force_http, params)
   end
 end
 
@@ -2233,5 +2251,140 @@ describe TelegramBot::Bot do
       bot.handle_update(TelegramBot::Update.from_json(json))
       bot.handled_update.should eq(expected)
     end
+  end
+
+  it "sends and edits rich messages and streams stoppable drafts" do
+    bot = SerializedRequestBuildingBot.new
+    rich = TelegramBot::InputRichMessage.new(markdown: "**Hello**", skip_entity_detection: true)
+    bot.send_rich_message("@channel", rich, protect_content: true).should be_a(TelegramBot::Message)
+    bot.last_method.should eq("sendRichMessage")
+    JSON.parse(bot.serialized_params["rich_message"].as(String))["markdown"].should eq("**Hello**")
+    bot.serialized_params["protect_content"].should eq("true")
+    bot.serialized_params.has_key?("ephemeral_message_parameters").should be_false
+
+    bot.edit_message_text(chat_id: 1, message_id: 1, rich_message: rich)
+    bot.last_method.should eq("editMessageText")
+    bot.serialized_params.has_key?("text").should be_false
+    JSON.parse(bot.serialized_params["rich_message"].as(String))["skip_entity_detection"].as_bool.should be_true
+
+    bot.send_rich_message_draft(1, 2, rich, can_stop: true, keep_on_stop: false).should be_true
+    bot.last_method.should eq("sendRichMessageDraft")
+    bot.last_force_http.should be_true
+    bot.serialized_params["draft_id"].should eq("2")
+    bot.serialized_params["can_stop"].should eq("true")
+    bot.serialized_params["keep_on_stop"].should eq("false")
+
+    bot.send_message_draft(1, 2, "", can_stop: true, keep_on_stop: true).should be_true
+    bot.last_method.should eq("sendMessageDraft")
+    bot.serialized_params["text"].should eq("")
+    bot.serialized_params["can_stop"].should eq("true")
+    bot.serialized_params["keep_on_stop"].should eq("true")
+  end
+
+  it "collects uploads through nested rich blocks and explicit HTML media" do
+    bot = SerializedRequestBuildingBot.new
+    ::File.tempfile("rich-message") do |file|
+      file.print("uploaded content")
+      file.flush
+      voice = TelegramBot::InputMediaVoiceNote.new(bot.attach("voice", file), duration: 3)
+      photo = TelegramBot::InputMediaPhoto.new(bot.attach("photo", file))
+      document = TelegramBot::InputMediaDocument.new(bot.attach("document", file))
+      item = TelegramBot::InputRichBlockListItem.new([
+        TelegramBot::InputRichBlockVoiceNote.new(voice),
+        TelegramBot::InputRichBlockPhoto.new(photo),
+      ] of TelegramBot::InputRichBlock)
+      blocks = [TelegramBot::InputRichBlockDetails.new(
+        TelegramBot::RichText.new("Uploads"),
+        [TelegramBot::InputRichBlockList.new([item])] of TelegramBot::InputRichBlock
+      )] of TelegramBot::InputRichBlock
+      bot.send_rich_message(1, TelegramBot::InputRichMessage.new(blocks: blocks))
+      bot.serialized_params["voice"].should eq(file)
+      bot.serialized_params["photo"].should eq(file)
+      nested = JSON.parse(bot.serialized_params["rich_message"].as(String))["blocks"][0]["blocks"][0]["items"][0]["blocks"]
+      nested[0]["voice_note"]["media"].should eq("attach://voice")
+      nested[0]["voice_note"]["type"].should eq("voice_note")
+      nested[1]["photo"]["media"].should eq("attach://photo")
+
+      bot.send_rich_message(1, TelegramBot::InputRichMessage.new(
+        html: %(<tg-document src="tg://document?id=report"/>),
+        media: [TelegramBot::InputRichMessageMedia.new("report", document)]
+      ))
+      bot.serialized_params["document"].should eq(file)
+      JSON.parse(bot.serialized_params["rich_message"].as(String))["media"][0]["media"]["media"].should eq("attach://document")
+      multipart = HTTP::Client::MultipartBody.new(bot.serialized_params).bodyg
+      multipart.should contain(%(name="document"; filename=))
+      multipart.should contain("uploaded content")
+    end
+  end
+
+  it "serializes link poll options" do
+    bot = SerializedRequestBuildingBot.new
+    bot.send_poll(1, "Link?", [TelegramBot::InputPollOption.new("Read", media: TelegramBot::InputMediaLink.new("https://example.com"))])
+    JSON.parse(bot.serialized_params["options"].as(String))[0]["media"].should eq(JSON.parse(%({"type":"link","url":"https://example.com"})))
+  end
+
+  it "passes ephemeral parameters through every supported sending method" do
+    bot = SerializedRequestBuildingBot.new
+    ephemeral = TelegramBot::EphemeralMessageParameters.new(5_000_000_000_i64, callback_query_id: "query", replace_callback_query_message: false)
+    {% for method, args in {
+                             "send_message"    => {1, "text"},
+                             "send_animation"  => {1, "file"},
+                             "send_audio"      => {1, "file"},
+                             "send_document"   => {1, "file"},
+                             "send_live_photo" => {1, "video", "photo"},
+                             "send_photo"      => {1, "file"},
+                             "send_sticker"    => {1, "file"},
+                             "send_video"      => {1, "file"},
+                             "send_video_note" => {1, "file"},
+                             "send_voice"      => {1, "file"},
+                             "send_contact"    => {1, "+123456789", "User"},
+                             "send_location"   => {1, 50.45, 30.52},
+                             "send_venue"      => {1, 50.45, 30.52, "Title", "Address"},
+                           } %}
+      bot.{{ method.id }}({{ args.splat }}, ephemeral_message_parameters: ephemeral)
+      JSON.parse(bot.serialized_params["ephemeral_message_parameters"].as(String)).should eq(JSON.parse(ephemeral.to_json))
+    {% end %}
+    bot.send_rich_message(1, TelegramBot::InputRichMessage.new(markdown: "Hello"), ephemeral_message_parameters: ephemeral)
+    JSON.parse(bot.serialized_params["ephemeral_message_parameters"].as(String))["receiver_user_id"].should eq(5_000_000_000_i64)
+  end
+
+  it "edits and deletes ephemeral messages including uploaded media" do
+    bot = SerializedRequestBuildingBot.new
+    rich = TelegramBot::InputRichMessage.new(markdown: "Updated")
+    bot.edit_ephemeral_message_text(1, 2, 3, rich_message: rich).should be_true
+    bot.last_method.should eq("editEphemeralMessageText")
+    bot.serialized_params["receiver_user_id"].should eq("2")
+    bot.serialized_params["ephemeral_message_id"].should eq("3")
+    bot.serialized_params.has_key?("text").should be_false
+    JSON.parse(bot.serialized_params["rich_message"].as(String))["markdown"].should eq("Updated")
+
+    ::File.tempfile("ephemeral-photo") do |file|
+      bot.edit_ephemeral_message_media(1, 2, 3, TelegramBot::InputMediaPhoto.new(bot.attach("photo", file))).should be_true
+      bot.last_method.should eq("editEphemeralMessageMedia")
+      bot.serialized_params["photo"].should eq(file)
+      JSON.parse(bot.serialized_params["media"].as(String))["media"].should eq("attach://photo")
+    end
+    bot.edit_ephemeral_message_caption(1, 2, 3, caption: "Caption", show_caption_above_media: true).should be_true
+    bot.last_method.should eq("editEphemeralMessageCaption")
+    bot.serialized_params["show_caption_above_media"].should eq("true")
+    markup = TelegramBot::InlineKeyboardMarkup.new(force_reply: true)
+    bot.edit_ephemeral_message_reply_markup(1, 2, 3, markup).should be_true
+    bot.last_method.should eq("editEphemeralMessageReplyMarkup")
+    JSON.parse(bot.serialized_params["reply_markup"].as(String))["force_reply"].as_bool.should be_true
+    bot.delete_ephemeral_message(1, 2, 3).should be_true
+    bot.last_method.should eq("deleteEphemeralMessage")
+  end
+
+  it "builds join-request query methods and welcome-message permissions" do
+    bot = SerializedRequestBuildingBot.new
+    bot.answer_chat_join_request_query("query", "queue").should be_true
+    bot.last_method.should eq("answerChatJoinRequestQuery")
+    bot.serialized_params["chat_join_request_query_id"].should eq("query")
+    bot.serialized_params["result"].should eq("queue")
+    bot.send_chat_join_request_web_app("query", "https://example.com").should be_true
+    bot.last_method.should eq("sendChatJoinRequestWebApp")
+    bot.serialized_params["web_app_url"].should eq("https://example.com")
+    bot.promote_chat_member(1, 2, can_send_welcome_messages: true).should be_true
+    bot.serialized_params["can_send_welcome_messages"].should eq("true")
   end
 end

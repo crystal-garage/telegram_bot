@@ -111,6 +111,10 @@ module TelegramBot
   class UniqueGiftInfo
     include JSON::Serializable
 
+    property text : String?
+    property entities : Array(MessageEntity)?
+    property? is_private : Bool?
+
     property gift : UniqueGift
     property origin : String
     property last_resale_currency : String?

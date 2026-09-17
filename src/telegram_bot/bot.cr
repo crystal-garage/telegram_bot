@@ -32,6 +32,8 @@ module TelegramBot
     alias ChatJoinRequestHandler = Proc(ChatJoinRequest, Nil)
     alias ChatBoostUpdatedHandler = Proc(ChatBoostUpdated, Nil)
     alias ChatBoostRemovedHandler = Proc(ChatBoostRemoved, Nil)
+    alias BotSubscriptionUpdatedHandler = Proc(BotSubscriptionUpdated, Nil)
+    alias MessageGenerationStoppedHandler = Proc(MessageGenerationStopped, Nil)
     alias ManagedBotUpdatedHandler = Proc(ManagedBotUpdated, Nil)
 
     def initialize(
@@ -68,6 +70,8 @@ module TelegramBot
       @chat_join_request_handler = nil.as(ChatJoinRequestHandler?)
       @chat_boost_handler = nil.as(ChatBoostUpdatedHandler?)
       @removed_chat_boost_handler = nil.as(ChatBoostRemovedHandler?)
+      @subscription_handler = nil.as(BotSubscriptionUpdatedHandler?)
+      @stopped_message_generation_handler = nil.as(MessageGenerationStoppedHandler?)
       @managed_bot_handler = nil.as(ManagedBotUpdatedHandler?)
     end
   end
@@ -85,3 +89,5 @@ require "./bot/methods/games"
 require "./bot/methods/payments"
 require "./bot/methods/stickers"
 require "./bot/methods/profile"
+require "./bot/methods/rich_messages"
+require "./bot/methods/ephemeral_messages"

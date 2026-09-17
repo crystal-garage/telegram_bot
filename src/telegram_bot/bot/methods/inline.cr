@@ -35,6 +35,7 @@ module TelegramBot
       entities : Array(MessageEntity)? = nil,
       link_preview_options : LinkPreviewOptions? = nil,
       reply_markup : InlineKeyboardMarkup? = nil,
+      rich_message : InputRichMessage? = nil,
     ) : Message | Bool?
       res = def_request(
         "editMessageText",
@@ -46,7 +47,8 @@ module TelegramBot
         parse_mode,
         entities,
         link_preview_options,
-        reply_markup
+        reply_markup,
+        rich_message
       )
 
       if res

@@ -2,6 +2,9 @@ module TelegramBot
   class Update
     include JSON::Serializable
 
+    property subscription : BotSubscriptionUpdated?
+    property stopped_message_generation : MessageGenerationStopped?
+
     property update_id : Int32
     property message : TelegramBot::Message?
     property edited_message : TelegramBot::Message?

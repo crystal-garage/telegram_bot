@@ -166,4 +166,24 @@ describe TelegramBot do
       bot.handle(message)
     end
   end
+
+  it "dispatches subscription and stopped-generation updates to block handlers" do
+    bot = TelegramBot::Bot.new("blockbot", "")
+    subscription = nil.as(TelegramBot::BotSubscriptionUpdated?)
+    stopped = nil.as(TelegramBot::MessageGenerationStopped?)
+    bot.on_subscription { |update| subscription = update }
+    bot.on_stopped_message_generation { |update| stopped = update }
+    bot.handle_update(TelegramBot::Update.from_json(<<-JSON))
+      {"update_id":1,"subscription":{"user":{"id":1,"is_bot":false,"first_name":"User"},"invoice_payload":"invoice","state":"canceled"}}
+      JSON
+    bot.handle_update(TelegramBot::Update.from_json(<<-JSON))
+      {"update_id":2,"stopped_message_generation":{"chat":{"id":1,"type":"private"},"message_thread_id":3,"draft_id":4}}
+      JSON
+    subscription.should_not be_nil
+    subscription.try(&.state).should eq("canceled")
+    subscription.try(&.invoice_payload).should eq("invoice")
+    stopped.should_not be_nil
+    stopped.try(&.draft_id).should eq(4)
+    stopped.try(&.message_thread_id).should eq(3)
+  end
 end

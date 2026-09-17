@@ -271,6 +271,7 @@ module TelegramBot
       can_edit_stories : Bool? = nil,
       can_delete_stories : Bool? = nil,
       can_manage_tags : Bool? = nil,
+      can_send_welcome_messages : Bool? = nil,
     )
       res = def_request(
         "promoteChatMember",
@@ -292,7 +293,8 @@ module TelegramBot
         can_post_stories,
         can_edit_stories,
         can_delete_stories,
-        can_manage_tags
+        can_manage_tags,
+        can_send_welcome_messages
       )
 
       res.as_bool if res
@@ -934,6 +936,34 @@ module TelegramBot
       res = def_request(
         "unpinAllGeneralForumTopicMessages",
         chat_id
+      )
+
+      res.as_bool if res
+    end
+
+    # See: <https://core.telegram.org/bots/api#answerchatjoinrequestquery>
+    def answer_chat_join_request_query(
+      chat_join_request_query_id : String,
+      result : String,
+    ) : Bool?
+      res = def_request(
+        "answerChatJoinRequestQuery",
+        chat_join_request_query_id,
+        result
+      )
+
+      res.as_bool if res
+    end
+
+    # See: <https://core.telegram.org/bots/api#sendchatjoinrequestwebapp>
+    def send_chat_join_request_web_app(
+      chat_join_request_query_id : String,
+      web_app_url : String,
+    ) : Bool?
+      res = def_request(
+        "sendChatJoinRequestWebApp",
+        chat_join_request_query_id,
+        web_app_url
       )
 
       res.as_bool if res

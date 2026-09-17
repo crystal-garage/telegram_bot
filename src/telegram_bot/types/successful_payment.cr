@@ -1,15 +1,16 @@
-require "json"
-
 module TelegramBot
   class SuccessfulPayment
-    JSON.mapping({
-      currency:                   String,
-      total_amount:               Int32,
-      invoice_payload:            String,
-      shipping_option_id:         {type: String, nilable: true},
-      order_info:                 {type: OrderInfo, nilable: true},
-      telegram_payment_charge_id: String,
-      provider_payment_charge_id: String,
-    })
+    include JSON::Serializable
+
+    property currency : String
+    property total_amount : Int64
+    property invoice_payload : String
+    property subscription_expiration_date : Int32?
+    property? is_recurring : Bool?
+    property? is_first_recurring : Bool?
+    property shipping_option_id : String?
+    property order_info : OrderInfo?
+    property telegram_payment_charge_id : String
+    property provider_payment_charge_id : String
   end
 end

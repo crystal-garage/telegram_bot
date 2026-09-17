@@ -1,19 +1,32 @@
-require "json"
-
 module TelegramBot
   class InlineQueryResultAudio < InlineQueryResult
-    FIELDS = {
-      type:                  {type: String, mustbe: "audio"},
-      id:                    String,
-      audio_url:             String,
-      title:                 String,
-      performer:             {type: String, nilable: true},
-      audio_duration:        {type: Int32, nilable: true},
-      reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
-      input_message_content: {type: InputMessageContent, nilable: true},
-    }
+    include JSON::Serializable
 
-    JSON.mapping({{FIELDS}})
-    initializer_for({{FIELDS}})
+    property type : String = "audio"
+    property id : String
+    property audio_url : String
+    property title : String
+    property caption : String?
+    property parse_mode : String?
+    property caption_entities : Array(MessageEntity)?
+    property performer : String?
+    property audio_duration : Int32?
+    property reply_markup : InlineKeyboardMarkup?
+    property input_message_content : InputMessageContent?
+
+    def initialize(
+      @id : String,
+      @audio_url : String,
+      @title : String,
+      *,
+      @caption : String? = nil,
+      @parse_mode : String? = nil,
+      @caption_entities : Array(MessageEntity)? = nil,
+      @performer : String? = nil,
+      @audio_duration : Int32? = nil,
+      @reply_markup : InlineKeyboardMarkup? = nil,
+      @input_message_content : InputMessageContent? = nil,
+    )
+    end
   end
 end

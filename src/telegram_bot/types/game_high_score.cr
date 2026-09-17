@@ -1,11 +1,9 @@
-require "json"
-
 module TelegramBot
   class GameHighScore
-    JSON.mapping({
-      position: Int32,
-      user:     User,
-      score:    Int32,
-    })
+    include JSON::Serializable
+
+    property position : Int32
+    property user : User
+    property score : Int32
   end
 end

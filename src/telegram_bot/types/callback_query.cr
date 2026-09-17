@@ -1,15 +1,13 @@
-require "json"
-
 module TelegramBot
   class CallbackQuery
-    JSON.mapping({
-      id:                String,
-      from:              User,
-      message:           {type: Message, nilable: true},
-      inline_message_id: {type: String, nilable: true},
-      chat_instance:     String,
-      data:              {type: String, nilable: true},
-      game_short_name:   {type: String, nilable: true},
-    })
+    include JSON::Serializable
+
+    property id : String
+    property from : User
+    property message : MaybeInaccessibleMessage?
+    property inline_message_id : String?
+    property chat_instance : String
+    property data : String?
+    property game_short_name : String?
   end
 end

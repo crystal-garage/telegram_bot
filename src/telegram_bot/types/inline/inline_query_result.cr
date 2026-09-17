@@ -1,7 +1,7 @@
-require "json"
-
 module TelegramBot
   abstract class InlineQueryResult
-    #    abstract def to_json : String
+    def to_json(json : JSON::Builder)
+      raise "InlineQueryResult subclasses must implement JSON serialization"
+    end
   end
 end

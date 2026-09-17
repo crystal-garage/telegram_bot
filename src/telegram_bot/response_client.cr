@@ -9,22 +9,24 @@ module TelegramBot
 
     def post_form(method : String, params : Hash(String, String))
       body = HTTP::Params.build do |form_builder|
-        params.each { |key, value| form_builder.add key, value }
-        form_builder.add "method", method
+        params.each { |key, value| form_builder.add(key, value) }
+        form_builder.add("method", method)
       end
 
       @response.content_type = "application/x-www-form-urlencoded"
       @response.print(body)
-      @response.close
       nil
     end
 
     def post_multipart(method : String, multipart_body : HTTP::Client::MultipartBody)
       multipart_body.add_part("method", method)
-      @response.content_type = "multipart/form-data; boundary=#{multipart_body.boundary}"
+      @response.content_type = multipart_body.content_type
       @response.print(multipart_body.bodyg)
-      @response.close
       nil
+    end
+
+    def close
+      @response.close
     end
   end
 end

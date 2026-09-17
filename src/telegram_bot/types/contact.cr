@@ -1,12 +1,11 @@
-require "json"
-
 module TelegramBot
   class Contact
-    JSON.mapping({
-      phone_number: String,
-      first_name:   String,
-      last_name:    {type: String, nilable: true},
-      user_id:      {type: Int32, nilable: true},
-    })
+    include JSON::Serializable
+
+    property phone_number : String
+    property first_name : String
+    property last_name : String?
+    property user_id : Int64?
+    property vcard : String?
   end
 end

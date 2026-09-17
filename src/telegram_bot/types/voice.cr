@@ -1,12 +1,11 @@
-require "json"
-
 module TelegramBot
   class Voice
-    JSON.mapping({
-      file_id:   String,
-      duration:  Int32,
-      mime_type: {type: String, nilable: true},
-      file_size: {type: Int32, nilable: true},
-    })
+    include JSON::Serializable
+
+    property file_id : String
+    property file_unique_id : String
+    property duration : Int32
+    property mime_type : String?
+    property file_size : Int64?
   end
 end

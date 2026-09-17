@@ -1,9 +1,20 @@
 name: telegram_bot
-version: 0.1.0
+version: 1.0.0-rc2
+
+description: |
+  Telegram Bot API client library for Crystal.
+  Provides a convenient interface to interact with the Telegram Bot API,
+  allowing you to create and manage Telegram bots with ease.
 
 authors:
   - Krisztián Ádám <adamkrisz@gmail.com>
+  - Anton Maminov <anton.maminov@gmail.com>
 
-crystal: 0.34.0
+crystal: ">= 1.0.0"
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    branch: master
 
 license: MIT

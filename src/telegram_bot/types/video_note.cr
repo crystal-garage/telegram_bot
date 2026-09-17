@@ -1,13 +1,12 @@
-require "json"
-
 module TelegramBot
   class VideoNote
-    JSON.mapping({
-      file_id:   String,
-      length:    Int32,
-      duration:  Int32,
-      thumb:     {type: PhotoSize, nilable: true},
-      file_size: {type: Int32, nilable: true},
-    })
+    include JSON::Serializable
+
+    property file_id : String
+    property file_unique_id : String
+    property length : Int32
+    property duration : Int32
+    property thumbnail : PhotoSize?
+    property file_size : Int64?
   end
 end

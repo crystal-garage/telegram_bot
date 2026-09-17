@@ -1,13 +1,11 @@
-require "json"
-
 module TelegramBot
   class ReplyKeyboardRemove
-    FIELDS = {
-      remove_keyboard: {type: Bool, mustbe: true},
-      selective:       {type: Bool, nilable: true},
-    }
+    include JSON::Serializable
 
-    JSON.mapping({{FIELDS}})
-    initializer_for({{FIELDS}})
+    property? remove_keyboard : Bool = true
+    property? selective : Bool?
+
+    def initialize(@selective = nil)
+    end
   end
 end

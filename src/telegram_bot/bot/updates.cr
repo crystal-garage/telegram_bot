@@ -410,14 +410,12 @@ module TelegramBot
       ssl_key_path : String? = nil,
     )
       server = HTTP::Server.new do |context|
-        begin
-          Fiber.current.telegram_bot_server_http_context = context
-          handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
-        rescue ex
-          Log.error { ex }
-        ensure
-          Fiber.current.telegram_bot_server_http_context = nil
-        end
+        Fiber.current.telegram_bot_server_http_context = context
+        handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
+      rescue ex
+        Log.error { ex }
+      ensure
+        Fiber.current.telegram_bot_server_http_context = nil
       end
 
       if ssl_certificate_path && ssl_key_path
